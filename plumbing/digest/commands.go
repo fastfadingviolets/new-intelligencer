@@ -121,7 +121,6 @@ var readPostsCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		offset, _ := cmd.Flags().GetInt("offset")
 		limit, _ := cmd.Flags().GetInt("limit")
-		format, _ := cmd.Flags().GetString("format")
 
 		dir, err := GetWorkspaceDir()
 		if err != nil {
@@ -145,19 +144,8 @@ var readPostsCmd = &cobra.Command{
 		posts = posts[offset:end]
 		displayPosts := FormatForDisplay(posts)
 
-		if format == "json" {
-			data, _ := json.MarshalIndent(displayPosts, "", "  ")
-			fmt.Println(string(data))
-		} else {
-			// Compact format
-			for _, p := range displayPosts {
-				fmt.Printf("[%s] %s (%s)\n", p.Rkey, p.Author.Handle, p.CreatedAt.Format("Jan 02, 3:04pm"))
-				if p.Repost != nil {
-					fmt.Printf("  [reposted by %s]\n", p.Repost.ByHandle)
-				}
-				fmt.Printf("%s\n\n", p.Text)
-			}
-		}
+		data, _ := json.MarshalIndent(displayPosts, "", "  ")
+		fmt.Println(string(data))
 
 		return nil
 	},
@@ -235,7 +223,6 @@ var showCategoryCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		category := args[0]
-		format, _ := cmd.Flags().GetString("format")
 
 		wd, err := LoadWorkspace(workspaceDir)
 		if err != nil {
@@ -251,14 +238,8 @@ var showCategoryCmd = &cobra.Command{
 			return err
 		}
 
-		if format == "json" {
-			data, _ := json.MarshalIndent(displayPosts, "", "  ")
-			fmt.Println(string(data))
-		} else {
-			for _, p := range displayPosts {
-				fmt.Printf("[%s] %s\n%s\n\n", p.Rkey, p.Author.Handle, p.Text)
-			}
-		}
+		data, _ := json.MarshalIndent(displayPosts, "", "  ")
+		fmt.Println(string(data))
 
 		return nil
 	},
@@ -400,8 +381,6 @@ var uncategorizedCmd = &cobra.Command{
 	Use:   "uncategorized",
 	Short: "Show uncategorized posts",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		format, _ := cmd.Flags().GetString("format")
-
 		wd, err := LoadWorkspace(workspaceDir)
 		if err != nil {
 			dir, _ := GetWorkspaceDir()
@@ -423,15 +402,55 @@ var uncategorizedCmd = &cobra.Command{
 
 		displayPosts := FormatForDisplay(posts)
 
-		if format == "json" {
-			data, _ := json.MarshalIndent(displayPosts, "", "  ")
-			fmt.Println(string(data))
-		} else {
-			for _, p := range displayPosts {
-				fmt.Printf("[%s] %s\n%s\n\n", p.Rkey, p.Author.Handle, p.Text)
-			}
+		data, _ := json.MarshalIndent(displayPosts, "", "  ")
+		fmt.Println(string(data))
+
+		return nil
+	},
+}
+
+// digest delete-category
+var deleteCategoryCmd = &cobra.Command{
+	Use:   "delete-category <category>",
+	Short: "Delete a category and uncategorize its posts",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		category := args[0]
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
 		}
 
+		// Load categories and summaries
+		cats, err := LoadCategories(filepath.Join(dir, "categories.json"))
+		if err != nil {
+			return err
+		}
+
+		sums, err := LoadSummaries(filepath.Join(dir, "summaries.json"))
+		if err != nil {
+			return err
+		}
+
+		// Delete category
+		postCount, err := DeleteCategory(cats, category)
+		if err != nil {
+			return err
+		}
+
+		// Delete summary if exists
+		delete(sums, category)
+
+		// Save
+		if err := SaveCategories(filepath.Join(dir, "categories.json"), cats); err != nil {
+			return err
+		}
+		if err := SaveSummaries(filepath.Join(dir, "summaries.json"), sums); err != nil {
+			return err
+		}
+
+		fmt.Printf("Deleted category '%s' (%d posts now uncategorized)\n", category, postCount)
 		return nil
 	},
 }
@@ -446,17 +465,10 @@ func init() {
 	// read-posts flags
 	readPostsCmd.Flags().Int("offset", 0, "Skip first N posts")
 	readPostsCmd.Flags().Int("limit", 20, "Show M posts")
-	readPostsCmd.Flags().String("format", "compact", "Output format (json|compact)")
 
 	// list-categories flags
 	listCategoriesCmd.Flags().Bool("with-counts", true, "Show post counts")
 
-	// show-category flags
-	showCategoryCmd.Flags().String("format", "compact", "Output format (json|compact)")
-
 	// compile flags
 	compileCmd.Flags().String("output", "", "Output file (default: workspace/digest.md)")
-
-	// uncategorized flags
-	uncategorizedCmd.Flags().String("format", "compact", "Output format (json|compact)")
 }

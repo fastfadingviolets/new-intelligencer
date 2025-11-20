@@ -343,3 +343,59 @@ func TestCategorizePosts_RemovesFromMultipleCategories(t *testing.T) {
 	assert.NotContains(t, cats["cat-b"], "rkey2")
 	assert.Contains(t, cats["cat-c"], "rkey2")
 }
+
+func TestDeleteCategory_Basic(t *testing.T) {
+	cats := Categories{
+		"category-a": {"rkey1", "rkey2"},
+		"category-b": {"rkey3"},
+	}
+
+	count, err := DeleteCategory(cats, "category-a")
+	require.NoError(t, err)
+
+	assert.Equal(t, 2, count)
+	assert.NotContains(t, cats, "category-a")
+	assert.Contains(t, cats, "category-b") // Other categories unaffected
+}
+
+func TestDeleteCategory_NonExistent(t *testing.T) {
+	cats := Categories{
+		"category-a": {"rkey1"},
+	}
+
+	count, err := DeleteCategory(cats, "nonexistent")
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "not found")
+	assert.Equal(t, 0, count)
+
+	// Original category still exists
+	assert.Contains(t, cats, "category-a")
+}
+
+func TestDeleteCategory_Empty(t *testing.T) {
+	cats := Categories{
+		"empty":      {},
+		"category-a": {"rkey1"},
+	}
+
+	count, err := DeleteCategory(cats, "empty")
+	require.NoError(t, err)
+
+	assert.Equal(t, 0, count)
+	assert.NotContains(t, cats, "empty")
+	assert.Contains(t, cats, "category-a")
+}
+
+func TestDeleteCategory_SinglePost(t *testing.T) {
+	cats := Categories{
+		"single": {"rkey1"},
+		"other":  {"rkey2"},
+	}
+
+	count, err := DeleteCategory(cats, "single")
+	require.NoError(t, err)
+
+	assert.Equal(t, 1, count)
+	assert.NotContains(t, cats, "single")
+	assert.Contains(t, cats, "other")
+}

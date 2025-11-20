@@ -72,6 +72,20 @@ func MergeCategories(cats Categories, from string, to string) error {
 	return nil
 }
 
+// DeleteCategory removes a category and returns the number of posts that were in it
+// Returns error if category doesn't exist
+func DeleteCategory(cats Categories, category string) (int, error) {
+	posts, exists := cats[category]
+	if !exists {
+		return 0, fmt.Errorf("category '%s' not found", category)
+	}
+
+	postCount := len(posts)
+	delete(cats, category)
+
+	return postCount, nil
+}
+
 // GetCategoryPosts retrieves all posts in a category
 // Uses index for fast lookup, returns in display format
 func GetCategoryPosts(cats Categories, posts []Post, index PostsIndex, category string) ([]DisplayPost, error) {

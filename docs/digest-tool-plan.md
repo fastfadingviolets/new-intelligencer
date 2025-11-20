@@ -821,7 +821,8 @@ ls *.go | entr -c go test -v ./...
 - [ ] Verify digest compile output
 
 ### Phase 8: Agent Integration
-- [ ] Update agent instruction files
+- [x] Update agent instruction files (bsky-categorizer.md, bsky-consolidator.md, bsky-summarizer.md)
+- [x] Update PROMPT.md with digest CLI workflow
 - [ ] Test full workflow with agents
 - [ ] Verify final digest.md quality
 

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -14,7 +13,7 @@ var (
 
 func main() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		// Cobra already printed the error, just exit
 		os.Exit(1)
 	}
 }
@@ -25,6 +24,10 @@ var rootCmd = &cobra.Command{
 	Long: `A CLI tool for creating daily digests from Bluesky timeline.
 Fetches posts, categorizes them, and generates narrative summaries.`,
 	Version: version,
+	// SilenceUsage prevents showing usage on every error
+	SilenceUsage: false,
+	// SilenceErrors lets us handle error printing
+	SilenceErrors: false,
 }
 
 func init() {
@@ -39,6 +42,7 @@ func init() {
 	rootCmd.AddCommand(listCategoriesCmd)
 	rootCmd.AddCommand(showCategoryCmd)
 	rootCmd.AddCommand(mergeCategoriesCmd)
+	rootCmd.AddCommand(deleteCategoryCmd)
 	rootCmd.AddCommand(writeSummaryCmd)
 	rootCmd.AddCommand(compileCmd)
 	rootCmd.AddCommand(statusCmd)
