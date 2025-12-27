@@ -19,7 +19,7 @@ func TestCompile_BasicStructure(t *testing.T) {
 	}
 
 	cats := Categories{
-		"test-category": {"abc123"},
+		"test-category": CategoryData{Visible: []string{"abc123"}},
 	}
 
 	sums := Summaries{
@@ -62,8 +62,8 @@ func TestCompile_CategorySections(t *testing.T) {
 	}
 
 	cats := Categories{
-		"ai-discussions": {"post1", "post2"},
-		"tech-news":      {"post3"},
+		"ai-discussions": CategoryData{Visible: []string{"post1", "post2"}},
+		"tech-news":      CategoryData{Visible: []string{"post3"}},
 	}
 
 	sums := Summaries{
@@ -95,7 +95,7 @@ func TestCompile_ReferenceLinks(t *testing.T) {
 	}
 
 	cats := Categories{
-		"test": {"abc123"},
+		"test": CategoryData{Visible: []string{"abc123"}},
 	}
 
 	sums := Summaries{
@@ -127,7 +127,7 @@ func TestCompile_RepostInReferences(t *testing.T) {
 		},
 	}
 
-	cats := Categories{"test": {"repost1"}}
+	cats := Categories{"test": CategoryData{Visible: []string{"repost1"}}}
 	sums := Summaries{"test": "Reference [repost1]"}
 
 	markdown, err := CompileDigest(posts, cats, sums, config)
@@ -150,7 +150,7 @@ func TestCompile_EscapesMarkdown(t *testing.T) {
 		},
 	}
 
-	cats := Categories{"test": {"escape1"}}
+	cats := Categories{"test": CategoryData{Visible: []string{"escape1"}}}
 	sums := Summaries{"test": "Summary [escape1]"}
 
 	markdown, err := CompileDigest(posts, cats, sums, config)
@@ -169,8 +169,8 @@ func TestCompile_EmptyCategory(t *testing.T) {
 	}
 
 	cats := Categories{
-		"with-summary":    {"post1"},
-		"without-summary": {}, // Empty category
+		"with-summary":    CategoryData{Visible: []string{"post1"}},
+		"without-summary": CategoryData{Visible: []string{}}, // Empty category
 	}
 
 	sums := Summaries{
@@ -215,9 +215,9 @@ func TestCompile_OrderedOutput(t *testing.T) {
 	}
 
 	cats := Categories{
-		"zebra":   {"post3"},
-		"alpha":   {"post1"},
-		"beta":    {"post2"},
+		"zebra":   CategoryData{Visible: []string{"post3"}},
+		"alpha":   CategoryData{Visible: []string{"post1"}},
+		"beta":    CategoryData{Visible: []string{"post2"}},
 	}
 
 	sums := Summaries{
@@ -288,4 +288,77 @@ func TestFormatPostTime(t *testing.T) {
 	// Should format as "Nov 20, 2:30pm" or similar human-readable format
 	assert.Contains(t, formatted, "Nov")
 	assert.Contains(t, formatted, "20")
+}
+
+func TestCompile_HiddenCategories(t *testing.T) {
+	config := Config{CreatedAt: time.Now()}
+
+	posts := []Post{
+		{Rkey: "post1", Text: "Visible post", Author: Author{Handle: "alice.bsky.social"}, CreatedAt: time.Now()},
+		{Rkey: "post2", Text: "Hidden post", Author: Author{Handle: "bob.bsky.social"}, CreatedAt: time.Now()},
+		{Rkey: "post3", Text: "Another hidden", Author: Author{Handle: "charlie.bsky.social"}, CreatedAt: time.Now()},
+	}
+
+	cats := Categories{
+		"visible-category": CategoryData{Visible: []string{"post1"}},
+		"hidden-category-1": CategoryData{
+			Visible:  []string{"post2"},
+			IsHidden: true,
+		},
+		"hidden-category-2": CategoryData{
+			Visible:  []string{"post3"},
+			Hidden:   []string{}, // Empty hidden posts
+			IsHidden: true,
+		},
+	}
+
+	sums := Summaries{
+		"visible-category": "Visible summary [post1]",
+		// Hidden categories might have summaries too, but they won't be shown
+		"hidden-category-1": "This summary should not appear",
+	}
+
+	markdown, err := CompileDigest(posts, cats, sums, config)
+	require.NoError(t, err)
+
+	// Visible category should appear in main section
+	assert.Contains(t, markdown, "## visible-category")
+	assert.Contains(t, markdown, "Visible summary [post1]")
+
+	// Hidden categories should NOT have their own sections in main area
+	assert.NotContains(t, markdown, "## hidden-category-1")
+	assert.NotContains(t, markdown, "## hidden-category-2")
+	assert.NotContains(t, markdown, "This summary should not appear")
+
+	// Hidden categories should appear in "Hidden Categories" section
+	assert.Contains(t, markdown, "## Hidden Categories")
+	assert.Contains(t, markdown, "- hidden-category-1 (1 posts)")
+	assert.Contains(t, markdown, "- hidden-category-2 (1 posts)")
+
+	// Check ordering: Hidden Categories should come before References
+	hiddenIdx := strings.Index(markdown, "## Hidden Categories")
+	refIdx := strings.Index(markdown, "## References")
+	assert.True(t, hiddenIdx < refIdx, "Hidden Categories should come before References")
+}
+
+func TestCompile_NoHiddenCategories(t *testing.T) {
+	config := Config{CreatedAt: time.Now()}
+
+	posts := []Post{
+		{Rkey: "post1", Text: "Test", Author: Author{Handle: "alice.bsky.social"}, CreatedAt: time.Now()},
+	}
+
+	cats := Categories{
+		"visible-category": CategoryData{Visible: []string{"post1"}},
+	}
+
+	sums := Summaries{
+		"visible-category": "Summary [post1]",
+	}
+
+	markdown, err := CompileDigest(posts, cats, sums, config)
+	require.NoError(t, err)
+
+	// Should NOT have Hidden Categories section when there are none
+	assert.NotContains(t, markdown, "## Hidden Categories")
 }

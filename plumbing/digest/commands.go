@@ -201,13 +201,21 @@ var listCategoriesCmd = &cobra.Command{
 			return err
 		}
 
+		// Filter out hidden categories
+		visibleCats := make(Categories)
+		for name, catData := range cats {
+			if !catData.IsHidden {
+				visibleCats[name] = catData
+			}
+		}
+
 		if withCounts {
-			counts := ListCategoriesWithCounts(cats)
+			counts := ListCategoriesWithCounts(visibleCats)
 			for cat, count := range counts {
 				fmt.Printf("%s (%d posts)\n", cat, count)
 			}
 		} else {
-			for cat := range cats {
+			for cat := range visibleCats {
 				fmt.Println(cat)
 			}
 		}
@@ -362,14 +370,43 @@ var statusCmd = &cobra.Command{
 		fmt.Printf("  Categorized: %d\n", categorized)
 		fmt.Printf("  Uncategorized: %d\n\n", len(uncategorized))
 
-		counts := ListCategoriesWithCounts(wd.Categories)
-		fmt.Printf("Categories: %d\n", len(counts))
-		for cat, count := range counts {
+		// Separate visible and hidden categories
+		visibleCats := make(map[string]int)
+		hiddenCats := make(map[string]int)
+		for cat, catData := range wd.Categories {
+			count := len(catData.Visible)
+			if catData.IsHidden {
+				hiddenCats[cat] = count
+			} else if count > 0 {
+				visibleCats[cat] = count
+			}
+		}
+
+		fmt.Printf("Categories: %d visible, %d hidden\n", len(visibleCats), len(hiddenCats))
+		for cat, count := range visibleCats {
 			hasSum := "✓"
 			if _, ok := wd.Summaries[cat]; !ok {
 				hasSum = " "
 			}
-			fmt.Printf("  [%s] %s: %d posts\n", hasSum, cat, count)
+
+			catData := wd.Categories[cat]
+			hiddenPostCount := len(catData.Hidden)
+
+			if hiddenPostCount > 0 {
+				fmt.Printf("  [%s] %s: %d visible, %d hidden\n", hasSum, cat, count, hiddenPostCount)
+			} else {
+				fmt.Printf("  [%s] %s: %d posts\n", hasSum, cat, count)
+			}
+		}
+
+		// Show hidden categories
+		if len(hiddenCats) > 0 {
+			fmt.Printf("\nHidden categories:\n")
+			for cat, count := range hiddenCats {
+				catData := wd.Categories[cat]
+				totalPosts := count + len(catData.Hidden)
+				fmt.Printf("  [hidden] %s: %d posts\n", cat, totalPosts)
+			}
 		}
 
 		return nil
@@ -409,10 +446,10 @@ var uncategorizedCmd = &cobra.Command{
 	},
 }
 
-// digest delete-category
-var deleteCategoryCmd = &cobra.Command{
-	Use:   "delete-category <category>",
-	Short: "Delete a category and uncategorize its posts",
+// digest hide-category
+var hideCategoryCmd = &cobra.Command{
+	Use:   "hide-category <category>",
+	Short: "Hide a category from the digest",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		category := args[0]
@@ -422,35 +459,98 @@ var deleteCategoryCmd = &cobra.Command{
 			return err
 		}
 
-		// Load categories and summaries
+		// Load categories
 		cats, err := LoadCategories(filepath.Join(dir, "categories.json"))
 		if err != nil {
 			return err
 		}
 
-		sums, err := LoadSummaries(filepath.Join(dir, "summaries.json"))
+		// Hide category
+		postCount, err := HideCategory(cats, category)
 		if err != nil {
 			return err
 		}
-
-		// Delete category
-		postCount, err := DeleteCategory(cats, category)
-		if err != nil {
-			return err
-		}
-
-		// Delete summary if exists
-		delete(sums, category)
 
 		// Save
 		if err := SaveCategories(filepath.Join(dir, "categories.json"), cats); err != nil {
 			return err
 		}
-		if err := SaveSummaries(filepath.Join(dir, "summaries.json"), sums); err != nil {
+
+		fmt.Printf("Hidden category '%s' (%d posts)\n", category, postCount)
+		return nil
+	},
+}
+
+// digest unhide-category
+var unhideCategoryCmd = &cobra.Command{
+	Use:   "unhide-category <category>",
+	Short: "Unhide a category to show it in the digest",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		category := args[0]
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
 			return err
 		}
 
-		fmt.Printf("Deleted category '%s' (%d posts now uncategorized)\n", category, postCount)
+		// Load categories
+		cats, err := LoadCategories(filepath.Join(dir, "categories.json"))
+		if err != nil {
+			return err
+		}
+
+		// Unhide category
+		if err := UnhideCategory(cats, category); err != nil {
+			return err
+		}
+
+		// Save
+		if err := SaveCategories(filepath.Join(dir, "categories.json"), cats); err != nil {
+			return err
+		}
+
+		fmt.Printf("Unhidden category '%s'\n", category)
+		return nil
+	},
+}
+
+// digest hide-posts
+var hidePostsCmd = &cobra.Command{
+	Use:   "hide-posts <category> <rkey>... [--reason TEXT]",
+	Short: "Hide posts within a category",
+	Args:  cobra.MinimumNArgs(2),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		category := args[0]
+		rkeys := args[1:]
+		reason, _ := cmd.Flags().GetString("reason")
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
+		}
+
+		// Load categories
+		cats, err := LoadCategories(filepath.Join(dir, "categories.json"))
+		if err != nil {
+			return err
+		}
+
+		// Hide posts
+		if err := HidePosts(cats, category, rkeys, reason); err != nil {
+			return err
+		}
+
+		// Save
+		if err := SaveCategories(filepath.Join(dir, "categories.json"), cats); err != nil {
+			return err
+		}
+
+		if reason != "" {
+			fmt.Printf("Hid %d posts in '%s' (reason: %s)\n", len(rkeys), category, reason)
+		} else {
+			fmt.Printf("Hid %d posts in '%s'\n", len(rkeys), category)
+		}
 		return nil
 	},
 }
@@ -471,4 +571,7 @@ func init() {
 
 	// compile flags
 	compileCmd.Flags().String("output", "", "Output file (default: workspace/digest.md)")
+
+	// hide-posts flags
+	hidePostsCmd.Flags().String("reason", "", "Reason for hiding posts")
 }

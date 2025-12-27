@@ -86,8 +86,16 @@ type TimeRange struct {
 // PostsIndex maps rkey to array index for fast lookup
 type PostsIndex map[string]int
 
-// Categories maps category name to list of rkeys
-type Categories map[string][]string
+// CategoryData holds posts for a category, split into visible and hidden
+type CategoryData struct {
+	Visible      []string `json:"visible"`
+	Hidden       []string `json:"hidden,omitempty"`
+	HiddenReason string   `json:"hiddenReason,omitempty"`
+	IsHidden     bool     `json:"isHidden,omitempty"`
+}
+
+// Categories maps category name to category data
+type Categories map[string]CategoryData
 
 // Summaries maps category name to summary text
 type Summaries map[string]string

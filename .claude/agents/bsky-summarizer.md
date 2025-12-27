@@ -51,6 +51,38 @@ Shows which categories have summaries (✓) and which don't.
 ```
 Generates the final markdown digest from all categories and summaries.
 
+## Working with JSON
+
+Use `jq` to efficiently inspect category data:
+
+### Count posts in a category
+```bash
+./bin/digest show-category ai-discussion | jq 'length'
+```
+
+### Preview posts before summarizing
+```bash
+# See all post texts
+./bin/digest show-category ai-discussion | jq -r '.[] | .text'
+
+# See authors and engagement
+./bin/digest show-category ai-discussion | jq -r '.[] | "\(.author.handle) (\(.likeCount) likes): \(.text[:60])..."'
+```
+
+### Extract rkeys for reference
+```bash
+# List all rkeys in a category
+./bin/digest show-category ai-discussion | jq -r '.[].rkey'
+
+# Get rkey of most-liked post
+./bin/digest show-category ai-discussion | jq -r 'max_by(.likeCount) | .rkey'
+```
+
+**Best practices:**
+- Use `jq` to preview and understand category content before writing summaries
+- Don't write temporary files - pipe directly with `jq`
+- When writing summaries, copy exact rkeys from the JSON output
+
 ## Workflow Example
 
 1. List categories: `./bin/digest list-categories --with-counts`
@@ -61,14 +93,37 @@ Generates the final markdown digest from all categories and summaries.
 6. Check progress: `./bin/digest status`
 7. Compile: `./bin/digest compile`
 
+## Writing Concisely
+
+Match your summary length and style to the content type:
+
+### Entertainment/Vibes (jokes, shitposts, absurdist humor)
+**Format**: One sentence listing topics with citations
+**Example**: "Alice went on a shitposting spree about MrBeast [rkey1], furries [rkey2], and tech layoffs [rkey3]"
+
+### News/Announcements
+**Format**: State clearly with citation, optionally one reaction sentence
+**Example**: "The Carney government's proposed federal budget received a vote of confidence Monday evening [rkey1]. Several users expressed surprise given the polling [rkey2]"
+
+### Discourse/Discussion (back-and-forth, multiple perspectives)
+**Format**: Narrative paragraph showing the exchange
+**Example**: "Debate emerged about AI copyright. Bob argued it's theft [rkey1], Carol countered it's transformative [rkey2], which led Alice to propose a middle ground [rkey3]"
+
+## Core Principles
+
+- **Identify the pattern, don't paraphrase content**: What's the shape of this category? (thread, debate, news drop, coordinated vibes)
+- **Group similar posts**: Don't describe each one individually - "Five users shared their experiences [rkey1, rkey2, rkey3, rkey4, rkey5]"
+- **Citations do the work**: Point to posts rather than explaining everything - let readers click through
+- **If there's no story arc, don't write one**: Jokes don't need a narrative structure
+
 ## Writing Guidelines
 
 - **Parse JSON carefully**: show-category returns JSON array with exact rkey values
 - **Copy rkeys exactly**: Extract rkey values from the JSON and use them exactly as-is in [brackets]
 - **Be conversational**: Write in an engaging, readable tone
 - **Reference posts**: Use [rkey] to cite specific posts in your narrative
-- **Note patterns**: Call out interesting dynamics ("X went on a repost spree")
-- **Be concise**: Keep summaries focused and informative
+- **Note patterns**: Call out interesting dynamics ("X went on a thread about...")
+- **Keep it focused**: Brevity over thoroughness
 - **Highlight main characters**: Mention particularly active or interesting users
 
 ## Output Format

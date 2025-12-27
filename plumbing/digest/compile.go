@@ -14,14 +14,18 @@ func CompileDigest(posts []Post, cats Categories, sums Summaries, config Config)
 	// Title with date
 	md.WriteString(fmt.Sprintf("# Bluesky Digest - %s\n\n", formatDigestDate(config.CreatedAt)))
 
-	// Get sorted category names
+	// Get sorted category names (only visible categories)
 	catNames := make([]string, 0, len(cats))
-	for name := range cats {
-		if len(cats[name]) > 0 { // Only include non-empty categories
+	hiddenCatNames := make([]string, 0)
+	for name, catData := range cats {
+		if catData.IsHidden {
+			hiddenCatNames = append(hiddenCatNames, name)
+		} else if len(catData.Visible) > 0 { // Only include non-hidden categories with visible posts
 			catNames = append(catNames, name)
 		}
 	}
 	sort.Strings(catNames)
+	sort.Strings(hiddenCatNames)
 
 	// Build index for quick post lookup
 	postIndex := make(map[string]Post)
@@ -34,7 +38,8 @@ func CompileDigest(posts []Post, cats Categories, sums Summaries, config Config)
 
 	// Category sections
 	for _, catName := range catNames {
-		postCount := len(cats[catName])
+		catData := cats[catName]
+		postCount := len(catData.Visible)
 		pluralS := "s"
 		if postCount == 1 {
 			pluralS = ""
@@ -47,8 +52,8 @@ func CompileDigest(posts []Post, cats Categories, sums Summaries, config Config)
 			md.WriteString(summary)
 			md.WriteString("\n\n")
 
-			// Track referenced posts
-			for _, rkey := range cats[catName] {
+			// Track referenced posts (only visible posts can be referenced)
+			for _, rkey := range catData.Visible {
 				if strings.Contains(summary, "["+rkey+"]") {
 					referenced[rkey] = true
 				}
@@ -57,6 +62,28 @@ func CompileDigest(posts []Post, cats Categories, sums Summaries, config Config)
 			// No summary available
 			md.WriteString("(No summary available)\n\n")
 		}
+
+		// Add note about hidden posts if any
+		if len(catData.Hidden) > 0 {
+			hiddenCount := len(catData.Hidden)
+			reason := catData.HiddenReason
+			if reason != "" {
+				md.WriteString(fmt.Sprintf("*Note: %d posts filtered (%s)*\n\n", hiddenCount, reason))
+			} else {
+				md.WriteString(fmt.Sprintf("*Note: %d posts filtered*\n\n", hiddenCount))
+			}
+		}
+	}
+
+	// Hidden categories section (if any)
+	if len(hiddenCatNames) > 0 {
+		md.WriteString("## Hidden Categories\n\n")
+		for _, catName := range hiddenCatNames {
+			catData := cats[catName]
+			postCount := len(catData.Visible) + len(catData.Hidden)
+			md.WriteString(fmt.Sprintf("- %s (%d posts)\n", catName, postCount))
+		}
+		md.WriteString("\n")
 	}
 
 	// Separator before references
@@ -70,7 +97,7 @@ func CompileDigest(posts []Post, cats Categories, sums Summaries, config Config)
 	seenRefs := make(map[string]bool)
 
 	for _, catName := range catNames {
-		for _, rkey := range cats[catName] {
+		for _, rkey := range cats[catName].Visible {
 			if referenced[rkey] && !seenRefs[rkey] {
 				if post, ok := postIndex[rkey]; ok {
 					refPosts = append(refPosts, post)

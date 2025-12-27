@@ -180,12 +180,13 @@ func TestLoadCategories_ValidData(t *testing.T) {
 	tmpDir := t.TempDir()
 	catsFile := filepath.Join(tmpDir, "categories.json")
 
-	testCats := Categories{
+	// Write old format (map[string][]string) to test backward compatibility
+	oldFormat := map[string][]string{
 		"ai-discussions": {"3lbkj2x3abcd", "6oezm5a6klmn"},
 		"tech-news":      {"4mcxk3y4defg", "7pfan6b7opqr"},
 	}
 
-	data, err := json.MarshalIndent(testCats, "", "  ")
+	data, err := json.MarshalIndent(oldFormat, "", "  ")
 	require.NoError(t, err)
 	err = os.WriteFile(catsFile, data, 0644)
 	require.NoError(t, err)
@@ -193,8 +194,9 @@ func TestLoadCategories_ValidData(t *testing.T) {
 	cats, err := LoadCategories(catsFile)
 	require.NoError(t, err)
 	assert.Len(t, cats, 2)
-	assert.Equal(t, []string{"3lbkj2x3abcd", "6oezm5a6klmn"}, cats["ai-discussions"])
-	assert.Equal(t, []string{"4mcxk3y4defg", "7pfan6b7opqr"}, cats["tech-news"])
+	// Should be migrated to new format
+	assert.Equal(t, []string{"3lbkj2x3abcd", "6oezm5a6klmn"}, cats["ai-discussions"].Visible)
+	assert.Equal(t, []string{"4mcxk3y4defg", "7pfan6b7opqr"}, cats["tech-news"].Visible)
 }
 
 func TestSaveCategories(t *testing.T) {
@@ -202,7 +204,7 @@ func TestSaveCategories(t *testing.T) {
 	catsFile := filepath.Join(tmpDir, "categories.json")
 
 	testCats := Categories{
-		"test-category": {"rkey1", "rkey2"},
+		"test-category": CategoryData{Visible: []string{"rkey1", "rkey2"}},
 	}
 
 	err := SaveCategories(catsFile, testCats)

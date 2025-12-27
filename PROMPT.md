@@ -2,7 +2,7 @@ First, initialize the digest workspace and fetch posts:
 
 ```bash
 ./bin/digest init
-./bin/digest fetch --limit 100
+./bin/digest fetch --limit 1000
 ```
 
 Then invoke three subagents in sequence:

@@ -69,6 +69,7 @@ func SavePosts(path string, posts []Post) error {
 
 // LoadCategories reads categories from a JSON file
 // Returns empty map if file doesn't exist
+// Supports backward compatibility with old format (map[string][]string)
 func LoadCategories(path string) (Categories, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -78,13 +79,28 @@ func LoadCategories(path string) (Categories, error) {
 		return nil, fmt.Errorf("reading categories file: %w", err)
 	}
 
+	// Try new format first (map[string]CategoryData)
 	var cats Categories
-	if err := json.Unmarshal(data, &cats); err != nil {
-		return nil, fmt.Errorf("parsing categories JSON: %w", err)
+	if err := json.Unmarshal(data, &cats); err == nil {
+		if cats == nil {
+			cats = Categories{}
+		}
+		return cats, nil
 	}
 
-	if cats == nil {
-		cats = Categories{}
+	// Fall back to old format (map[string][]string) and migrate
+	var oldCats map[string][]string
+	if err := json.Unmarshal(data, &oldCats); err != nil {
+		return nil, fmt.Errorf("parsing categories JSON (tried both formats): %w", err)
+	}
+
+	// Migrate old format to new format
+	cats = make(Categories, len(oldCats))
+	for catName, rkeys := range oldCats {
+		cats[catName] = CategoryData{
+			Visible: rkeys,
+			Hidden:  []string{},
+		}
 	}
 
 	return cats, nil

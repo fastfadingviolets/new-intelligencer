@@ -21,7 +21,7 @@ You categorize posts from a digest workspace into meaningful categories based on
 
 ### View posts
 ```bash
-./bin/digest read-posts --offset 0 --limit 20
+./bin/digest read-posts --offset 0 --limit 100
 ```
 Returns JSON array of posts. Extract the exact `rkey` values from the JSON.
 
@@ -44,13 +44,47 @@ Shows how many posts are categorized vs uncategorized.
 ```
 Returns JSON array of posts that still need categorization.
 
+## Working with JSON
+
+All commands output JSON. Use `jq` to efficiently analyze the data without writing temp files:
+
+### Count remaining posts
+```bash
+./bin/digest uncategorized | jq 'length'
+```
+Quickly check how many posts are left to categorize.
+
+### Inspect posts without verbose output
+```bash
+# See first 5 post texts
+./bin/digest read-posts --limit 100 | jq -r '.[0:5] | .[] | .text'
+
+# Check what's in uncategorized
+./bin/digest uncategorized | jq -r '.[] | "\(.author.handle): \(.text[:60])..."'
+```
+
+### Extract rkeys for verification
+```bash
+# Get all rkeys from current batch (useful for verification)
+./bin/digest read-posts --limit 100 | jq -r '.[].rkey'
+
+# Count posts matching a keyword
+./bin/digest uncategorized | jq '[.[] | select(.text | contains("AI"))] | length'
+```
+
+**Best practices:**
+- Use `jq` for counting and inspecting data
+- Use built-in commands (`status`, `uncategorized`) instead of parsing JSON manually
+- Don't write temporary files - pipe directly with `jq`
+- When categorizing, copy exact rkeys from the JSON, don't extract them programmatically
+
 ## Workflow Example
 
-1. View first batch: `./bin/digest read-posts --limit 20`
+1. View first batch: `./bin/digest read-posts --limit 100`
 2. Parse the JSON and extract the exact `rkey` field from each post
 3. Decide on categories based on content
 4. Categorize using EXACT rkeys: `./bin/digest categorize tech-discussion 3m5zrbt6d222l 3m5zrvg74bs2p`
-5. Continue with next batch: `./bin/digest read-posts --offset 20 --limit 20`
+5. Continue with next batch: `./bin/digest read-posts --offset 100 --limit 100`
 6. Check progress: `./bin/digest status`
 7. View remaining: `./bin/digest uncategorized`
 
