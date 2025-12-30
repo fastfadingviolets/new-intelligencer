@@ -319,6 +319,7 @@ var compileCmd = &cobra.Command{
 	Short: "Generate final markdown digest",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		output, _ := cmd.Flags().GetString("output")
+		format, _ := cmd.Flags().GetString("format")
 
 		wd, err := LoadWorkspace(workspaceDir)
 		if err != nil {
@@ -330,9 +331,39 @@ var compileCmd = &cobra.Command{
 		}
 
 		config := Config{CreatedAt: time.Now()} // TODO: Load from file
-		markdown, err := CompileDigest(wd.Posts, wd.Categories, wd.Summaries, config)
-		if err != nil {
-			return err
+
+		var markdown string
+		if format == "newspaper" {
+			// Load newspaper config from project root
+			newspaperConfig, err := LoadNewspaperConfig("newspaper.json")
+			if err != nil {
+				return fmt.Errorf("loading newspaper.json from project root: %w", err)
+			}
+
+			// Load workspace-specific data
+			storyGroups, err := LoadStoryGroups(filepath.Join(wd.Dir, "story-groups.json"))
+			if err != nil {
+				return err
+			}
+			sectionAssignments, err := LoadSectionAssignments(filepath.Join(wd.Dir, "section-assignments.json"))
+			if err != nil {
+				return err
+			}
+			contentPicks, err := LoadContentPicks(filepath.Join(wd.Dir, "content-picks.json"))
+			if err != nil {
+				return err
+			}
+
+			markdown, err = CompileNewspaper(wd.Posts, wd.Categories, wd.Summaries, storyGroups, newspaperConfig, sectionAssignments, contentPicks, config)
+			if err != nil {
+				return err
+			}
+		} else {
+			// Classic format
+			markdown, err = CompileDigest(wd.Posts, wd.Categories, wd.Summaries, config)
+			if err != nil {
+				return err
+			}
 		}
 
 		if output == "" {
@@ -555,6 +586,41 @@ var hidePostsCmd = &cobra.Command{
 	},
 }
 
+// digest delete-category
+var deleteCategoryCmd = &cobra.Command{
+	Use:   "delete-category <category>",
+	Short: "Delete a category entirely",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		category := args[0]
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
+		}
+
+		cats, err := LoadCategories(filepath.Join(dir, "categories.json"))
+		if err != nil {
+			return err
+		}
+
+		catData, ok := cats[category]
+		if !ok {
+			return fmt.Errorf("category not found: %s", category)
+		}
+
+		postCount := len(catData.Visible) + len(catData.Hidden)
+		delete(cats, category)
+
+		if err := SaveCategories(filepath.Join(dir, "categories.json"), cats); err != nil {
+			return err
+		}
+
+		fmt.Printf("Deleted category '%s' (%d posts now uncategorized)\n", category, postCount)
+		return nil
+	},
+}
+
 func init() {
 	// init flags
 	initCmd.Flags().String("since", "", "Start time for fetching (default: 24h ago)")
@@ -571,6 +637,7 @@ func init() {
 
 	// compile flags
 	compileCmd.Flags().String("output", "", "Output file (default: workspace/digest.md)")
+	compileCmd.Flags().String("format", "classic", "Output format: classic or newspaper")
 
 	// hide-posts flags
 	hidePostsCmd.Flags().String("reason", "", "Reason for hiding posts")

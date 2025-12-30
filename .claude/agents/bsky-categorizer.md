@@ -8,6 +8,15 @@ permissionMode: default
 
 You categorize posts from a digest workspace into meaningful categories based on their content.
 
+## CRITICAL: Do NOT Write Scripts
+
+- Do NOT write bash scripts or shell loops
+- Do NOT use `for`, `while`, or pipe chains to automate categorization
+- Do NOT create temporary files
+- Do NOT use `jq` to extract rkeys programmatically
+
+Instead: Run commands, READ the output yourself, decide categories based on what you see, then run the categorize command with the rkeys you identified.
+
 ## Your Task
 
 1. Find the digest workspace (it's named `digest-DD-MM-YYYY/`)
@@ -44,49 +53,27 @@ Shows how many posts are categorized vs uncategorized.
 ```
 Returns JSON array of posts that still need categorization.
 
-## Working with JSON
+## Reading Posts
 
-All commands output JSON. Use `jq` to efficiently analyze the data without writing temp files:
+When you run `./bin/digest read-posts`, you'll see JSON output. **Read the actual post content** - look at the `text` field of each post, understand what it's about, then decide which category it belongs to.
 
-### Count remaining posts
+You can use `jq` to make output more readable:
 ```bash
-./bin/digest uncategorized | jq 'length'
-```
-Quickly check how many posts are left to categorize.
-
-### Inspect posts without verbose output
-```bash
-# See first 5 post texts
-./bin/digest read-posts --limit 100 | jq -r '.[0:5] | .[] | .text'
-
-# Check what's in uncategorized
-./bin/digest uncategorized | jq -r '.[] | "\(.author.handle): \(.text[:60])..."'
+# See posts in a readable format
+./bin/digest read-posts --limit 50 | jq -r '.[] | "[\(.rkey)] @\(.author.handle): \(.text[0:100])"'
 ```
 
-### Extract rkeys for verification
-```bash
-# Get all rkeys from current batch (useful for verification)
-./bin/digest read-posts --limit 100 | jq -r '.[].rkey'
+Then look at the output, identify posts about similar topics, and categorize them.
 
-# Count posts matching a keyword
-./bin/digest uncategorized | jq '[.[] | select(.text | contains("AI"))] | length'
-```
+## Workflow
 
-**Best practices:**
-- Use `jq` for counting and inspecting data
-- Use built-in commands (`status`, `uncategorized`) instead of parsing JSON manually
-- Don't write temporary files - pipe directly with `jq`
-- When categorizing, copy exact rkeys from the JSON, don't extract them programmatically
-
-## Workflow Example
-
-1. View first batch: `./bin/digest read-posts --limit 100`
-2. Parse the JSON and extract the exact `rkey` field from each post
-3. Decide on categories based on content
-4. Categorize using EXACT rkeys: `./bin/digest categorize tech-discussion 3m5zrbt6d222l 3m5zrvg74bs2p`
-5. Continue with next batch: `./bin/digest read-posts --offset 100 --limit 100`
-6. Check progress: `./bin/digest status`
-7. View remaining: `./bin/digest uncategorized`
+1. `./bin/digest read-posts --limit 50` - read the posts
+2. Look at the output - what topics do you see?
+3. Identify rkeys for posts about the same topic
+4. `./bin/digest categorize topic-name rkey1 rkey2 rkey3`
+5. `./bin/digest status` - check progress
+6. `./bin/digest uncategorized` - see what's left
+7. Repeat until done
 
 ## Important Guidelines
 

@@ -164,6 +164,20 @@ func ConvertAPIPost(item *bsky.FeedDefs_FeedViewPost) Post {
 	// Set indexed time to now
 	post.IndexedAt = time.Now()
 
+	// Extract engagement metrics
+	if item.Post.LikeCount != nil {
+		post.LikeCount = *item.Post.LikeCount
+	}
+	if item.Post.ReplyCount != nil {
+		post.ReplyCount = *item.Post.ReplyCount
+	}
+	if item.Post.RepostCount != nil {
+		post.RepostCount = *item.Post.RepostCount
+	}
+	if item.Post.QuoteCount != nil {
+		post.QuoteCount = *item.Post.QuoteCount
+	}
+
 	// Check if this is a repost and extract repost metadata
 	if item.Reason != nil && item.Reason.FeedDefs_ReasonRepost != nil {
 		repostReason := item.Reason.FeedDefs_ReasonRepost

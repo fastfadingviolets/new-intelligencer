@@ -19,25 +19,42 @@ type WorkspaceData struct {
 }
 
 // GetWorkspaceDir returns the workspace directory path
-// Uses --dir flag if set, otherwise looks for digest-* in current directory
+// Uses --dir flag if set, otherwise finds the most recent digest-* in current directory
 func GetWorkspaceDir() (string, error) {
 	if workspaceDir != "" {
 		return workspaceDir, nil
 	}
 
-	// Look for digest-* directory in current directory
+	// Look for digest-* directories in current directory
 	entries, err := os.ReadDir(".")
 	if err != nil {
 		return "", fmt.Errorf("reading current directory: %w", err)
 	}
 
+	var newest string
+	var newestDate time.Time
+
 	for _, entry := range entries {
 		if entry.IsDir() && strings.HasPrefix(entry.Name(), "digest-") {
-			return entry.Name(), nil
+			// Parse date from folder name (format: digest-DD-MM-YYYY)
+			dateStr := strings.TrimPrefix(entry.Name(), "digest-")
+			date, err := time.Parse("02-01-2006", dateStr)
+			if err != nil {
+				// Can't parse date, skip this folder
+				continue
+			}
+			if newest == "" || date.After(newestDate) {
+				newest = entry.Name()
+				newestDate = date
+			}
 		}
 	}
 
-	return "", fmt.Errorf("no workspace found - run 'digest init' first or use --dir flag")
+	if newest == "" {
+		return "", fmt.Errorf("no workspace found - run 'digest init' first or use --dir flag")
+	}
+
+	return newest, nil
 }
 
 // GenerateWorkspaceDir creates a workspace directory name from current date

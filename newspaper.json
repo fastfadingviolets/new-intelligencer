@@ -1,0 +1,17 @@
+{
+  "sections": [
+    {"id": "tech", "name": "Technology", "type": "news", "description": "Information technology industry news"},
+    {"id": "finance", "name": "Finance", "type": "news", "description": "Finance industry news"},
+    {"id": "sports", "name": "Sports", "type": "news", "description": "Sports coverage"},
+    {"id": "film", "name": "Film", "type": "news", "description": "Film coverage"},
+    {"id": "music", "name": "Music", "type": "news", "description": "Music coverage"},
+
+    {"id": "politics-ca", "name": "Canadian Politics", "type": "news", "description": "Canadian federal politics, national news"},
+    {"id": "local-news", "name": "Toronto News", "type": "news", "description": "Local Toronto news and politics"},
+    {"id": "politics-us", "name": "US Politics", "type": "news", "description": "American politics and US national news"},
+    {"id": "geopolitics", "name": "Geopolitics", "type": "news", "description": "Global politics, international news"},
+
+    {"id": "fashion", "name": "Fashion", "type": "content", "description": "Images of outfits and objects"},
+    {"id": "vibes", "name": "Vibes & Shitposts", "type": "content", "description": "Vibes and shitposts"}
+  ]
+}

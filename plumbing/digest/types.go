@@ -4,16 +4,20 @@ import "time"
 
 // Post represents a Bluesky post in storage format (complete data)
 type Post struct {
-	Rkey      string     `json:"rkey"`
-	URI       string     `json:"uri"`
-	CID       string     `json:"cid"`
-	Text      string     `json:"text"`
-	Author    Author     `json:"author"`
-	CreatedAt time.Time  `json:"created_at"`
-	IndexedAt time.Time  `json:"indexed_at"`
-	Repost    *Repost    `json:"repost,omitempty"`
-	ReplyTo   *ReplyTo   `json:"reply_to,omitempty"`
-	Images    []Image    `json:"images,omitempty"`
+	Rkey        string     `json:"rkey"`
+	URI         string     `json:"uri"`
+	CID         string     `json:"cid"`
+	Text        string     `json:"text"`
+	Author      Author     `json:"author"`
+	CreatedAt   time.Time  `json:"created_at"`
+	IndexedAt   time.Time  `json:"indexed_at"`
+	Repost      *Repost    `json:"repost,omitempty"`
+	ReplyTo     *ReplyTo   `json:"reply_to,omitempty"`
+	Images      []Image    `json:"images,omitempty"`
+	LikeCount   int64      `json:"like_count"`
+	ReplyCount  int64      `json:"reply_count"`
+	RepostCount int64      `json:"repost_count"`
+	QuoteCount  int64      `json:"quote_count"`
 }
 
 // Author represents post author information
@@ -44,13 +48,17 @@ type Image struct {
 
 // DisplayPost is the minimal format for agent consumption
 type DisplayPost struct {
-	Rkey      string          `json:"rkey"`
-	Text      string          `json:"text"`
-	Author    DisplayAuthor   `json:"author"`
-	CreatedAt time.Time       `json:"created_at"`
-	Repost    *DisplayRepost  `json:"repost,omitempty"`
-	ReplyTo   *DisplayReplyTo `json:"reply_to,omitempty"`
-	Images    []Image         `json:"images,omitempty"`
+	Rkey        string          `json:"rkey"`
+	Text        string          `json:"text"`
+	Author      DisplayAuthor   `json:"author"`
+	CreatedAt   time.Time       `json:"created_at"`
+	Repost      *DisplayRepost  `json:"repost,omitempty"`
+	ReplyTo     *DisplayReplyTo `json:"reply_to,omitempty"`
+	Images      []Image         `json:"images,omitempty"`
+	LikeCount   int64           `json:"like_count"`
+	ReplyCount  int64           `json:"reply_count"`
+	RepostCount int64           `json:"repost_count"`
+	QuoteCount  int64           `json:"quote_count"`
 }
 
 // DisplayAuthor is author info without DID
@@ -99,3 +107,45 @@ type Categories map[string]CategoryData
 
 // Summaries maps category name to summary text
 type Summaries map[string]string
+
+// NewspaperSection defines a section in the newspaper (from project-level config)
+type NewspaperSection struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Type        string `json:"type"`                  // "news" or "content"
+	Description string `json:"description,omitempty"` // Helps agent understand what belongs here
+}
+
+// NewspaperConfig is the project-level newspaper structure (lives at project root)
+type NewspaperConfig struct {
+	Sections []NewspaperSection `json:"sections"`
+}
+
+// SectionAssignments maps section IDs to category names (per-workspace, auto-generated)
+type SectionAssignments map[string][]string
+
+// StoryGroup represents consolidated posts about same news story (created by agent)
+type StoryGroup struct {
+	ID          string   `json:"id"`
+	Headline    string   `json:"headline"`
+	Summary     string   `json:"summary,omitempty"`
+	ArticleURL  string   `json:"article_url,omitempty"`
+	PostRkeys   []string `json:"post_rkeys"`
+	PrimaryRkey string   `json:"primary_rkey"`
+	IsOpinion   bool     `json:"is_opinion"`
+	SectionID   string   `json:"section_id"`
+	Role        string   `json:"role"`      // "headline", "featured", "opinion"
+	IsFrontPage bool     `json:"front_page"` // if true, appears on front page only
+}
+
+// StoryGroups maps story group ID to story group data
+type StoryGroups map[string]StoryGroup
+
+// ContentPicks tracks Claude's picks for content sections
+type ContentPicks struct {
+	SectionID  string   `json:"section_id"`
+	SuiGeneris []string `json:"sui_generis"` // rkeys Claude finds interesting
+}
+
+// AllContentPicks maps section ID to content picks
+type AllContentPicks map[string]ContentPicks

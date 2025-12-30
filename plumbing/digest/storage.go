@@ -235,3 +235,163 @@ func BuildIndex(posts []Post) PostsIndex {
 	}
 	return index
 }
+
+// LoadNewspaperConfig reads the project-level newspaper config
+// Returns error if file doesn't exist (it's required)
+func LoadNewspaperConfig(path string) (NewspaperConfig, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return NewspaperConfig{}, fmt.Errorf("reading newspaper config: %w", err)
+	}
+
+	var config NewspaperConfig
+	if err := json.Unmarshal(data, &config); err != nil {
+		return NewspaperConfig{}, fmt.Errorf("parsing newspaper config JSON: %w", err)
+	}
+
+	return config, nil
+}
+
+// LoadSectionAssignments reads section assignments from a workspace JSON file
+// Returns empty map if file doesn't exist
+func LoadSectionAssignments(path string) (SectionAssignments, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return SectionAssignments{}, nil
+		}
+		return nil, fmt.Errorf("reading section assignments file: %w", err)
+	}
+
+	var assignments SectionAssignments
+	if err := json.Unmarshal(data, &assignments); err != nil {
+		return nil, fmt.Errorf("parsing section assignments JSON: %w", err)
+	}
+
+	if assignments == nil {
+		assignments = SectionAssignments{}
+	}
+
+	return assignments, nil
+}
+
+// SaveSectionAssignments writes section assignments to a JSON file atomically
+func SaveSectionAssignments(path string, assignments SectionAssignments) error {
+	dir := filepath.Dir(path)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return fmt.Errorf("creating directory: %w", err)
+	}
+
+	data, err := json.MarshalIndent(assignments, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshaling section assignments: %w", err)
+	}
+
+	tempFile := path + ".tmp"
+	if err := os.WriteFile(tempFile, data, 0644); err != nil {
+		return fmt.Errorf("writing temp file: %w", err)
+	}
+
+	if err := os.Rename(tempFile, path); err != nil {
+		os.Remove(tempFile)
+		return fmt.Errorf("renaming temp file: %w", err)
+	}
+
+	return nil
+}
+
+// LoadStoryGroups reads story groups from a JSON file
+// Returns empty map if file doesn't exist
+func LoadStoryGroups(path string) (StoryGroups, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return StoryGroups{}, nil
+		}
+		return nil, fmt.Errorf("reading story groups file: %w", err)
+	}
+
+	var groups StoryGroups
+	if err := json.Unmarshal(data, &groups); err != nil {
+		return nil, fmt.Errorf("parsing story groups JSON: %w", err)
+	}
+
+	if groups == nil {
+		groups = StoryGroups{}
+	}
+
+	return groups, nil
+}
+
+// SaveStoryGroups writes story groups to a JSON file atomically
+func SaveStoryGroups(path string, groups StoryGroups) error {
+	dir := filepath.Dir(path)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return fmt.Errorf("creating directory: %w", err)
+	}
+
+	data, err := json.MarshalIndent(groups, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshaling story groups: %w", err)
+	}
+
+	tempFile := path + ".tmp"
+	if err := os.WriteFile(tempFile, data, 0644); err != nil {
+		return fmt.Errorf("writing temp file: %w", err)
+	}
+
+	if err := os.Rename(tempFile, path); err != nil {
+		os.Remove(tempFile)
+		return fmt.Errorf("renaming temp file: %w", err)
+	}
+
+	return nil
+}
+
+// LoadContentPicks reads content picks from a JSON file
+// Returns empty map if file doesn't exist
+func LoadContentPicks(path string) (AllContentPicks, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return AllContentPicks{}, nil
+		}
+		return nil, fmt.Errorf("reading content picks file: %w", err)
+	}
+
+	var picks AllContentPicks
+	if err := json.Unmarshal(data, &picks); err != nil {
+		return nil, fmt.Errorf("parsing content picks JSON: %w", err)
+	}
+
+	if picks == nil {
+		picks = AllContentPicks{}
+	}
+
+	return picks, nil
+}
+
+// SaveContentPicks writes content picks to a JSON file atomically
+func SaveContentPicks(path string, picks AllContentPicks) error {
+	dir := filepath.Dir(path)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return fmt.Errorf("creating directory: %w", err)
+	}
+
+	data, err := json.MarshalIndent(picks, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshaling content picks: %w", err)
+	}
+
+	tempFile := path + ".tmp"
+	if err := os.WriteFile(tempFile, data, 0644); err != nil {
+		return fmt.Errorf("writing temp file: %w", err)
+	}
+
+	if err := os.Rename(tempFile, path); err != nil {
+		os.Remove(tempFile)
+		return fmt.Errorf("renaming temp file: %w", err)
+	}
+
+	return nil
+}

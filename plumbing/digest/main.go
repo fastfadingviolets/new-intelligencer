@@ -49,4 +49,5 @@ func init() {
 	rootCmd.AddCommand(compileCmd)
 	rootCmd.AddCommand(statusCmd)
 	rootCmd.AddCommand(uncategorizedCmd)
+	rootCmd.AddCommand(deleteCategoryCmd)
 }

@@ -41,6 +41,12 @@ func FormatForDisplay(posts []Post) []DisplayPost {
 			copy(dp.Images, post.Images)
 		}
 
+		// Copy engagement metrics
+		dp.LikeCount = post.LikeCount
+		dp.ReplyCount = post.ReplyCount
+		dp.RepostCount = post.RepostCount
+		dp.QuoteCount = post.QuoteCount
+
 		display[i] = dp
 	}
 
