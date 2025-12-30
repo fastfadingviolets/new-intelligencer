@@ -15,7 +15,6 @@ type WorkspaceData struct {
 	Posts      []Post
 	Index      PostsIndex
 	Categories Categories
-	Summaries  Summaries
 }
 
 // GetWorkspaceDir returns the workspace directory path
@@ -105,14 +104,6 @@ func LoadWorkspace(dir string) (*WorkspaceData, error) {
 	}
 	wd.Categories = cats
 
-	// Load summaries
-	sumsPath := filepath.Join(dir, "summaries.json")
-	sums, err := LoadSummaries(sumsPath)
-	if err != nil {
-		return nil, fmt.Errorf("loading summaries: %w", err)
-	}
-	wd.Summaries = sums
-
 	return wd, nil
 }
 
@@ -128,10 +119,6 @@ func SaveWorkspaceData(wd *WorkspaceData) error {
 
 	if err := SaveCategories(filepath.Join(wd.Dir, "categories.json"), wd.Categories); err != nil {
 		return fmt.Errorf("saving categories: %w", err)
-	}
-
-	if err := SaveSummaries(filepath.Join(wd.Dir, "summaries.json"), wd.Summaries); err != nil {
-		return fmt.Errorf("saving summaries: %w", err)
 	}
 
 	return nil

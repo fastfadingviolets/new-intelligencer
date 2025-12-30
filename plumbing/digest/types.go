@@ -105,9 +105,6 @@ type CategoryData struct {
 // Categories maps category name to category data
 type Categories map[string]CategoryData
 
-// Summaries maps category name to summary text
-type Summaries map[string]string
-
 // NewspaperSection defines a section in the newspaper (from project-level config)
 type NewspaperSection struct {
 	ID          string `json:"id"`

@@ -59,7 +59,6 @@ var initCmd = &cobra.Command{
 		SavePosts(filepath.Join(dirName, "posts.json"), []Post{})
 		SaveIndex(filepath.Join(dirName, "posts-index.json"), PostsIndex{})
 		SaveCategories(filepath.Join(dirName, "categories.json"), Categories{})
-		SaveSummaries(filepath.Join(dirName, "summaries.json"), Summaries{})
 
 		fmt.Printf("Initialized workspace: %s\n", dirName)
 		fmt.Printf("Time range: %s onwards\n", since.Format("2006-01-02 15:04"))
@@ -284,42 +283,12 @@ var mergeCategoriesCmd = &cobra.Command{
 	},
 }
 
-// digest write-summary
-var writeSummaryCmd = &cobra.Command{
-	Use:   "write-summary <category> <text>",
-	Short: "Write summary for a category",
-	Args:  cobra.ExactArgs(2),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		category, summary := args[0], args[1]
-
-		dir, err := GetWorkspaceDir()
-		if err != nil {
-			return err
-		}
-
-		sums, err := LoadSummaries(filepath.Join(dir, "summaries.json"))
-		if err != nil {
-			return err
-		}
-
-		sums[category] = summary
-
-		if err := SaveSummaries(filepath.Join(dir, "summaries.json"), sums); err != nil {
-			return err
-		}
-
-		fmt.Printf("Updated summary for '%s'\n", category)
-		return nil
-	},
-}
-
 // digest compile
 var compileCmd = &cobra.Command{
 	Use:   "compile",
 	Short: "Generate final markdown digest",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		output, _ := cmd.Flags().GetString("output")
-		format, _ := cmd.Flags().GetString("format")
 
 		wd, err := LoadWorkspace(workspaceDir)
 		if err != nil {
@@ -332,38 +301,29 @@ var compileCmd = &cobra.Command{
 
 		config := Config{CreatedAt: time.Now()} // TODO: Load from file
 
-		var markdown string
-		if format == "newspaper" {
-			// Load newspaper config from project root
-			newspaperConfig, err := LoadNewspaperConfig("newspaper.json")
-			if err != nil {
-				return fmt.Errorf("loading newspaper.json from project root: %w", err)
-			}
+		// Load newspaper config from project root
+		newspaperConfig, err := LoadNewspaperConfig("newspaper.json")
+		if err != nil {
+			return fmt.Errorf("loading newspaper.json from project root: %w", err)
+		}
 
-			// Load workspace-specific data
-			storyGroups, err := LoadStoryGroups(filepath.Join(wd.Dir, "story-groups.json"))
-			if err != nil {
-				return err
-			}
-			sectionAssignments, err := LoadSectionAssignments(filepath.Join(wd.Dir, "section-assignments.json"))
-			if err != nil {
-				return err
-			}
-			contentPicks, err := LoadContentPicks(filepath.Join(wd.Dir, "content-picks.json"))
-			if err != nil {
-				return err
-			}
+		// Load workspace-specific data
+		storyGroups, err := LoadStoryGroups(filepath.Join(wd.Dir, "story-groups.json"))
+		if err != nil {
+			return err
+		}
+		sectionAssignments, err := LoadSectionAssignments(filepath.Join(wd.Dir, "section-assignments.json"))
+		if err != nil {
+			return err
+		}
+		contentPicks, err := LoadContentPicks(filepath.Join(wd.Dir, "content-picks.json"))
+		if err != nil {
+			return err
+		}
 
-			markdown, err = CompileNewspaper(wd.Posts, wd.Categories, wd.Summaries, storyGroups, newspaperConfig, sectionAssignments, contentPicks, config)
-			if err != nil {
-				return err
-			}
-		} else {
-			// Classic format
-			markdown, err = CompileDigest(wd.Posts, wd.Categories, wd.Summaries, config)
-			if err != nil {
-				return err
-			}
+		markdown, err := CompileDigest(wd.Posts, wd.Categories, storyGroups, newspaperConfig, sectionAssignments, contentPicks, config)
+		if err != nil {
+			return err
 		}
 
 		if output == "" {
@@ -415,18 +375,13 @@ var statusCmd = &cobra.Command{
 
 		fmt.Printf("Categories: %d visible, %d hidden\n", len(visibleCats), len(hiddenCats))
 		for cat, count := range visibleCats {
-			hasSum := "✓"
-			if _, ok := wd.Summaries[cat]; !ok {
-				hasSum = " "
-			}
-
 			catData := wd.Categories[cat]
 			hiddenPostCount := len(catData.Hidden)
 
 			if hiddenPostCount > 0 {
-				fmt.Printf("  [%s] %s: %d visible, %d hidden\n", hasSum, cat, count, hiddenPostCount)
+				fmt.Printf("  %s: %d visible, %d hidden\n", cat, count, hiddenPostCount)
 			} else {
-				fmt.Printf("  [%s] %s: %d posts\n", hasSum, cat, count)
+				fmt.Printf("  %s: %d posts\n", cat, count)
 			}
 		}
 
@@ -637,7 +592,6 @@ func init() {
 
 	// compile flags
 	compileCmd.Flags().String("output", "", "Output file (default: workspace/digest.md)")
-	compileCmd.Flags().String("format", "classic", "Output format: classic or newspaper")
 
 	// hide-posts flags
 	hidePostsCmd.Flags().String("reason", "", "Reason for hiding posts")

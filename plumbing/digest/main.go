@@ -45,7 +45,6 @@ func init() {
 	rootCmd.AddCommand(hideCategoryCmd)
 	rootCmd.AddCommand(unhideCategoryCmd)
 	rootCmd.AddCommand(hidePostsCmd)
-	rootCmd.AddCommand(writeSummaryCmd)
 	rootCmd.AddCommand(compileCmd)
 	rootCmd.AddCommand(statusCmd)
 	rootCmd.AddCommand(uncategorizedCmd)

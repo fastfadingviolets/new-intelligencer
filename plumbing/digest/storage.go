@@ -131,54 +131,6 @@ func SaveCategories(path string, cats Categories) error {
 	return nil
 }
 
-// LoadSummaries reads summaries from a JSON file
-// Returns empty map if file doesn't exist
-func LoadSummaries(path string) (Summaries, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return Summaries{}, nil
-		}
-		return nil, fmt.Errorf("reading summaries file: %w", err)
-	}
-
-	var sums Summaries
-	if err := json.Unmarshal(data, &sums); err != nil {
-		return nil, fmt.Errorf("parsing summaries JSON: %w", err)
-	}
-
-	if sums == nil {
-		sums = Summaries{}
-	}
-
-	return sums, nil
-}
-
-// SaveSummaries writes summaries to a JSON file atomically
-func SaveSummaries(path string, sums Summaries) error {
-	dir := filepath.Dir(path)
-	if err := os.MkdirAll(dir, 0755); err != nil {
-		return fmt.Errorf("creating directory: %w", err)
-	}
-
-	data, err := json.MarshalIndent(sums, "", "  ")
-	if err != nil {
-		return fmt.Errorf("marshaling summaries: %w", err)
-	}
-
-	tempFile := path + ".tmp"
-	if err := os.WriteFile(tempFile, data, 0644); err != nil {
-		return fmt.Errorf("writing temp file: %w", err)
-	}
-
-	if err := os.Rename(tempFile, path); err != nil {
-		os.Remove(tempFile)
-		return fmt.Errorf("renaming temp file: %w", err)
-	}
-
-	return nil
-}
-
 // LoadIndex reads posts index from a JSON file
 // Returns empty map if file doesn't exist
 func LoadIndex(path string) (PostsIndex, error) {

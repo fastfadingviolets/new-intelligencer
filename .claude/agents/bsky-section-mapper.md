@@ -19,6 +19,7 @@ This is a fully automated process - no manual intervention needed.
 5. For content sections: select sui generis picks
 6. Pick front page stories
 7. Write all output files to the workspace
+8. Compile the final digest
 
 ## Commands You'll Use
 
@@ -205,6 +206,16 @@ cat > "${WORKSPACE}content-picks.json" << 'EOF'
 }
 EOF
 ```
+
+### Step 7: Compile the Digest
+
+After writing all JSON files, compile the final digest:
+
+```bash
+./bin/digest compile
+```
+
+This generates `digest.md` in the workspace directory.
 
 ## Guidelines
 

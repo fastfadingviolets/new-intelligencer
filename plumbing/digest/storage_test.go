@@ -215,41 +215,6 @@ func TestSaveCategories(t *testing.T) {
 	assert.Equal(t, testCats, loaded)
 }
 
-func TestLoadSummaries(t *testing.T) {
-	tmpDir := t.TempDir()
-	sumsFile := filepath.Join(tmpDir, "summaries.json")
-
-	testSums := Summaries{
-		"ai-discussions": "Several conversations about AI safety...",
-		"tech-news":      "Apple announced new features...",
-	}
-
-	data, err := json.MarshalIndent(testSums, "", "  ")
-	require.NoError(t, err)
-	err = os.WriteFile(sumsFile, data, 0644)
-	require.NoError(t, err)
-
-	sums, err := LoadSummaries(sumsFile)
-	require.NoError(t, err)
-	assert.Equal(t, testSums, sums)
-}
-
-func TestSaveSummaries(t *testing.T) {
-	tmpDir := t.TempDir()
-	sumsFile := filepath.Join(tmpDir, "summaries.json")
-
-	testSums := Summaries{
-		"test": "Test summary",
-	}
-
-	err := SaveSummaries(sumsFile, testSums)
-	require.NoError(t, err)
-
-	loaded, err := LoadSummaries(sumsFile)
-	require.NoError(t, err)
-	assert.Equal(t, testSums, loaded)
-}
-
 func TestBuildIndex(t *testing.T) {
 	posts := []Post{
 		{Rkey: "abc123"},
