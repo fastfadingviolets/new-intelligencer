@@ -32,13 +32,15 @@ cat newspaper.json                           # See available sections
   --section tech \
   --headline "Major Tech Company Announces Layoffs" \
   --rkeys rkey1,rkey2,rkey3 \
-  --role headline
+  --role headline \
+  --priority 1
 ```
 
 Options:
 - `--section` (required): Section ID
 - `--headline` (required): Newspaper-style headline
 - `--rkeys` (required): Comma-separated post rkeys
+- `--priority` (required): Story priority (1 = most important). Each priority can only be used once per section.
 - `--role`: `headline` (one per section) or `featured` (default)
 - `--opinion`: Flag to mark as opinion piece
 - `--summary`: Optional summary text
@@ -66,21 +68,23 @@ Options:
 The front page has already been populated by the categorizer with the day's top stories.
 
 1. View front page posts: `./bin/digest show-category front-page`
-2. Create stories, picking ONE as the headline:
+2. Create stories with priorities (1 = most important, each priority used once):
 
 ```bash
-# THE headline of the day
+# THE headline of the day (priority 1)
 ./bin/digest create-story \
   --section front-page \
   --headline "Breaking: Major Event Unfolds" \
   --rkeys rkey1 \
-  --role headline
+  --role headline \
+  --priority 1
 
-# Other front page stories (featured)
+# Other front page stories (priority 2, 3, etc.)
 ./bin/digest create-story \
   --section front-page \
   --headline "Another Important Story" \
-  --rkeys rkey2
+  --rkeys rkey2 \
+  --priority 2
 ```
 
 ### Step 2: Process Other News Sections
@@ -88,28 +92,31 @@ The front page has already been populated by the categorizer with the day's top 
 For each news section (tech, finance, sports, etc.):
 
 1. View posts: `./bin/digest show-category tech`
-2. Create stories, picking ONE as the section headline:
+2. Create stories with priorities. You can create more stories than max_stories - compile will truncate to the top N by priority.
 
 ```bash
-# Section headline
+# Section headline (priority 1)
 ./bin/digest create-story \
   --section tech \
   --headline "OpenAI Releases New Model" \
   --rkeys 3abc123,3def456 \
-  --role headline
+  --role headline \
+  --priority 1
 
-# Featured stories
+# Featured stories (priority 2, 3, etc.)
 ./bin/digest create-story \
   --section tech \
   --headline "Startup Funding Trends" \
-  --rkeys 3ghi789
+  --rkeys 3ghi789 \
+  --priority 2
 
-# Opinion pieces
+# Opinion pieces (also need priority)
 ./bin/digest create-story \
   --section tech \
   --headline "Hot Take on AI Safety" \
   --rkeys 3jkl012 \
-  --opinion
+  --opinion \
+  --priority 3
 ```
 
 ### Step 3: Process Content Sections
@@ -154,6 +161,8 @@ If a different post is better:
 - **Copy rkeys exactly**: Use the exact rkey values from show-category output
 - **Be decisive**: Make editorial choices, don't ask for confirmation
 - **One headline per section**: Each section has exactly one `--role headline` story
+- **Always set priority**: Every story needs `--priority N` (1 = most important). Each priority can only be used once per section.
+- **Create all worthy stories**: Even if there are 8+ stories, create them all with priorities. Compile truncates to max_stories.
 - **Check primary links**: The linked post should have the best content/context
 
 ## Note

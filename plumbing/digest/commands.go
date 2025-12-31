@@ -388,10 +388,11 @@ var compileCmd = &cobra.Command{
 
 		config := Config{CreatedAt: time.Now()} // TODO: Load from file
 
-		// Load newspaper config from project root
-		newspaperConfig, err := LoadNewspaperConfig("newspaper.json")
+		// Load newspaper config from workspace's parent directory (project root)
+		newspaperPath := filepath.Join(filepath.Dir(wd.Dir), "newspaper.json")
+		newspaperConfig, err := LoadNewspaperConfig(newspaperPath)
 		if err != nil {
-			return fmt.Errorf("loading newspaper.json from project root: %w", err)
+			return fmt.Errorf("loading %s: %w", newspaperPath, err)
 		}
 
 		// Load workspace-specific data
@@ -704,6 +705,7 @@ var createStoryCmd = &cobra.Command{
 		articleURL, _ := cmd.Flags().GetString("article-url")
 		opinion, _ := cmd.Flags().GetBool("opinion")
 		frontPage, _ := cmd.Flags().GetBool("front-page")
+		priority, _ := cmd.Flags().GetInt("priority")
 
 		if section == "" {
 			return fmt.Errorf("--section is required")
@@ -713,6 +715,9 @@ var createStoryCmd = &cobra.Command{
 		}
 		if len(rkeys) == 0 {
 			return fmt.Errorf("--rkeys is required (at least one rkey)")
+		}
+		if priority <= 0 {
+			return fmt.Errorf("--priority is required (must be >= 1)")
 		}
 
 		// Opinion pieces should have role "opinion"
@@ -738,6 +743,14 @@ var createStoryCmd = &cobra.Command{
 				if existing.SectionID == section && existing.Role == "headline" {
 					return fmt.Errorf("section '%s' already has a headline: %s (%s)", section, id, existing.Headline)
 				}
+			}
+		}
+
+		// Check if priority is already used in this section
+		for id := range storyGroups {
+			existing := storyGroups[id]
+			if existing.SectionID == section && existing.Priority == priority {
+				return fmt.Errorf("priority %d already used in section '%s' by story '%s' (%s)", priority, section, id, existing.Headline)
 			}
 		}
 
@@ -769,6 +782,7 @@ var createStoryCmd = &cobra.Command{
 			SectionID:   section,
 			Role:        role,
 			IsFrontPage: frontPage,
+			Priority:    priority,
 		}
 
 		storyGroups[id] = story
@@ -1086,6 +1100,7 @@ func init() {
 	createStoryCmd.Flags().String("article-url", "", "Optional article URL")
 	createStoryCmd.Flags().Bool("opinion", false, "Mark as opinion piece")
 	createStoryCmd.Flags().Bool("front-page", false, "Mark for front page")
+	createStoryCmd.Flags().Int("priority", 0, "Story priority (1 = highest, required)")
 }
 
 // joinStrings joins strings with a separator

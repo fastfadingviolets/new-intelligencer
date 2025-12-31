@@ -41,6 +41,9 @@ func FormatForDisplay(posts []Post) []DisplayPost {
 			copy(dp.Images, post.Images)
 		}
 
+		// Copy external link if present
+		dp.ExternalLink = post.ExternalLink
+
 		// Copy engagement metrics
 		dp.LikeCount = post.LikeCount
 		dp.ReplyCount = post.ReplyCount

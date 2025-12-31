@@ -62,9 +62,10 @@ type DisplayPost struct {
 	Author      DisplayAuthor   `json:"author"`
 	CreatedAt   time.Time       `json:"created_at"`
 	Repost      *DisplayRepost  `json:"repost,omitempty"`
-	ReplyTo     *DisplayReplyTo `json:"reply_to,omitempty"`
-	Images      []Image         `json:"images,omitempty"`
-	LikeCount   int64           `json:"like_count"`
+	ReplyTo      *DisplayReplyTo `json:"reply_to,omitempty"`
+	Images       []Image         `json:"images,omitempty"`
+	ExternalLink *ExternalLink   `json:"external_link,omitempty"`
+	LikeCount    int64           `json:"like_count"`
 	ReplyCount  int64           `json:"reply_count"`
 	RepostCount int64           `json:"repost_count"`
 	QuoteCount  int64           `json:"quote_count"`
@@ -120,6 +121,7 @@ type NewspaperSection struct {
 	Name        string `json:"name"`
 	Type        string `json:"type"`                  // "news" or "content"
 	Description string `json:"description,omitempty"` // Helps agent understand what belongs here
+	MaxStories  int    `json:"max_stories,omitempty"` // Max stories to show in compiled output
 }
 
 // NewspaperConfig is the project-level newspaper structure (lives at project root)
@@ -137,8 +139,9 @@ type StoryGroup struct {
 	PrimaryRkey string   `json:"primary_rkey"`
 	IsOpinion   bool     `json:"is_opinion"`
 	SectionID   string   `json:"section_id"`
-	Role        string   `json:"role"`      // "headline", "featured", "opinion"
+	Role        string   `json:"role"`       // "headline", "featured", "opinion"
 	IsFrontPage bool     `json:"front_page"` // if true, appears on front page only
+	Priority    int      `json:"priority"`   // 1 = most important, higher = less important
 }
 
 // StoryGroups maps story group ID to story group data

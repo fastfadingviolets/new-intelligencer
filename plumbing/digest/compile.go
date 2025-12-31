@@ -64,6 +64,13 @@ func CompileDigest(
 
 	// Front page headline
 	frontPageGroups := getFrontPageGroups(storyGroups)
+	// Apply truncation based on max_stories from newspaper.json
+	for _, section := range newspaperConfig.Sections {
+		if section.ID == "front-page" && section.MaxStories > 0 {
+			truncateStories(&frontPageGroups, section.MaxStories)
+			break
+		}
+	}
 	if frontPageGroups.Headline != nil {
 		headline := frontPageGroups.Headline
 		post := postIndex[headline.PrimaryRkey]
@@ -119,6 +126,10 @@ func CompileDigest(
 
 			// Get story groups for this section
 			sectionGroups := getSectionGroups(storyGroups, section.ID)
+			// Apply truncation based on max_stories
+			if section.MaxStories > 0 {
+				truncateStories(&sectionGroups, section.MaxStories)
+			}
 
 			// Headline
 			if sectionGroups.Headline != nil {
@@ -263,14 +274,7 @@ type GroupedStories struct {
 func getFrontPageGroups(groups StoryGroups) GroupedStories {
 	result := GroupedStories{}
 
-	// Sort IDs for deterministic iteration
-	ids := make([]string, 0, len(groups))
 	for id := range groups {
-		ids = append(ids, id)
-	}
-	sort.Strings(ids)
-
-	for _, id := range ids {
 		group := groups[id]
 		// Front page stories are those in the "front-page" section
 		if group.SectionID != "front-page" {
@@ -287,20 +291,21 @@ func getFrontPageGroups(groups StoryGroups) GroupedStories {
 		}
 	}
 
+	// Sort by priority (lower = higher priority)
+	sort.Slice(result.Featured, func(i, j int) bool {
+		return result.Featured[i].Priority < result.Featured[j].Priority
+	})
+	sort.Slice(result.Opinions, func(i, j int) bool {
+		return result.Opinions[i].Priority < result.Opinions[j].Priority
+	})
+
 	return result
 }
 
 func getSectionGroups(groups StoryGroups, sectionID string) GroupedStories {
 	result := GroupedStories{}
 
-	// Sort IDs for deterministic iteration
-	ids := make([]string, 0, len(groups))
 	for id := range groups {
-		ids = append(ids, id)
-	}
-	sort.Strings(ids)
-
-	for _, id := range ids {
 		group := groups[id]
 		if group.SectionID != sectionID {
 			continue
@@ -316,7 +321,65 @@ func getSectionGroups(groups StoryGroups, sectionID string) GroupedStories {
 		}
 	}
 
+	// Sort by priority (lower = higher priority)
+	sort.Slice(result.Featured, func(i, j int) bool {
+		return result.Featured[i].Priority < result.Featured[j].Priority
+	})
+	sort.Slice(result.Opinions, func(i, j int) bool {
+		return result.Opinions[i].Priority < result.Opinions[j].Priority
+	})
+
 	return result
+}
+
+// truncateStories limits the total number of stories (headline + featured + opinions)
+// to maxStories. Headline is always kept, featured and opinions are truncated proportionally.
+func truncateStories(groups *GroupedStories, maxStories int) {
+	if maxStories <= 0 {
+		return // No limit
+	}
+
+	// Headline counts as 1 if present
+	headlineCount := 0
+	if groups.Headline != nil {
+		headlineCount = 1
+	}
+
+	// Calculate how many featured + opinions we can keep
+	remaining := maxStories - headlineCount
+	if remaining <= 0 {
+		// Only room for headline
+		groups.Featured = nil
+		groups.Opinions = nil
+		return
+	}
+
+	totalNonHeadline := len(groups.Featured) + len(groups.Opinions)
+	if totalNonHeadline <= remaining {
+		return // Already within limit
+	}
+
+	// Truncate: prioritize featured over opinions, but keep at least 1 opinion if there are any
+	if len(groups.Opinions) > 0 && remaining > 0 {
+		// Keep at least 1 opinion
+		featuredSlots := remaining - 1
+		if len(groups.Featured) <= featuredSlots {
+			// All featured fit, truncate opinions
+			opinionSlots := remaining - len(groups.Featured)
+			if len(groups.Opinions) > opinionSlots {
+				groups.Opinions = groups.Opinions[:opinionSlots]
+			}
+		} else {
+			// Truncate featured, keep 1 opinion
+			groups.Featured = groups.Featured[:featuredSlots]
+			groups.Opinions = groups.Opinions[:1]
+		}
+	} else {
+		// No opinions, just truncate featured
+		if len(groups.Featured) > remaining {
+			groups.Featured = groups.Featured[:remaining]
+		}
+	}
 }
 
 func getSectionPosts(sectionID string, cats Categories, postIndex map[string]Post) []Post {
@@ -446,6 +509,15 @@ func CompileDigestHTML(
 
 	// Count grid gaps first (prioritize filling grids over interleaving)
 	frontPageGroups := getFrontPageGroups(storyGroups)
+
+	// Apply truncation based on max_stories from newspaper.json
+	for _, section := range newspaperConfig.Sections {
+		if section.ID == "front-page" && section.MaxStories > 0 {
+			truncateStories(&frontPageGroups, section.MaxStories)
+			break
+		}
+	}
+
 	gridGapsNeeded := 0
 
 	// Front page grid gap
@@ -457,6 +529,10 @@ func CompileDigestHTML(
 	// News section grid gaps
 	for _, section := range newsSections {
 		groups := getSectionGroups(storyGroups, section.ID)
+		// Apply truncation BEFORE counting (must match render phase)
+		if section.MaxStories > 0 {
+			truncateStories(&groups, section.MaxStories)
+		}
 		if groups.Headline == nil && len(groups.Featured) == 0 && len(groups.Opinions) == 0 {
 			continue
 		}
@@ -646,6 +722,11 @@ a:hover { text-decoration: underline; }
 	renderedSections := 0
 	for _, section := range newsSections {
 		sectionGroups := getSectionGroups(storyGroups, section.ID)
+
+		// Apply truncation based on max_stories
+		if section.MaxStories > 0 {
+			truncateStories(&sectionGroups, section.MaxStories)
+		}
 
 		// Skip empty sections
 		if sectionGroups.Headline == nil && len(sectionGroups.Featured) == 0 && len(sectionGroups.Opinions) == 0 {
