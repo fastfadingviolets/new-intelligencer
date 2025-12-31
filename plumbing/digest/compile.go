@@ -464,40 +464,60 @@ func CompileDigestHTML(
 <title>The Daily Digest - ` + escapeHTML(formatDigestDate(config.CreatedAt)) + `</title>
 <style>
 :root {
-  --bg: #faf9f6;
+  --bg: #f5f1e8;
   --text: #1a1a1a;
-  --muted: #666;
-  --border: #ccc;
-  --accent: #0066cc;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1a1a1a;
-    --text: #e8e6e3;
-    --muted: #999;
-    --border: #444;
-    --accent: #4da6ff;
-  }
+  --muted: #555;
+  --border: #d4cfc4;
+  --accent: #8b0000;
+  --section-bg: #ece7db;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: Georgia, "Times New Roman", serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.5;
-  max-width: 900px;
+  line-height: 1.6;
+  max-width: min(1200px, 90vw);
   margin: 0 auto;
-  padding: 1rem 2rem;
+  padding: clamp(1rem, 2vw, 3rem);
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
 }
-h1 { font-size: 2.5rem; text-align: center; border-bottom: 2px solid var(--text); padding-bottom: 0.5rem; margin-bottom: 0.25rem; }
-h2 { font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.05em; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+h1 {
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  text-align: center;
+  border-bottom: 3px double var(--text);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+}
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
-.subtitle { text-align: center; color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+.subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; }
+
+/* Section headers - distinctive */
+.section > summary { list-style: none; cursor: pointer; }
+.section > summary::-webkit-details-marker { display: none; }
+.section > summary h2 {
+  text-align: center;
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: var(--section-bg);
+  padding: 0.75rem 1rem;
+  margin: 2rem 0 1.5rem;
+  border-top: 3px double var(--border);
+  border-bottom: 3px double var(--border);
+}
+.section > summary h2::after { content: " ▼"; font-size: 0.7em; color: var(--muted); }
+.section:not([open]) > summary h2::after { content: " ▶"; }
 
 /* Headline story - full width, prominent */
 .headline-story { margin-bottom: 1.5rem; }
-.headline-story h3 { font-size: 1.4rem; line-height: 1.3; margin-bottom: 0.5rem; }
+.headline-story h3 {
+  font-size: clamp(1.3rem, 1rem + 1vw, 1.8rem);
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
 .headline-story h3 a { color: var(--text); }
 .headline-story h3 a:hover { color: var(--accent); }
 
@@ -505,40 +525,43 @@ a:hover { text-decoration: underline; }
 .stories-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem 2rem;
+  gap: clamp(1rem, 2vw, 2rem) clamp(1.5rem, 3vw, 3rem);
   margin-bottom: 1.5rem;
 }
 .story { border-top: 1px solid var(--border); padding-top: 0.75rem; }
-.story h4 { font-size: 1rem; line-height: 1.3; margin-bottom: 0.25rem; }
+.story h4 {
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.3rem);
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
 .story h4 a { color: var(--text); }
 .story h4 a:hover { color: var(--accent); }
 
 /* Expanded post list */
-details { margin-top: 0.25rem; }
-details[open] summary { margin-bottom: 0.5rem; }
-summary { font-size: 0.8rem; color: var(--muted); cursor: pointer; list-style: none; }
-summary::-webkit-details-marker { display: none; }
-summary::before { content: "▶ "; font-size: 0.7rem; }
-details[open] summary::before { content: "▼ "; }
-.post { margin: 0.5rem 0; padding-left: 0.75rem; border-left: 2px solid var(--border); font-size: 0.85rem; }
+.story details, .headline-story details { margin-top: 0.25rem; }
+.story details[open] summary, .headline-story details[open] summary { margin-bottom: 0.5rem; }
+.story summary, .headline-story summary { font-size: 0.85em; color: var(--muted); cursor: pointer; list-style: none; }
+.story summary::-webkit-details-marker, .headline-story summary::-webkit-details-marker { display: none; }
+.story summary::before, .headline-story summary::before { content: "▶ "; font-size: 0.8em; }
+.story details[open] summary::before, .headline-story details[open] summary::before { content: "▼ "; }
+.post { margin: 0.5rem 0; padding-left: 0.75rem; border-left: 2px solid var(--border); }
 .post .author { color: var(--accent); }
 .post .text { color: var(--text); margin: 0.25rem 0; }
-.post .meta { color: var(--muted); font-size: 0.75rem; }
+.post .meta { color: var(--muted); font-size: 0.85em; }
 
 /* From the Feed section */
 .content-break { margin: 2rem 0; padding: 1rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.content-break-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; }
-.feed-post { margin: 0.75rem 0; font-size: 0.9rem; }
+.content-break-label { font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; }
+.feed-post { margin: 0.75rem 0; }
 .feed-post .author { font-weight: bold; }
 .feed-post .text { margin: 0.25rem 0; }
-.feed-post .meta { color: var(--muted); font-size: 0.8rem; }
-.feed-post .images img { max-width: 100%; max-height: 150px; margin: 0.5rem 0; }
+.feed-post .meta { color: var(--muted); font-size: 0.85em; }
+.feed-post .images img { max-width: 100%; max-height: 200px; margin: 0.5rem 0; }
 
 @media (max-width: 600px) {
   .stories-grid { grid-template-columns: 1fr; }
-  body { padding: 1rem; }
 }
-@media print { body { max-width: none; } }
+@media print { body { max-width: none; background: white; } }
 </style>
 </head>
 <body>
@@ -549,7 +572,8 @@ details[open] summary::before { content: "▼ "; }
 	html.WriteString(fmt.Sprintf("<p class=\"subtitle\">%s</p>\n", escapeHTML(formatDigestDate(config.CreatedAt))))
 
 	// Front Page
-	html.WriteString("<h2>Front Page</h2>\n")
+	html.WriteString("<details class=\"section\" open>\n")
+	html.WriteString("<summary><h2>Front Page</h2></summary>\n")
 
 	frontPageGroups := getFrontPageGroups(storyGroups)
 
@@ -569,6 +593,7 @@ details[open] summary::before { content: "▼ "; }
 		}
 		html.WriteString("</div>\n")
 	}
+	html.WriteString("</details>\n")
 
 	// News sections with interleaved content
 	renderedSections := 0
@@ -591,7 +616,8 @@ details[open] summary::before { content: "▼ "; }
 			html.WriteString("</section>\n")
 		}
 
-		html.WriteString(fmt.Sprintf("<h2>%s</h2>\n", escapeHTML(section.Name)))
+		html.WriteString("<details class=\"section\" open>\n")
+		html.WriteString(fmt.Sprintf("<summary><h2>%s</h2></summary>\n", escapeHTML(section.Name)))
 
 		// Headline story (full width, prominent)
 		if sectionGroups.Headline != nil {
@@ -610,6 +636,7 @@ details[open] summary::before { content: "▼ "; }
 			html.WriteString("</div>\n")
 		}
 
+		html.WriteString("</details>\n")
 		renderedSections++
 	}
 
