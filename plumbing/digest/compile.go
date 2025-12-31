@@ -436,8 +436,6 @@ func CompileDigestHTML(
 			}
 		}
 	}
-	contentIdx := 0
-
 	// Get news sections for interleaving calculation
 	var newsSections []NewspaperSection
 	for _, section := range newspaperConfig.Sections {
@@ -446,10 +444,38 @@ func CompileDigestHTML(
 		}
 	}
 
-	// Calculate content insertion points
+	// Count grid gaps first (prioritize filling grids over interleaving)
+	frontPageGroups := getFrontPageGroups(storyGroups)
+	gridGapsNeeded := 0
+
+	// Front page grid gap
+	fpCount := len(frontPageGroups.Featured) + len(frontPageGroups.Opinions)
+	if fpCount > 0 && fpCount%2 == 1 {
+		gridGapsNeeded++
+	}
+
+	// News section grid gaps
+	for _, section := range newsSections {
+		groups := getSectionGroups(storyGroups, section.ID)
+		if groups.Headline == nil && len(groups.Featured) == 0 && len(groups.Opinions) == 0 {
+			continue
+		}
+		count := len(groups.Featured) + len(groups.Opinions)
+		if count > 0 && count%2 == 1 {
+			gridGapsNeeded++
+		}
+	}
+
+	// Split content: first N for grid gaps, rest for interleaving
+	gridReserve := min(gridGapsNeeded, len(contentQueue))
+	gridIdx := 0
+	interleaveIdx := gridReserve
+
+	// Calculate content insertion points for interleaving
+	interleaveCount := len(contentQueue) - gridReserve
 	contentPerGap := 1
-	if len(newsSections) > 0 && len(contentQueue) > 0 {
-		contentPerGap = (len(contentQueue) + len(newsSections)) / (len(newsSections) + 1)
+	if len(newsSections) > 0 && interleaveCount > 0 {
+		contentPerGap = (interleaveCount + len(newsSections)) / (len(newsSections) + 1)
 		if contentPerGap < 1 {
 			contentPerGap = 1
 		}
@@ -552,11 +578,26 @@ a:hover { text-decoration: underline; }
 /* From the Feed section */
 .content-break { margin: 2rem 0; padding: 1rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .content-break-label { font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; }
-.feed-post { margin: 0.75rem 0; }
-.feed-post .author { font-weight: bold; }
-.feed-post .text { margin: 0.25rem 0; }
-.feed-post .meta { color: var(--muted); font-size: 0.85em; }
-.feed-post .images img { max-width: 100%; max-height: 200px; margin: 0.5rem 0; }
+
+/* Feed card - used everywhere for "From the Feed" posts */
+.feed-card {
+  background: var(--section-bg);
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+.feed-card .label {
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.feed-card .author { font-weight: bold; }
+.feed-card .text { margin: 0.25rem 0; }
+.feed-card .meta { color: var(--muted); font-size: 0.85em; }
+.feed-card .images img { max-width: 100%; max-height: 150px; margin: 0.5rem 0; }
 
 @media (max-width: 600px) {
   .stories-grid { grid-template-columns: 1fr; }
@@ -575,7 +616,7 @@ a:hover { text-decoration: underline; }
 	html.WriteString("<details class=\"section\" open>\n")
 	html.WriteString("<summary><h2>Front Page</h2></summary>\n")
 
-	frontPageGroups := getFrontPageGroups(storyGroups)
+	// frontPageGroups already computed above for grid gap counting
 
 	// Headline story (full width, prominent)
 	if frontPageGroups.Headline != nil {
@@ -584,12 +625,18 @@ a:hover { text-decoration: underline; }
 
 	// Featured + Opinions in grid (same style)
 	if len(frontPageGroups.Featured) > 0 || len(frontPageGroups.Opinions) > 0 {
+		gridCount := len(frontPageGroups.Featured) + len(frontPageGroups.Opinions)
 		html.WriteString("<div class=\"stories-grid\">\n")
 		for _, group := range frontPageGroups.Featured {
 			writeGridStory(&html, group, postIndex, false)
 		}
 		for _, group := range frontPageGroups.Opinions {
 			writeGridStory(&html, group, postIndex, true)
+		}
+		// Fill grid gap with feed card if odd count (use reserved grid posts)
+		if gridCount%2 == 1 && gridIdx < gridReserve {
+			writeFeedCard(&html, contentQueue[gridIdx])
+			gridIdx++
 		}
 		html.WriteString("</div>\n")
 	}
@@ -606,12 +653,12 @@ a:hover { text-decoration: underline; }
 		}
 
 		// Insert content BEFORE this section (as a break between sections)
-		if renderedSections > 0 && contentIdx < len(contentQueue) {
+		if renderedSections > 0 && interleaveIdx < len(contentQueue) {
 			html.WriteString("<section class=\"content-break\">\n")
 			html.WriteString("<div class=\"content-break-label\">From the Feed</div>\n")
-			for i := 0; i < contentPerGap && contentIdx < len(contentQueue); i++ {
-				writeFeedPost(&html, contentQueue[contentIdx])
-				contentIdx++
+			for i := 0; i < contentPerGap && interleaveIdx < len(contentQueue); i++ {
+				writeFeedCard(&html, contentQueue[interleaveIdx])
+				interleaveIdx++
 			}
 			html.WriteString("</section>\n")
 		}
@@ -626,12 +673,18 @@ a:hover { text-decoration: underline; }
 
 		// Featured + Opinions in grid (same style)
 		if len(sectionGroups.Featured) > 0 || len(sectionGroups.Opinions) > 0 {
+			gridCount := len(sectionGroups.Featured) + len(sectionGroups.Opinions)
 			html.WriteString("<div class=\"stories-grid\">\n")
 			for _, group := range sectionGroups.Featured {
 				writeGridStory(&html, group, postIndex, false)
 			}
 			for _, group := range sectionGroups.Opinions {
 				writeGridStory(&html, group, postIndex, true)
+			}
+			// Fill grid gap with feed card if odd count (use reserved grid posts)
+			if gridCount%2 == 1 && gridIdx < gridReserve {
+				writeFeedCard(&html, contentQueue[gridIdx])
+				gridIdx++
 			}
 			html.WriteString("</div>\n")
 		}
@@ -641,12 +694,12 @@ a:hover { text-decoration: underline; }
 	}
 
 	// Any remaining content at the end
-	if contentIdx < len(contentQueue) {
+	if interleaveIdx < len(contentQueue) {
 		html.WriteString("<section class=\"content-break\">\n")
 		html.WriteString("<div class=\"content-break-label\">From the Feed</div>\n")
-		for contentIdx < len(contentQueue) {
-			writeFeedPost(&html, contentQueue[contentIdx])
-			contentIdx++
+		for interleaveIdx < len(contentQueue) {
+			writeFeedCard(&html, contentQueue[interleaveIdx])
+			interleaveIdx++
 		}
 		html.WriteString("</section>\n")
 	}
@@ -722,9 +775,10 @@ func writeStoryPost(html *strings.Builder, post Post) {
 	html.WriteString("</div>\n")
 }
 
-// writeFeedPost writes a "From the Feed" post (simpler style)
-func writeFeedPost(html *strings.Builder, post Post) {
-	html.WriteString("<div class=\"feed-post\">\n")
+// writeFeedCard writes a "From the Feed" post with box styling (used everywhere)
+func writeFeedCard(html *strings.Builder, post Post) {
+	html.WriteString("<article class=\"feed-card\">\n")
+	html.WriteString("<div class=\"label\">From the Feed</div>\n")
 	html.WriteString(fmt.Sprintf("<span class=\"author\">@%s</span>\n", escapeHTML(post.Author.Handle)))
 	html.WriteString(fmt.Sprintf("<p class=\"text\">%s</p>\n", escapeHTML(post.Text)))
 
@@ -741,7 +795,7 @@ func writeFeedPost(html *strings.Builder, post Post) {
 		html.WriteString("</div>\n")
 	}
 
-	html.WriteString(fmt.Sprintf("<p class=\"meta\">%s • ♥ %d replies %d • <a href=\"%s\">View</a></p>\n",
-		escapeHTML(formatPostTime(post.CreatedAt)), post.LikeCount, post.ReplyCount, escapeHTML(postURL(post))))
-	html.WriteString("</div>\n")
+	html.WriteString(fmt.Sprintf("<p class=\"meta\">%s • ♥ %d • <a href=\"%s\">View</a></p>\n",
+		escapeHTML(formatPostTime(post.CreatedAt)), post.LikeCount, escapeHTML(postURL(post))))
+	html.WriteString("</article>\n")
 }
