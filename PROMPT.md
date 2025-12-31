@@ -7,10 +7,26 @@ First, initialize the digest workspace and fetch posts:
 
 Then invoke subagents in sequence:
 
-1. **bsky-categorizer** - categorize all posts into meaningful categories
-2. **bsky-category-hider** - hide entire categories that are clearly not digest-worthy
-3. **bsky-post-hider** - hide low-value posts within categories while preserving signal
-4. **bsky-section-mapper** - map categories to newspaper sections, create story groups
-5. **bsky-summarizer** - write summaries and compile the final digest
+## Step 1: Parallel Section Categorization
+
+Read `newspaper.json` to get the list of sections. For each section (except `front-page`), spawn a `bsky-section-categorizer` agent IN PARALLEL with the section ID.
+
+Wait for all to complete. File locking ensures no data races.
+
+## Step 2: Front Page Selection
+
+After all section categorizers complete:
+
+```
+bsky-front-page-selector - pick 4-6 top stories for front page
+```
+
+## Step 3: Story Editing
+
+After front page is selected:
+
+```
+bsky-story-editor - create story groups, pick headlines, check primary links, compile
+```
 
 The digest workspace will be in `digest-DD-MM-YYYY/` directory with all state files.

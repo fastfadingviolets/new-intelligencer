@@ -148,17 +148,43 @@ func ConvertAPIPost(item *bsky.FeedDefs_FeedViewPost) Post {
 			}
 		}
 
-		// TODO: Extract images - need to determine correct field names in indigo
-		// if postView.Embed != nil && postView.Embed.EmbedImages != nil {
-		// 	images := postView.Embed.EmbedImages.Images
-		// 	post.Images = make([]Image, 0, len(images))
-		// 	for _, img := range images {
-		// 		post.Images = append(post.Images, Image{
-		// 			URL: img.???,  // Field name TBD
-		// 			Alt: img.Alt,
-		// 		})
-		// 	}
-		// }
+	}
+
+	// Extract images and external links from embed view data
+	if item.Post.Embed != nil {
+		// Direct image embeds
+		if item.Post.Embed.EmbedImages_View != nil {
+			for _, img := range item.Post.Embed.EmbedImages_View.Images {
+				post.Images = append(post.Images, Image{
+					URL: img.Fullsize,
+					Alt: img.Alt,
+				})
+			}
+		}
+
+		// Record with media (quote posts with images)
+		if item.Post.Embed.EmbedRecordWithMedia_View != nil {
+			media := item.Post.Embed.EmbedRecordWithMedia_View.Media
+			if media != nil && media.EmbedImages_View != nil {
+				for _, img := range media.EmbedImages_View.Images {
+					post.Images = append(post.Images, Image{
+						URL: img.Fullsize,
+						Alt: img.Alt,
+					})
+				}
+			}
+		}
+
+		// External link embeds (articles, websites)
+		if item.Post.Embed.EmbedExternal_View != nil {
+			ext := item.Post.Embed.EmbedExternal_View.External
+			post.ExternalLink = &ExternalLink{
+				URL:         ext.Uri,
+				Title:       ext.Title,
+				Description: ext.Description,
+				Thumb:       getStringPtr(ext.Thumb),
+			}
+		}
 	}
 
 	// Set indexed time to now

@@ -1,5 +1,6 @@
 {
   "sections": [
+    {"id": "front-page", "name": "Front Page", "type": "news", "description": "The day's most important stories"},
     {"id": "tech", "name": "Technology", "type": "news", "description": "Information technology industry news"},
     {"id": "finance", "name": "Finance", "type": "news", "description": "Finance industry news"},
     {"id": "sports", "name": "Sports", "type": "news", "description": "Sports coverage"},

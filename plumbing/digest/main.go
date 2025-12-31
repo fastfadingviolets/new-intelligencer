@@ -49,4 +49,10 @@ func init() {
 	rootCmd.AddCommand(statusCmd)
 	rootCmd.AddCommand(uncategorizedCmd)
 	rootCmd.AddCommand(deleteCategoryCmd)
+	rootCmd.AddCommand(createStoryCmd)
+	rootCmd.AddCommand(addSuiGenerisCmd)
+	rootCmd.AddCommand(setFrontPageCmd)
+	rootCmd.AddCommand(showFrontPageCmd)
+	rootCmd.AddCommand(showStoryCmd)
+	rootCmd.AddCommand(setPrimaryCmd)
 }

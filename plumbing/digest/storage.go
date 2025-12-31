@@ -204,54 +204,6 @@ func LoadNewspaperConfig(path string) (NewspaperConfig, error) {
 	return config, nil
 }
 
-// LoadSectionAssignments reads section assignments from a workspace JSON file
-// Returns empty map if file doesn't exist
-func LoadSectionAssignments(path string) (SectionAssignments, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return SectionAssignments{}, nil
-		}
-		return nil, fmt.Errorf("reading section assignments file: %w", err)
-	}
-
-	var assignments SectionAssignments
-	if err := json.Unmarshal(data, &assignments); err != nil {
-		return nil, fmt.Errorf("parsing section assignments JSON: %w", err)
-	}
-
-	if assignments == nil {
-		assignments = SectionAssignments{}
-	}
-
-	return assignments, nil
-}
-
-// SaveSectionAssignments writes section assignments to a JSON file atomically
-func SaveSectionAssignments(path string, assignments SectionAssignments) error {
-	dir := filepath.Dir(path)
-	if err := os.MkdirAll(dir, 0755); err != nil {
-		return fmt.Errorf("creating directory: %w", err)
-	}
-
-	data, err := json.MarshalIndent(assignments, "", "  ")
-	if err != nil {
-		return fmt.Errorf("marshaling section assignments: %w", err)
-	}
-
-	tempFile := path + ".tmp"
-	if err := os.WriteFile(tempFile, data, 0644); err != nil {
-		return fmt.Errorf("writing temp file: %w", err)
-	}
-
-	if err := os.Rename(tempFile, path); err != nil {
-		os.Remove(tempFile)
-		return fmt.Errorf("renaming temp file: %w", err)
-	}
-
-	return nil
-}
-
 // LoadStoryGroups reads story groups from a JSON file
 // Returns empty map if file doesn't exist
 func LoadStoryGroups(path string) (StoryGroups, error) {

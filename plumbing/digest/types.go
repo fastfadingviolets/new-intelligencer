@@ -4,20 +4,21 @@ import "time"
 
 // Post represents a Bluesky post in storage format (complete data)
 type Post struct {
-	Rkey        string     `json:"rkey"`
-	URI         string     `json:"uri"`
-	CID         string     `json:"cid"`
-	Text        string     `json:"text"`
-	Author      Author     `json:"author"`
-	CreatedAt   time.Time  `json:"created_at"`
-	IndexedAt   time.Time  `json:"indexed_at"`
-	Repost      *Repost    `json:"repost,omitempty"`
-	ReplyTo     *ReplyTo   `json:"reply_to,omitempty"`
-	Images      []Image    `json:"images,omitempty"`
-	LikeCount   int64      `json:"like_count"`
-	ReplyCount  int64      `json:"reply_count"`
-	RepostCount int64      `json:"repost_count"`
-	QuoteCount  int64      `json:"quote_count"`
+	Rkey         string        `json:"rkey"`
+	URI          string        `json:"uri"`
+	CID          string        `json:"cid"`
+	Text         string        `json:"text"`
+	Author       Author        `json:"author"`
+	CreatedAt    time.Time     `json:"created_at"`
+	IndexedAt    time.Time     `json:"indexed_at"`
+	Repost       *Repost       `json:"repost,omitempty"`
+	ReplyTo      *ReplyTo      `json:"reply_to,omitempty"`
+	Images       []Image       `json:"images,omitempty"`
+	ExternalLink *ExternalLink `json:"external_link,omitempty"`
+	LikeCount    int64         `json:"like_count"`
+	ReplyCount   int64         `json:"reply_count"`
+	RepostCount  int64         `json:"repost_count"`
+	QuoteCount   int64         `json:"quote_count"`
 }
 
 // Author represents post author information
@@ -44,6 +45,14 @@ type ReplyTo struct {
 type Image struct {
 	URL string `json:"url"`
 	Alt string `json:"alt,omitempty"`
+}
+
+// ExternalLink represents an embedded link preview (article, website, etc.)
+type ExternalLink struct {
+	URL         string `json:"url"`
+	Title       string `json:"title"`
+	Description string `json:"description,omitempty"`
+	Thumb       string `json:"thumb,omitempty"`
 }
 
 // DisplayPost is the minimal format for agent consumption
@@ -117,9 +126,6 @@ type NewspaperSection struct {
 type NewspaperConfig struct {
 	Sections []NewspaperSection `json:"sections"`
 }
-
-// SectionAssignments maps section IDs to category names (per-workspace, auto-generated)
-type SectionAssignments map[string][]string
 
 // StoryGroup represents consolidated posts about same news story (created by agent)
 type StoryGroup struct {

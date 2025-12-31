@@ -1,11 +1,12 @@
 module github.com/v/bsky-digest-agent/plumbing/digest
 
-go 1.24
+go 1.24.0
 
 toolchain go1.24.10
 
 require (
 	github.com/bluesky-social/indigo v0.0.0-20251114034233-c10ddb5cf518
+	github.com/gofrs/flock v0.13.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/spf13/cobra v1.10.1
 	github.com/stretchr/testify v1.11.1
@@ -59,7 +60,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
-	golang.org/x/sys v0.22.0 // indirect
+	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	lukechampine.com/blake3 v1.2.1 // indirect
