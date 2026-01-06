@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/url"
 	"regexp"
 	"sort"
 	"strconv"
@@ -457,6 +458,36 @@ func escapeHTML(text string) string {
 	return text
 }
 
+// extractDomain extracts the domain from a URL for display
+func extractDomain(rawURL string) string {
+	parsed, err := url.Parse(rawURL)
+	if err != nil {
+		return rawURL
+	}
+	return parsed.Host
+}
+
+// writeLinkCard writes an external link card embed
+func writeLinkCard(html *strings.Builder, link *ExternalLink) {
+	if link == nil {
+		return
+	}
+	html.WriteString(fmt.Sprintf("<a href=\"%s\" class=\"link-card\" target=\"_blank\" rel=\"noopener\">\n", escapeHTML(link.URL)))
+	if link.Thumb != "" {
+		html.WriteString(fmt.Sprintf("<img src=\"%s\" alt=\"\" loading=\"lazy\">\n", escapeHTML(link.Thumb)))
+	}
+	html.WriteString("<div class=\"link-info\">\n")
+	if link.Title != "" {
+		html.WriteString(fmt.Sprintf("<div class=\"link-title\">%s</div>\n", escapeHTML(link.Title)))
+	}
+	if link.Description != "" {
+		desc := truncateText(link.Description, 120)
+		html.WriteString(fmt.Sprintf("<div class=\"link-desc\">%s</div>\n", escapeHTML(desc)))
+	}
+	html.WriteString(fmt.Sprintf("<div class=\"link-domain\">%s</div>\n", escapeHTML(extractDomain(link.URL))))
+	html.WriteString("</div>\n</a>\n")
+}
+
 // CompileDigestHTML generates an HTML newspaper-style digest with interleaved content
 func CompileDigestHTML(
 	posts []Post,
@@ -705,6 +736,15 @@ a:hover { text-decoration: underline; }
 .lightbox-counter { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); color: white; font-size: 0.9rem; }
 .images img { cursor: pointer; }
 
+/* Link cards */
+.link-card { display: flex; gap: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 0.5rem 0; text-decoration: none; color: inherit; }
+.link-card:hover { border-color: var(--accent); }
+.link-card img { width: 100px; height: 100px; object-fit: cover; flex-shrink: 0; }
+.link-card .link-info { padding: 0.5rem; min-width: 0; }
+.link-card .link-title { font-weight: bold; font-size: 0.9em; color: var(--text); }
+.link-card .link-desc { font-size: 0.85em; color: var(--muted); margin: 0.25rem 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.link-card .link-domain { font-size: 0.75em; color: var(--muted); }
+
 @media (max-width: 600px) {
   .stories-grid { grid-template-columns: 1fr; }
 }
@@ -928,6 +968,9 @@ func writeStoryPost(html *strings.Builder, post Post) {
 		html.WriteString("</div>\n")
 	}
 
+	// External link card
+	writeLinkCard(html, post.ExternalLink)
+
 	html.WriteString(fmt.Sprintf("<p class=\"meta\">%s • ♥ %d • <a href=\"%s\">View</a></p>\n",
 		escapeHTML(formatPostTime(post.CreatedAt)), post.LikeCount, escapeHTML(postURL(post))))
 	html.WriteString("</div>\n")
@@ -953,6 +996,9 @@ func writeFeedCard(html *strings.Builder, post Post) {
 		}
 		html.WriteString("</div>\n")
 	}
+
+	// External link card
+	writeLinkCard(html, post.ExternalLink)
 
 	html.WriteString(fmt.Sprintf("<p class=\"meta\">%s • ♥ %d • <a href=\"%s\">View</a></p>\n",
 		escapeHTML(formatPostTime(post.CreatedAt)), post.LikeCount, escapeHTML(postURL(post))))
