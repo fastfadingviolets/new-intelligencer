@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -431,8 +433,23 @@ func min(a, b int) int {
 	return b
 }
 
-// escapeHTML escapes special HTML characters
+// decodeUnicodeEscapes decodes \uXXXX sequences to actual characters
+var unicodeEscapeRegex = regexp.MustCompile(`\\u([0-9a-fA-F]{4})`)
+
+func decodeUnicodeEscapes(text string) string {
+	return unicodeEscapeRegex.ReplaceAllStringFunc(text, func(match string) string {
+		// Parse the hex value (skip the \u prefix)
+		code, err := strconv.ParseInt(match[2:], 16, 32)
+		if err != nil {
+			return match // Keep original if parsing fails
+		}
+		return string(rune(code))
+	})
+}
+
+// escapeHTML escapes special HTML characters (after decoding unicode escapes)
 func escapeHTML(text string) string {
+	text = decodeUnicodeEscapes(text)
 	text = strings.ReplaceAll(text, "&", "&amp;")
 	text = strings.ReplaceAll(text, "<", "&lt;")
 	text = strings.ReplaceAll(text, ">", "&gt;")
