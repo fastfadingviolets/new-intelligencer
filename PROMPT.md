@@ -2,16 +2,24 @@ First, initialize the digest workspace and fetch posts:
 
 ```bash
 ./bin/digest init
-./bin/digest fetch --limit 1000
+./bin/digest fetch
 ```
 
-Then invoke subagents in sequence:
+Then invoke subagents in sequence.
 
-## Step 1: Parallel Section Categorization
+**IMPORTANT:** All subagents run from the **PROJECT ROOT** directory (where `bin/`, `newspaper.json`, and `digest-*/` are located). They should NEVER `cd` into any directory.
 
-Read `newspaper.json` to get the list of sections. For each section (except `front-page`), spawn a `bsky-section-categorizer` agent IN PARALLEL with the section ID.
+## Step 1: Parallel Batch Categorization
 
-Wait for all to complete. File locking ensures no data races.
+1. Run `./bin/digest status` to get the total post count
+2. Calculate batches of ~100 posts each
+3. Spawn one `bsky-section-categorizer` agent per batch IN PARALLEL, passing the offset and limit:
+   - Agent 1: `--offset 0 --limit 100`
+   - Agent 2: `--offset 100 --limit 100`
+   - Agent 3: `--offset 200 --limit 100`
+   - etc.
+
+Each agent categorizes its batch into all sections (except front-page). Wait for all to complete.
 
 ## Step 2: Front Page Selection
 
