@@ -8,7 +8,7 @@
     {"id": "music", "name": "Music", "type": "news", "description": "Music coverage", "max_stories": 4},
 
     {"id": "politics-ca", "name": "Canadian Politics", "type": "news", "description": "Canadian federal politics, national news", "max_stories": 4},
-    {"id": "local-news", "name": "Toronto News", "type": "news", "description": "Local Toronto news and politics", "max_stories": 4},
+    {"id": "local-news", "name": "Toronto News", "type": "news", "description": "Local Toronto and Greater Toronto Area (GTA) news. NOT New York, NOT other cities.", "max_stories": 4},
     {"id": "politics-us", "name": "US Politics", "type": "news", "description": "American politics and US national news", "max_stories": 4},
     {"id": "geopolitics", "name": "Geopolitics", "type": "news", "description": "Global politics, international news", "max_stories": 4},
 

@@ -673,7 +673,20 @@ a:hover { text-decoration: underline; }
 .feed-card .author { font-weight: bold; }
 .feed-card .text { margin: 0.25rem 0; }
 .feed-card .meta { color: var(--muted); font-size: 0.85em; }
-.feed-card .images img { max-width: 100%; max-height: 150px; margin: 0.5rem 0; }
+.feed-card .images img { max-width: 100%; max-height: 150px; margin: 0.5rem 0; cursor: pointer; }
+
+/* Lightbox */
+.lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
+.lightbox-close { position: absolute; top: 1rem; right: 1rem; color: white; font-size: 2rem; cursor: pointer; background: none; border: none; padding: 0.5rem; }
+.lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 3rem; cursor: pointer; background: none; border: none; padding: 1rem; opacity: 0.7; }
+.lightbox-nav:hover { opacity: 1; }
+.lightbox-nav.prev { left: 1rem; }
+.lightbox-nav.next { right: 1rem; }
+.lightbox-nav:disabled { opacity: 0.2; cursor: default; }
+.lightbox-counter { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); color: white; font-size: 0.9rem; }
+.images img { cursor: pointer; }
 
 @media (max-width: 600px) {
   .stories-grid { grid-template-columns: 1fr; }
@@ -785,6 +798,52 @@ a:hover { text-decoration: underline; }
 		html.WriteString("</section>\n")
 	}
 
+	// Lightbox HTML and JavaScript
+	html.WriteString(`<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+<button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+<button class="lightbox-nav prev" onclick="navLightbox(-1, event)">&#8249;</button>
+<img id="lightbox-img" src="" alt="">
+<button class="lightbox-nav next" onclick="navLightbox(1, event)">&#8250;</button>
+<div class="lightbox-counter"><span id="lightbox-idx">1</span> / <span id="lightbox-total">1</span></div>
+</div>
+<script>
+let lbGroup = [], lbIdx = 0;
+function openLightbox(img) {
+  const group = img.dataset.group;
+  lbGroup = Array.from(document.querySelectorAll('img[data-group="' + group + '"]'));
+  lbIdx = parseInt(img.dataset.idx) || 0;
+  showLightboxImage();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+function navLightbox(dir, e) {
+  e.stopPropagation();
+  lbIdx = Math.max(0, Math.min(lbGroup.length - 1, lbIdx + dir));
+  showLightboxImage();
+}
+function showLightboxImage() {
+  const img = lbGroup[lbIdx];
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox-img').alt = img.alt;
+  document.getElementById('lightbox-idx').textContent = lbIdx + 1;
+  document.getElementById('lightbox-total').textContent = lbGroup.length;
+  document.querySelector('.lightbox-nav.prev').disabled = lbIdx === 0;
+  document.querySelector('.lightbox-nav.next').disabled = lbIdx === lbGroup.length - 1;
+}
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+  if (e.key === 'ArrowLeft') navLightbox(-1, e);
+  if (e.key === 'ArrowRight') navLightbox(1, e);
+});
+</script>
+`)
 	html.WriteString("</body>\n</html>\n")
 
 	return html.String(), nil
@@ -841,12 +900,13 @@ func writeStoryPost(html *strings.Builder, post Post) {
 	// Images
 	if len(post.Images) > 0 {
 		html.WriteString("<div class=\"images\">\n")
-		for _, img := range post.Images {
+		for i, img := range post.Images {
 			alt := img.Alt
 			if alt == "" {
 				alt = "Image"
 			}
-			html.WriteString(fmt.Sprintf("<img src=\"%s\" alt=\"%s\" loading=\"lazy\" style=\"max-width:100%%;max-height:200px;\">\n", escapeHTML(img.URL), escapeHTML(alt)))
+			html.WriteString(fmt.Sprintf("<img src=\"%s\" alt=\"%s\" loading=\"lazy\" style=\"max-width:100%%;max-height:200px;\" data-group=\"%s\" data-idx=\"%d\" onclick=\"openLightbox(this)\">\n",
+				escapeHTML(img.URL), escapeHTML(alt), escapeHTML(post.Rkey), i))
 		}
 		html.WriteString("</div>\n")
 	}
@@ -860,18 +920,19 @@ func writeStoryPost(html *strings.Builder, post Post) {
 func writeFeedCard(html *strings.Builder, post Post) {
 	html.WriteString("<article class=\"feed-card\">\n")
 	html.WriteString("<div class=\"label\">From the Feed</div>\n")
-	html.WriteString(fmt.Sprintf("<span class=\"author\">@%s</span>\n", escapeHTML(post.Author.Handle)))
+	html.WriteString(fmt.Sprintf("<a class=\"author\" href=\"%s\">@%s</a>\n", escapeHTML(postURL(post)), escapeHTML(post.Author.Handle)))
 	html.WriteString(fmt.Sprintf("<p class=\"text\">%s</p>\n", escapeHTML(post.Text)))
 
 	// Images
 	if len(post.Images) > 0 {
 		html.WriteString("<div class=\"images\">\n")
-		for _, img := range post.Images {
+		for i, img := range post.Images {
 			alt := img.Alt
 			if alt == "" {
 				alt = "Image"
 			}
-			html.WriteString(fmt.Sprintf("<img src=\"%s\" alt=\"%s\" loading=\"lazy\">\n", escapeHTML(img.URL), escapeHTML(alt)))
+			html.WriteString(fmt.Sprintf("<img src=\"%s\" alt=\"%s\" loading=\"lazy\" data-group=\"%s\" data-idx=\"%d\" onclick=\"openLightbox(this)\">\n",
+				escapeHTML(img.URL), escapeHTML(alt), escapeHTML(post.Rkey), i))
 		}
 		html.WriteString("</div>\n")
 	}
