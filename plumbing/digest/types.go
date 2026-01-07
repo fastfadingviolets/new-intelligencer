@@ -15,6 +15,7 @@ type Post struct {
 	ReplyTo      *ReplyTo      `json:"reply_to,omitempty"`
 	Images       []Image       `json:"images,omitempty"`
 	ExternalLink *ExternalLink `json:"external_link,omitempty"`
+	Quote        *Quote        `json:"quote,omitempty"`
 	LikeCount    int64         `json:"like_count"`
 	ReplyCount   int64         `json:"reply_count"`
 	RepostCount  int64         `json:"repost_count"`
@@ -41,6 +42,15 @@ type ReplyTo struct {
 	AuthorHandle string `json:"author_handle"`
 }
 
+// Quote holds metadata for an embedded/quoted post
+type Quote struct {
+	URI       string    `json:"uri"`
+	Rkey      string    `json:"rkey"`
+	Text      string    `json:"text"`
+	Author    Author    `json:"author"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
 // Image represents an image attachment
 type Image struct {
 	URL string `json:"url"`
@@ -57,18 +67,21 @@ type ExternalLink struct {
 
 // DisplayPost is the minimal format for agent consumption
 type DisplayPost struct {
-	Rkey        string          `json:"rkey"`
-	Text        string          `json:"text"`
-	Author      DisplayAuthor   `json:"author"`
-	CreatedAt   time.Time       `json:"created_at"`
-	Repost      *DisplayRepost  `json:"repost,omitempty"`
-	ReplyTo      *DisplayReplyTo `json:"reply_to,omitempty"`
-	Images       []Image         `json:"images,omitempty"`
-	ExternalLink *ExternalLink   `json:"external_link,omitempty"`
-	LikeCount    int64           `json:"like_count"`
-	ReplyCount  int64           `json:"reply_count"`
-	RepostCount int64           `json:"repost_count"`
-	QuoteCount  int64           `json:"quote_count"`
+	Rkey          string          `json:"rkey"`
+	Text          string          `json:"text"`
+	Author        DisplayAuthor   `json:"author"`
+	CreatedAt     time.Time       `json:"created_at"`
+	Repost        *DisplayRepost  `json:"repost,omitempty"`
+	ReplyTo       *DisplayReplyTo `json:"reply_to,omitempty"`
+	Images        []Image         `json:"images,omitempty"`
+	ExternalLink  *ExternalLink   `json:"external_link,omitempty"`
+	Quote         *DisplayQuote   `json:"quote,omitempty"`
+	LikeCount     int64           `json:"like_count"`
+	ReplyCount    int64           `json:"reply_count"`
+	RepostCount   int64           `json:"repost_count"`
+	QuoteCount    int64           `json:"quote_count"`
+	ThreadReplies []DisplayPost   `json:"thread_replies,omitempty"` // Replies in thread (for threaded view)
+	ImageData     string          `json:"image_data,omitempty"`     // Base64-encoded first image for agent viewing
 }
 
 // DisplayAuthor is author info without DID
@@ -86,6 +99,14 @@ type DisplayRepost struct {
 // DisplayReplyTo is reply metadata without URI
 type DisplayReplyTo struct {
 	AuthorHandle string `json:"author_handle"`
+}
+
+// DisplayQuote is quote metadata without full author DID
+type DisplayQuote struct {
+	Rkey      string        `json:"rkey"`
+	Text      string        `json:"text"`
+	Author    DisplayAuthor `json:"author"`
+	CreatedAt time.Time     `json:"created_at"`
 }
 
 // Config holds workspace configuration

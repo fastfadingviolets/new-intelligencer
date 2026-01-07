@@ -467,25 +467,96 @@ func extractDomain(rawURL string) string {
 	return parsed.Host
 }
 
+// writeEmbedCard writes a generic embed card (used for links and quotes)
+func writeEmbedCard(html *strings.Builder, url, thumb, title, desc, domain string) {
+	html.WriteString(fmt.Sprintf("<a href=\"%s\" class=\"link-card\" target=\"_blank\" rel=\"noopener\">\n", escapeHTML(url)))
+	if thumb != "" {
+		html.WriteString(fmt.Sprintf("<img src=\"%s\" alt=\"\" loading=\"lazy\">\n", escapeHTML(thumb)))
+	}
+	html.WriteString("<div class=\"link-info\">\n")
+	if title != "" {
+		html.WriteString(fmt.Sprintf("<div class=\"link-title\">%s</div>\n", escapeHTML(title)))
+	}
+	if desc != "" {
+		html.WriteString(fmt.Sprintf("<div class=\"link-desc\">%s</div>\n", escapeHTML(desc)))
+	}
+	html.WriteString(fmt.Sprintf("<div class=\"link-domain\">%s</div>\n", escapeHTML(domain)))
+	html.WriteString("</div>\n</a>\n")
+}
+
 // writeLinkCard writes an external link card embed
 func writeLinkCard(html *strings.Builder, link *ExternalLink) {
 	if link == nil {
 		return
 	}
-	html.WriteString(fmt.Sprintf("<a href=\"%s\" class=\"link-card\" target=\"_blank\" rel=\"noopener\">\n", escapeHTML(link.URL)))
-	if link.Thumb != "" {
-		html.WriteString(fmt.Sprintf("<img src=\"%s\" alt=\"\" loading=\"lazy\">\n", escapeHTML(link.Thumb)))
-	}
-	html.WriteString("<div class=\"link-info\">\n")
-	if link.Title != "" {
-		html.WriteString(fmt.Sprintf("<div class=\"link-title\">%s</div>\n", escapeHTML(link.Title)))
-	}
+	desc := ""
 	if link.Description != "" {
-		desc := truncateText(link.Description, 120)
-		html.WriteString(fmt.Sprintf("<div class=\"link-desc\">%s</div>\n", escapeHTML(desc)))
+		desc = truncateText(link.Description, 120)
 	}
-	html.WriteString(fmt.Sprintf("<div class=\"link-domain\">%s</div>\n", escapeHTML(extractDomain(link.URL))))
-	html.WriteString("</div>\n</a>\n")
+	writeEmbedCard(html, link.URL, link.Thumb, link.Title, desc, extractDomain(link.URL))
+}
+
+// writeQuoteCard writes a quoted post card embed
+func writeQuoteCard(html *strings.Builder, quote *Quote) {
+	if quote == nil {
+		return
+	}
+	// Build post URL from author handle and rkey
+	url := fmt.Sprintf("https://bsky.app/profile/%s/post/%s", quote.Author.Handle, quote.Rkey)
+	title := "@" + quote.Author.Handle
+	if quote.Author.DisplayName != "" {
+		title = quote.Author.DisplayName + " (@" + quote.Author.Handle + ")"
+	}
+	desc := truncateText(quote.Text, 120)
+	writeEmbedCard(html, url, "", title, desc, "bsky.app")
+}
+
+// writeThreadReplies writes collapsible thread replies for a post
+func writeThreadReplies(html *strings.Builder, parentRkey string, threadReplies map[string][]string, postIndex map[string]Post) {
+	replies := threadReplies[parentRkey]
+	if len(replies) == 0 {
+		return
+	}
+
+	html.WriteString("<details class=\"thread-replies\" open>\n")
+	html.WriteString(fmt.Sprintf("<summary>%d replies in thread</summary>\n", len(replies)))
+
+	for _, replyRkey := range replies {
+		post, ok := postIndex[replyRkey]
+		if !ok {
+			continue
+		}
+
+		html.WriteString("<div class=\"thread-reply\">\n")
+		html.WriteString(fmt.Sprintf("<span class=\"author\">@%s</span>\n", escapeHTML(post.Author.Handle)))
+		html.WriteString(fmt.Sprintf("<p class=\"text\">%s</p>\n", escapeHTML(post.Text)))
+
+		// Images
+		if len(post.Images) > 0 {
+			html.WriteString("<div class=\"images\">\n")
+			for i, img := range post.Images {
+				alt := img.Alt
+				if alt == "" {
+					alt = "Image"
+				}
+				html.WriteString(fmt.Sprintf("<img src=\"%s\" alt=\"%s\" loading=\"lazy\" data-group=\"%s\" data-idx=\"%d\" onclick=\"openLightbox(this)\">\n",
+					escapeHTML(img.URL), escapeHTML(alt), escapeHTML(post.Rkey), i))
+			}
+			html.WriteString("</div>\n")
+		}
+
+		// External link
+		writeLinkCard(html, post.ExternalLink)
+
+		// Quote post
+		writeQuoteCard(html, post.Quote)
+
+		html.WriteString(fmt.Sprintf("<p class=\"meta\">%s • ♥ %d • <a href=\"%s\">View</a></p>\n",
+			escapeHTML(formatPostTime(post.CreatedAt)), post.LikeCount, escapeHTML(postURL(post))))
+		html.WriteString("</div>\n")
+	}
+
+	html.WriteString("</details>\n")
 }
 
 // CompileDigestHTML generates an HTML newspaper-style digest with interleaved content
@@ -503,6 +574,17 @@ func CompileDigestHTML(
 	postIndex := make(map[string]Post)
 	for _, post := range posts {
 		postIndex[post.Rkey] = post
+	}
+
+	// Build thread graph (parentRkey → []childRkeys)
+	threadReplies := make(map[string][]string)
+	for _, post := range posts {
+		if post.ReplyTo != nil && post.ReplyTo.URI != "" {
+			parentRkey := extractRkeyFromURI(post.ReplyTo.URI)
+			if parentRkey != "" {
+				threadReplies[parentRkey] = append(threadReplies[parentRkey], post.Rkey)
+			}
+		}
 	}
 
 	// Collect content posts to interleave (same selection as markdown)
@@ -745,6 +827,15 @@ a:hover { text-decoration: underline; }
 .link-card .link-desc { font-size: 0.85em; color: var(--muted); margin: 0.25rem 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .link-card .link-domain { font-size: 0.75em; color: var(--muted); }
 
+/* Thread replies */
+.thread-replies { margin-top: 0.5rem; border-left: 2px solid var(--border); padding-left: 0.75rem; margin-left: 0.5rem; }
+.thread-replies summary { font-size: 0.85em; color: var(--muted); cursor: pointer; margin-bottom: 0.5rem; }
+.thread-reply { margin: 0.75rem 0; padding: 0.5rem; background: var(--bg); border-radius: 4px; }
+.thread-reply .author { color: var(--accent); font-size: 0.9em; }
+.thread-reply .text { margin: 0.25rem 0; font-size: 0.95em; }
+.thread-reply .meta { color: var(--muted); font-size: 0.8em; }
+.thread-reply .images img { max-width: 100%; max-height: 120px; margin: 0.25rem 0; cursor: pointer; }
+
 @media (max-width: 600px) {
   .stories-grid { grid-template-columns: 1fr; }
 }
@@ -781,7 +872,7 @@ a:hover { text-decoration: underline; }
 		}
 		// Fill grid gap with feed card if odd count (use reserved grid posts)
 		if gridCount%2 == 1 && gridIdx < gridReserve {
-			writeFeedCard(&html, contentQueue[gridIdx])
+			writeFeedCard(&html, contentQueue[gridIdx], threadReplies, postIndex)
 			gridIdx++
 		}
 		html.WriteString("</div>\n")
@@ -808,7 +899,7 @@ a:hover { text-decoration: underline; }
 			html.WriteString("<section class=\"content-break\">\n")
 			html.WriteString("<div class=\"content-break-label\">From the Feed</div>\n")
 			for i := 0; i < contentPerGap && interleaveIdx < len(contentQueue); i++ {
-				writeFeedCard(&html, contentQueue[interleaveIdx])
+				writeFeedCard(&html, contentQueue[interleaveIdx], threadReplies, postIndex)
 				interleaveIdx++
 			}
 			html.WriteString("</section>\n")
@@ -834,7 +925,7 @@ a:hover { text-decoration: underline; }
 			}
 			// Fill grid gap with feed card if odd count (use reserved grid posts)
 			if gridCount%2 == 1 && gridIdx < gridReserve {
-				writeFeedCard(&html, contentQueue[gridIdx])
+				writeFeedCard(&html, contentQueue[gridIdx], threadReplies, postIndex)
 				gridIdx++
 			}
 			html.WriteString("</div>\n")
@@ -849,7 +940,7 @@ a:hover { text-decoration: underline; }
 		html.WriteString("<section class=\"content-break\">\n")
 		html.WriteString("<div class=\"content-break-label\">From the Feed</div>\n")
 		for interleaveIdx < len(contentQueue) {
-			writeFeedCard(&html, contentQueue[interleaveIdx])
+			writeFeedCard(&html, contentQueue[interleaveIdx], threadReplies, postIndex)
 			interleaveIdx++
 		}
 		html.WriteString("</section>\n")
@@ -971,13 +1062,16 @@ func writeStoryPost(html *strings.Builder, post Post) {
 	// External link card
 	writeLinkCard(html, post.ExternalLink)
 
+	// Quote post card
+	writeQuoteCard(html, post.Quote)
+
 	html.WriteString(fmt.Sprintf("<p class=\"meta\">%s • ♥ %d • <a href=\"%s\">View</a></p>\n",
 		escapeHTML(formatPostTime(post.CreatedAt)), post.LikeCount, escapeHTML(postURL(post))))
 	html.WriteString("</div>\n")
 }
 
 // writeFeedCard writes a "From the Feed" post with box styling (used everywhere)
-func writeFeedCard(html *strings.Builder, post Post) {
+func writeFeedCard(html *strings.Builder, post Post, threadReplies map[string][]string, postIndex map[string]Post) {
 	html.WriteString("<article class=\"feed-card\">\n")
 	html.WriteString("<div class=\"label\">From the Feed</div>\n")
 	html.WriteString(fmt.Sprintf("<a class=\"author\" href=\"%s\">@%s</a>\n", escapeHTML(postURL(post)), escapeHTML(post.Author.Handle)))
@@ -999,6 +1093,12 @@ func writeFeedCard(html *strings.Builder, post Post) {
 
 	// External link card
 	writeLinkCard(html, post.ExternalLink)
+
+	// Quote post card
+	writeQuoteCard(html, post.Quote)
+
+	// Thread replies
+	writeThreadReplies(html, post.Rkey, threadReplies, postIndex)
 
 	html.WriteString(fmt.Sprintf("<p class=\"meta\">%s • ♥ %d • <a href=\"%s\">View</a></p>\n",
 		escapeHTML(formatPostTime(post.CreatedAt)), post.LikeCount, escapeHTML(postURL(post))))

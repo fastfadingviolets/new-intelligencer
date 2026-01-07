@@ -10,11 +10,50 @@ import (
 
 // WorkspaceData holds all data loaded from a workspace
 type WorkspaceData struct {
-	Dir        string
-	Config     Config
-	Posts      []Post
-	Index      PostsIndex
-	Categories Categories
+	Dir           string
+	Config        Config
+	Posts         []Post
+	Index         PostsIndex
+	Categories    Categories
+	ThreadReplies map[string][]string // parentRkey → []childRkeys (built lazily)
+}
+
+// extractRkeyFromURI extracts the rkey from an AT URI like "at://did:plc:xyz/app.bsky.feed.post/rkey123"
+func extractRkeyFromURI(uri string) string {
+	parts := strings.Split(uri, "/")
+	if len(parts) > 0 {
+		return parts[len(parts)-1]
+	}
+	return ""
+}
+
+// BuildThreadGraph builds the thread reply map from posts
+func (wd *WorkspaceData) BuildThreadGraph() {
+	wd.ThreadReplies = make(map[string][]string)
+	for _, post := range wd.Posts {
+		if post.ReplyTo != nil && post.ReplyTo.URI != "" {
+			parentRkey := extractRkeyFromURI(post.ReplyTo.URI)
+			if parentRkey != "" {
+				wd.ThreadReplies[parentRkey] = append(wd.ThreadReplies[parentRkey], post.Rkey)
+			}
+		}
+	}
+}
+
+// IsReply returns true if the post is a reply to another post
+func (wd *WorkspaceData) IsReply(rkey string) bool {
+	if idx, ok := wd.Index[rkey]; ok && idx < len(wd.Posts) {
+		return wd.Posts[idx].ReplyTo != nil
+	}
+	return false
+}
+
+// GetReplies returns all reply rkeys for a given parent post rkey
+func (wd *WorkspaceData) GetReplies(parentRkey string) []string {
+	if wd.ThreadReplies == nil {
+		wd.BuildThreadGraph()
+	}
+	return wd.ThreadReplies[parentRkey]
 }
 
 // GetWorkspaceDir returns the workspace directory path

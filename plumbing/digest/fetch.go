@@ -185,6 +185,18 @@ func ConvertAPIPost(item *bsky.FeedDefs_FeedViewPost) Post {
 				Thumb:       getStringPtr(ext.Thumb),
 			}
 		}
+
+		// Quote post embeds (pure quote)
+		if item.Post.Embed.EmbedRecord_View != nil {
+			post.Quote = extractQuoteFromRecord(item.Post.Embed.EmbedRecord_View.Record)
+		}
+
+		// Quote post with media - extract the quoted record
+		if item.Post.Embed.EmbedRecordWithMedia_View != nil {
+			if item.Post.Embed.EmbedRecordWithMedia_View.Record != nil {
+				post.Quote = extractQuoteFromRecord(item.Post.Embed.EmbedRecordWithMedia_View.Record.Record)
+			}
+		}
 	}
 
 	// Set indexed time to now
@@ -225,4 +237,37 @@ func getStringPtr(s *string) string {
 		return ""
 	}
 	return *s
+}
+
+// extractQuoteFromRecord extracts quote post data from an embed record
+func extractQuoteFromRecord(record *bsky.EmbedRecord_View_Record) *Quote {
+	if record == nil {
+		return nil
+	}
+
+	// The record can be various types - we only handle viewable posts
+	if record.EmbedRecord_ViewRecord != nil {
+		viewRecord := record.EmbedRecord_ViewRecord
+		quote := &Quote{
+			URI: viewRecord.Uri,
+			Author: Author{
+				DID:         viewRecord.Author.Did,
+				Handle:      viewRecord.Author.Handle,
+				DisplayName: getStringPtr(viewRecord.Author.DisplayName),
+			},
+		}
+
+		// Extract rkey from URI
+		quote.Rkey = ExtractRkey(viewRecord.Uri)
+
+		// Extract text and created_at from the record value
+		if postRecord, ok := viewRecord.Value.Val.(*bsky.FeedPost); ok {
+			quote.Text = postRecord.Text
+			quote.CreatedAt, _ = time.Parse(time.RFC3339, postRecord.CreatedAt)
+		}
+
+		return quote
+	}
+
+	return nil
 }

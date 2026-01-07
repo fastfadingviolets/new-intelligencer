@@ -170,13 +170,34 @@ var readPostsCmd = &cobra.Command{
 			return err
 		}
 
-		posts, err := LoadPosts(filepath.Join(dir, "posts.json"))
+		wd, err := LoadWorkspace(dir)
 		if err != nil {
 			return err
 		}
+		wd.BuildThreadGraph()
 
-		// Apply offset and limit
-		end := len(posts)
+		// Build set of rkeys that are replies to posts we have
+		repliesInDataset := make(map[string]bool)
+		for _, post := range wd.Posts {
+			if post.ReplyTo != nil {
+				parentRkey := extractRkeyFromURI(post.ReplyTo.URI)
+				// Check if parent is in our dataset
+				if _, ok := wd.Index[parentRkey]; ok {
+					repliesInDataset[post.Rkey] = true
+				}
+			}
+		}
+
+		// Filter to only thread roots (non-replies or replies to posts not in dataset)
+		var roots []Post
+		for _, post := range wd.Posts {
+			if !repliesInDataset[post.Rkey] {
+				roots = append(roots, post)
+			}
+		}
+
+		// Apply offset and limit to roots
+		end := len(roots)
 		if offset >= end {
 			offset = end
 		}
@@ -184,8 +205,13 @@ var readPostsCmd = &cobra.Command{
 			end = offset + limit
 		}
 
-		posts = posts[offset:end]
-		displayPosts := FormatForDisplay(posts)
+		roots = roots[offset:end]
+
+		// Format for display with thread info
+		displayPosts := FormatForDisplayWithThreads(roots, wd)
+
+		// Fetch and encode first image for each post
+		FetchImagesForDisplay(displayPosts)
 
 		data, _ := json.MarshalIndent(displayPosts, "", "  ")
 		fmt.Println(string(data))
@@ -222,6 +248,20 @@ var categorizeCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+
+		// Build thread graph to auto-include replies
+		wd.BuildThreadGraph()
+
+		// Expand rkeys to include thread replies
+		expandedRkeys := []string{}
+		for _, rkey := range rkeys {
+			expandedRkeys = append(expandedRkeys, rkey)
+			// Auto-include any replies to this post
+			for _, replyRkey := range wd.GetReplies(rkey) {
+				expandedRkeys = append(expandedRkeys, replyRkey)
+			}
+		}
+		rkeys = expandedRkeys
 
 		// Process rkeys based on --move flag
 		newRkeys := []string{}
