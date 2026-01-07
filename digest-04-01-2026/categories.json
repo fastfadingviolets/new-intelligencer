@@ -1,0 +1,173 @@
+{
+  "fashion": {
+    "visible": [
+      "3mborjt2us32n",
+      "3mbopmy76sy24",
+      "3mbo5sfdhmz2x",
+      "3mbofcwlbra2y",
+      "3mbnqnns5a22t",
+      "3mbnqncma422t"
+    ]
+  },
+  "film": {
+    "visible": [
+      "3mbnpspltdi27",
+      "3mbnhvhr3hc22",
+      "3mbla3hhwa22z",
+      "3mbmj2wdzac2a"
+    ]
+  },
+  "finance": {
+    "visible": [
+      "3mborgixjwr2a",
+      "3mboika6jlv2p",
+      "3mboihhsei52y",
+      "3mbogbhh6ae27",
+      "3mbofymjb7323",
+      "3mbo5svxp2s2k",
+      "3mbo36jikkx2l",
+      "3mbnrmb655q2i",
+      "3mbnaok4hcy2h"
+    ]
+  },
+  "front-page": {
+    "visible": [
+      "3mbojosn2a22j",
+      "3mbo2asrzoe2n",
+      "3mbo3w36yyi2i",
+      "3mbnqoahsa225",
+      "3mblzw2l7w22u"
+    ]
+  },
+  "geopolitics": {
+    "visible": [
+      "3mbor4vkmkc2x",
+      "3mbopbuk26o2e",
+      "3mbopyqldi724",
+      "3mboilo2bfa22",
+      "3mboif3kq2n2g",
+      "3mbogvy7amv2e",
+      "3mbofwrvdmp2o",
+      "3mbofkqn44g26",
+      "3mbo4u524th2p",
+      "3mbo3uczyh227",
+      "3mbnziudfwl27",
+      "3mbnssbrjy727",
+      "3mbnru3urps25",
+      "3mbnh2r4lzs2z",
+      "3mbnglmj3762z",
+      "3mbng5bn2sq26",
+      "3mbnbzsttww2h",
+      "3mbnbqxatv623",
+      "3mbnaqyz5hx2m",
+      "3mbn3dabxa42e",
+      "3mbn22dkdnz2k",
+      "3mbmzygs5yc2h",
+      "3mbmznoern42p",
+      "3mbmtbyggjm2z",
+      "3mbmpx7idyo23",
+      "3mbmpcbzhba24",
+      "3mbmplq332j2p",
+      "3mbmnvuwiau23",
+      "3mbmoctfjrx2o",
+      "3mbmhvphyac2o"
+    ]
+  },
+  "local-news": {
+    "visible": [
+      "3mbop5hfhrs2m",
+      "3mbofw367pc2s",
+      "3mbnryxyjy224",
+      "3mbnczw6ods2x",
+      "3mbncktpklk2x",
+      "3mbmvq6yvms2c",
+      "3mbn24457ks2x",
+      "3mbmuxhrezc2x",
+      "3mbmulgv7tc2x",
+      "3mbmi6tfc3c2t",
+      "3mbmhvi5icc2t",
+      "3mbmhtsdno22e",
+      "3mbmhkctrfc2i"
+    ]
+  },
+  "music": {
+    "visible": [
+      "3mbop25weu22z"
+    ]
+  },
+  "politics-ca": {
+    "visible": [
+      "3mbomp3tphc2o",
+      "3mbog56qzj22k",
+      "3mbofih4k5n2e",
+      "3mbnr4ycx3c25"
+    ]
+  },
+  "politics-us": {
+    "visible": [
+      "3mbohxd2dyc2x",
+      "3mboqllqbcs2j",
+      "3mboleo6fhc2u",
+      "3mboeqbe45c2e",
+      "3mboh4bazdr2i",
+      "3mbndphvdv227",
+      "3mbnbgn2zek2i",
+      "3mbmzoay7l423",
+      "3mbmptolu3c2x"
+    ]
+  },
+  "sports": {
+    "visible": [
+      "3mboqlduerc24",
+      "3mboiri2gps2t",
+      "3mbohls4ikb2i",
+      "3mbofbwcxj42z",
+      "3mbo4clyr7o2w",
+      "3mbnzwfseec2g",
+      "3mbnqikhzmy27",
+      "3mbmzowckjs2d",
+      "3mbmuommbma2d",
+      "3mbmpypg2s22h",
+      "3mbmpevy35c22",
+      "3mbmpmr5rel2t",
+      "3mbmolwmqh72g",
+      "3mbmo2tqgcs2b"
+    ]
+  },
+  "tech": {
+    "visible": [
+      "3mboqdjfmo42z",
+      "3mbopkya5ry26",
+      "3mbopdcv7k623",
+      "3mbnqsmxia7m2",
+      "3mbmymnnexo2g",
+      "3mbmplw7q6f2a"
+    ]
+  },
+  "vibes": {
+    "visible": [
+      "3mbnyip6mn22o",
+      "3mboquiju3c2w",
+      "3ldbtyq4gnc2b",
+      "3mbnuiczpmc27",
+      "3mbo3v6htbd26",
+      "3mbo3v6hy5l26",
+      "3mbnrsyysrs2k",
+      "3mbnr3ecoak2k",
+      "3mbnh4pdvrc2y",
+      "3mbn57dsobs2v",
+      "3l5idoxmlnq2a",
+      "3knhvwh67kd2d",
+      "3mbmoaozvdc2i",
+      "3mbmpsmcksc2w",
+      "3mbmtv2al422w",
+      "3mbmurruank2n",
+      "3mbn3fngnsk2f",
+      "3mbn2vhk7h22z",
+      "3mbn2ulc4rs2z",
+      "3mbmoxhi6zc2z",
+      "3mbmoplnh5222",
+      "3mbmmuood7s2m"
+    ]
+  }
+}

@@ -199,7 +199,7 @@ func CompileDigest(
 			if len(sectionPosts) > 0 {
 				popular := sortByLikes(sectionPosts)
 				md.WriteString("**Most Popular:**\n")
-				for i, post := range popular[:min(3, len(popular))] {
+				for i, post := range popular[:min(section.MaxStories, len(popular))] {
 					snippet := truncateText(post.Text, 60)
 					md.WriteString(fmt.Sprintf("%d. @%s: \"%s\" (%d likes) [%s]\n",
 						i+1, post.Author.Handle, snippet, post.LikeCount, post.Rkey))
@@ -212,7 +212,7 @@ func CompileDigest(
 			if len(sectionPosts) > 0 {
 				engaging := sortByEngagement(sectionPosts)
 				md.WriteString("**Most Engaging:**\n")
-				for i, post := range engaging[:min(3, len(engaging))] {
+				for i, post := range engaging[:min(section.MaxStories, len(engaging))] {
 					snippet := truncateText(post.Text, 60)
 					engagement := post.ReplyCount + post.RepostCount
 					md.WriteString(fmt.Sprintf("%d. @%s: \"%s\" (%d interactions) [%s]\n",
@@ -225,7 +225,8 @@ func CompileDigest(
 			// Sui Generis
 			if picks, ok := contentPicks[section.ID]; ok && len(picks.SuiGeneris) > 0 {
 				md.WriteString("**Sui Generis:**\n")
-				for _, rkey := range picks.SuiGeneris {
+				suiGenerisLimit := min(section.MaxStories, len(picks.SuiGeneris))
+				for _, rkey := range picks.SuiGeneris[:suiGenerisLimit] {
 					if post, ok := postIndex[rkey]; ok {
 						snippet := truncateText(post.Text, 80)
 						md.WriteString(fmt.Sprintf("- @%s: \"%s\" [%s]\n", post.Author.Handle, snippet, post.Rkey))
@@ -614,20 +615,20 @@ func CompileDigestHTML(
 			continue
 		}
 
-		// Add top 3 by likes
+		// Add top N by likes (N = max_stories)
 		popular := sortByLikes(sectionPosts)
-		for i := 0; i < min(3, len(popular)); i++ {
+		for i := 0; i < min(section.MaxStories, len(popular)); i++ {
 			contentQueue = append(contentQueue, popular[i])
 		}
 
-		// Add top 3 by engagement (avoid duplicates)
+		// Add top N by engagement (avoid duplicates)
 		seen := make(map[string]bool)
 		for _, p := range contentQueue {
 			seen[p.Rkey] = true
 		}
 		engaging := sortByEngagement(sectionPosts)
 		addedEngaging := 0
-		for i := 0; i < len(engaging) && addedEngaging < 3; i++ {
+		for i := 0; i < len(engaging) && addedEngaging < section.MaxStories; i++ {
 			if !seen[engaging[i].Rkey] {
 				contentQueue = append(contentQueue, engaging[i])
 				seen[engaging[i].Rkey] = true
@@ -635,12 +636,17 @@ func CompileDigestHTML(
 			}
 		}
 
-		// Add sui generis picks (avoid duplicates)
+		// Add sui generis picks (avoid duplicates, limit to max_stories)
 		if picks, ok := contentPicks[section.ID]; ok {
+			addedSuiGeneris := 0
 			for _, rkey := range picks.SuiGeneris {
+				if addedSuiGeneris >= section.MaxStories {
+					break
+				}
 				if post, ok := postIndex[rkey]; ok && !seen[rkey] {
 					contentQueue = append(contentQueue, post)
 					seen[rkey] = true
+					addedSuiGeneris++
 				}
 			}
 		}

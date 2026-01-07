@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Digest - 05 January 2026</title>
+<style>
+:root {
+  --bg: #f5f1e8;
+  --text: #1a1a1a;
+  --muted: #555;
+  --border: #d4cfc4;
+  --accent: #8b0000;
+  --section-bg: #ece7db;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  max-width: min(1200px, 90vw);
+  margin: 0 auto;
+  padding: clamp(1rem, 2vw, 3rem);
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+}
+h1 {
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  text-align: center;
+  border-bottom: 3px double var(--text);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; }
+
+/* Section headers - distinctive */
+.section > summary { list-style: none; cursor: pointer; }
+.section > summary::-webkit-details-marker { display: none; }
+.section > summary h2 {
+  text-align: center;
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: var(--section-bg);
+  padding: 0.75rem 1rem;
+  margin: 2rem 0 1.5rem;
+  border-top: 3px double var(--border);
+  border-bottom: 3px double var(--border);
+}
+.section > summary h2::after { content: " ▼"; font-size: 0.7em; color: var(--muted); }
+.section:not([open]) > summary h2::after { content: " ▶"; }
+
+/* Headline story - full width, prominent */
+.headline-story { margin-bottom: 1.5rem; }
+.headline-story h3 {
+  font-size: clamp(1.3rem, 1rem + 1vw, 1.8rem);
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+.headline-story h3 a { color: var(--text); }
+.headline-story h3 a:hover { color: var(--accent); }
+
+/* Stories grid - 2 columns */
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1rem, 2vw, 2rem) clamp(1.5rem, 3vw, 3rem);
+  margin-bottom: 1.5rem;
+}
+.story { border-top: 1px solid var(--border); padding-top: 0.75rem; }
+.story h4 {
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.3rem);
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+.story h4 a { color: var(--text); }
+.story h4 a:hover { color: var(--accent); }
+
+/* Expanded post list */
+.story details, .headline-story details { margin-top: 0.25rem; }
+.story details[open] summary, .headline-story details[open] summary { margin-bottom: 0.5rem; }
+.story summary, .headline-story summary { font-size: 0.85em; color: var(--muted); cursor: pointer; list-style: none; }
+.story summary::-webkit-details-marker, .headline-story summary::-webkit-details-marker { display: none; }
+.story summary::before, .headline-story summary::before { content: "▶ "; font-size: 0.8em; }
+.story details[open] summary::before, .headline-story details[open] summary::before { content: "▼ "; }
+.post { margin: 0.5rem 0; padding-left: 0.75rem; border-left: 2px solid var(--border); }
+.post .author { color: var(--accent); }
+.post .text { color: var(--text); margin: 0.25rem 0; }
+.post .meta { color: var(--muted); font-size: 0.85em; }
+
+/* From the Feed section */
+.content-break { margin: 2rem 0; padding: 1rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.content-break-label { font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; }
+
+/* Feed card - used everywhere for "From the Feed" posts */
+.feed-card {
+  background: var(--section-bg);
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+.feed-card .label {
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.feed-card .author { font-weight: bold; }
+.feed-card .text { margin: 0.25rem 0; }
+.feed-card .meta { color: var(--muted); font-size: 0.85em; }
+.feed-card .images img { max-width: 100%; max-height: 150px; margin: 0.5rem 0; }
+
+@media (max-width: 600px) {
+  .stories-grid { grid-template-columns: 1fr; }
+}
+@media print { body { max-width: none; background: white; } }
+</style>
+</head>
+<body>
+<h1>The Daily Digest</h1>
+<p class="subtitle">05 January 2026</p>
+<details class="section" open>
+<summary><h2>Front Page</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theguardian.com/post/3mbo2asrzoe2n">BBC Bans Journalists From Describing Venezuelan Leader as 'Kidnapped'</a></h3>
+<details open><summary>2 posts in story</summary>
+<div class="post">
+<span class="author">@owenjones.bsky.social</span>
+<p class="text">BBC journalists have been banned from describing the kidnapped Venezuelan leader as having been kidnapped.
+
+The BBC News Editor has sent this to BBC journalists.</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:kck4x62tvstln6zqiqr4ej5g/bafkreih6fzifvlctsozerrs6cw3iggolppkvhscgkx2jgufh6ydiheogku@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 05, 1:19pm • ♥ 3046 • <a href="https://bsky.app/profile/owenjones.bsky.social/post/3mbojosn2a22j">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Trump’s coup in Venezuela didn’t just break the rules – it showed there aren’t any. We’ll all regret that | Nesrine Malik</p>
+<p class="meta">Jan 05, 8:43am • ♥ 311 • <a href="https://bsky.app/profile/theguardian.com/post/3mbo2asrzoe2n">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mbo3w36yyi2i">Denmark Demands Trump End Greenland Takeover Threats</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Denmark urges Trump to stop threats to take over Greenland – Europe live</p>
+<p class="meta">Jan 05, 9:13am • ♥ 222 • <a href="https://bsky.app/profile/theguardian.com/post/3mbo3w36yyi2i">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/thestar.com/post/3mbnqoahsa225">Suspect Arrested in GO Bus Shooting Near Yorkdale Station</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">Person dead after being shot on GO bus near Yorkdale station, suspect arrested in first homicide of 2026</p>
+<p class="meta">Jan 05, 5:52am • ♥ 8 • <a href="https://bsky.app/profile/thestar.com/post/3mbnqoahsa225">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/astrokatie.com/post/3mblzw2l7w22u">AI Chatbots Raise Concerns as 'Psychosis Machines' for Vulnerable Users</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@astrokatie.com</span>
+<p class="text">For all that the media has spent years freaking out about what social media does to our brains, I don’t understand why there appears to be little effort to grapple with the fact that these chatbots are, for some not insignificant portion of the population, literally psychosis machines</p>
+<p class="meta">Jan 04, 1:32pm • ♥ 8645 • <a href="https://bsky.app/profile/astrokatie.com/post/3mblzw2l7w22u">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@metcostume.bsky.social</span>
+<p class="text">Button
+https://botfrens.com/collections/223/contents/95550</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:6qnikm7qt6cckwztni5p5eto/bafkreidgjvikel4e7zg3mspx3cheaafrkxz2d3obws4wnr5gg7doo2rdji@jpeg" alt="From the Hanna S. Kohn Collection, 1951" loading="lazy">
+</div>
+<p class="meta">Jan 05, 9:46am • ♥ 45 • <a href="https://bsky.app/profile/metcostume.bsky.social/post/3mbo5sfdhmz2x">View</a></p>
+</article>
+</div>
+</details>
+<details class="section" open>
+<summary><h2>Technology</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theguardian.com/post/3mboqdjfmo42z">Computing Skills Must Match Reading and Writing in AI Generation, Experts Warn</a></h3>
+<details open><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Generation AI: fears of ‘social divide’ unless all children learn computing skills</p>
+<p class="meta">Jan 05, 3:18pm • ♥ 10 • <a href="https://bsky.app/profile/theguardian.com/post/3mboqdjfmo42z">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/wired.com/post/3mbopkya5ry26">Samsung Unveils Galaxy Z TriFold Three-Panel Smartphone at CES 2026</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wired.com</span>
+<p class="text">At CES 2026, we went hands-on with the three-panel Samsung tablet that folds up to the size of a (large) phone. www.wired.com/story/samsun...</p>
+<p class="meta">Jan 05, 3:04pm • ♥ 15 • <a href="https://bsky.app/profile/wired.com/post/3mbopkya5ry26">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/mauve.moe/post/3mbnqsmxia7m2">Mastodon Creator Reflects on Threads Federation Failure and Fediverse Future</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@mauve.moe</span>
+<p class="text">Eugen seems like a reasonable person tbh. https://coywolf.com/news/social-media/mastodon-creator-shares-what-went-wrong-with-threads-and-ponders-the-future-of-the-fediverse/</p>
+<p class="meta">Jan 05, 5:53am • ♥ 0 • <a href="https://bsky.app/profile/mauve.moe/post/3mbnqsmxia7m2">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mbmymnnexo2g">Physicist Max Tegmark Rallies Celebrity Support to Halt AI Superintelligence</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Physicist Max Tegmark wants to halt development of AI superintelligence—and he has celebrity support from the likes of Prince Harry and will.i.am.</p>
+<p class="meta">Jan 04, 10:41pm • ♥ 45 • <a href="https://bsky.app/profile/wsj.com/post/3mbmymnnexo2g">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@laurencdeutsch.bsky.social</span>
+<p class="text">#PalaisGalliera used this 1880 Worth wedding bodice as an example of the importance of marketing. Labels were still new in the 1860s, before which local dressmakers usually made a person's clothes. However, with increasingly larger Parisian couture houses, clothes started</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:qdy7vyx5lc5hxkoyme5d6ngi/bafkreib6oqmrz7gg4ufo6m62iwu6wns23zwevjiwmozcv7iaq6st7hno7y@jpeg" alt="Image" loading="lazy">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:qdy7vyx5lc5hxkoyme5d6ngi/bafkreidnvle2ilkyupgk7di4zdizuzm57z3pf7m6nv54nq2ckb7tq3a5fu@jpeg" alt="Image" loading="lazy">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:qdy7vyx5lc5hxkoyme5d6ngi/bafkreiesukaago3n4vpbfg6a54a2ktkf2j5dixs5dqw7kcuzoc76m6pl6i@jpeg" alt="Image" loading="lazy">
+</div>
+<p class="meta">Jan 05, 5:51am • ♥ 35 • <a href="https://bsky.app/profile/laurencdeutsch.bsky.social/post/3mbnqncma422t">View</a></p>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@crushbort.bsky.social</span>
+<p class="text">it’s going to be weird going back to work and people talking like everything is normal. like in a final fantasy game when someone’s summoned a meteor from hell to destroy the planet and the villagers still only talk about the big chocobo pageant coming up</p>
+<p class="meta">Jan 04, 9:16pm • ♥ 3178 • <a href="https://bsky.app/profile/crushbort.bsky.social/post/3mbmtv2al422w">View</a></p>
+</article>
+</section>
+<details class="section" open>
+<summary><h2>Finance</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theglobeandmail.com/post/3mborgixjwr2a">Minto Apartment REIT Going Private in .3 Billion Deal Amid Immigration Shifts</a></h3>
+<details open><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@theglobeandmail.com</span>
+<p class="text"></p>
+<p class="meta">Jan 05, 3:38pm • ♥ 0 • <a href="https://bsky.app/profile/theglobeandmail.com/post/3mborgixjwr2a">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mboihhsei52y">UK Buy-to-Let Landlords Disappear as Higher Taxes Bite</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Are UK buy-to-let landlords dying out – and should we care?</p>
+<p class="meta">Jan 05, 12:57pm • ♥ 19 • <a href="https://bsky.app/profile/theguardian.com/post/3mboihhsei52y">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mbofymjb7323">Geopolitical Shocks No Longer Move Oil Markets as They Once Did</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Heard on the Street: The headlines from Venezuela and Iran used to be the sort of thing that sent crude prices skyrocketing. Today’s market is different.</p>
+<p class="meta">Jan 05, 12:13pm • ♥ 12 • <a href="https://bsky.app/profile/wsj.com/post/3mbofymjb7323">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/aljazeera.com/post/3mbo36jikkx2l">Syria Launches New Currency Without al-Assad Family Images</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Syria’s new currency removes al-Assad family images, seeks to boost economy https://aje.io/vzoesd</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreiewgbv5nihsh6oyxoxnick5vzckyen5rfblzx7b3rfxvxkjswj7wq@jpeg" alt="Syria’s new currency removes al-Assad family images, seeks to boost economy" loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 05, 9:00am • ♥ 42 • <a href="https://bsky.app/profile/aljazeera.com/post/3mbo36jikkx2l">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@laurencdeutsch.bsky.social</span>
+<p class="text">carrying these new labels. (This is why it's hard to assess the authenticity of early Worth gowns.) Worth, however, then went a step further when he used his autograph as his label, thus cementing the idea of the designer as an artist. #Fashionhistory #ootd</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:qdy7vyx5lc5hxkoyme5d6ngi/bafkreib2h3czwlwnrh55quw76y4xpsw53r6fgdkq43gfn7qbid4wbpjzfu@jpeg" alt="Image" loading="lazy">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:qdy7vyx5lc5hxkoyme5d6ngi/bafkreibcezbvaqfoevjfo7keposfgut3wzw3zq5arge2ltebbrkae4bw7a@jpeg" alt="Image" loading="lazy">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:qdy7vyx5lc5hxkoyme5d6ngi/bafkreicau42x27h2uyob3pcix3oanpxysx53vkhxx3n7qgjldba3vbo6ju@jpeg" alt="Image" loading="lazy">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:qdy7vyx5lc5hxkoyme5d6ngi/bafkreihdup4whl73ara5ucji7kc6mbxizvpbyaghg4gf7nfhsrzfbwgicq@jpeg" alt="Image" loading="lazy">
+</div>
+<p class="meta">Jan 05, 5:51am • ♥ 16 • <a href="https://bsky.app/profile/laurencdeutsch.bsky.social/post/3mbnqnns5a22t">View</a></p>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@bloomfilters.plus</span>
+<p class="text">may 2026 grant you the freedom and energy to see something pointless happening online and say &quot;girl idc&quot;</p>
+<p class="meta">Jan 04, 7:35pm • ♥ 1355 • <a href="https://bsky.app/profile/bloomfilters.plus/post/3mbmoaozvdc2i">View</a></p>
+</article>
+</section>
+<details class="section" open>
+<summary><h2>Sports</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theathleticfc.bsky.social/post/3mboqlduerc24">Celtic Part Ways With Wilfried Nancy After Losing Six of Eight Matches</a></h3>
+<details open><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@theathleticfc.bsky.social</span>
+<p class="text">Celtic have parted company with Wilfried Nancy after the head coach lost six of his eight matches in charge.
+
+Full story from @colinmillar.bsky.social ⬇️
+
+🔗 www.nytimes.com/athletic/689...</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fa7xejyd32fvuar5hpa2n2yi/bafkreifrbtvuuq2jlqpjxzov3bti3ut72coiyxar6cws2phb2mshu4xq6i@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 05, 3:23pm • ♥ 23 • <a href="https://bsky.app/profile/theathleticfc.bsky.social/post/3mboqlduerc24">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mbmpmr5rel2t">Enzo Fernandez Stuns Manchester City With Stoppage-Time Equaliser</a></h4>
+<details open><summary>4 posts</summary>
+<div class="post">
+<span class="author">@theathleticfc.bsky.social</span>
+<p class="text">Enzo Fernandez scores deep into stoppage time to earn Chelsea, managed by interim head coach Calum McFarlane, a point against Manchester City.
+
+It means Manchester City drop points at home in the league for the first time since August.</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fa7xejyd32fvuar5hpa2n2yi/bafkreiansjq4megthdif2ryuugkjkiwtowhuywqhrdwtemvhjroqoeup2i@jpeg" alt="Enzo Fernandez." loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 04, 7:32pm • ♥ 82 • <a href="https://bsky.app/profile/theathleticfc.bsky.social/post/3mbmo2tqgcs2b">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theathleticfc.bsky.social</span>
+<p class="text">Chelsea’s late equaliser against Manchester City means Arsenal have a six-point gap at the top of the Premier League.
+
+For the second time in two matches, Pep Guardiola’s side drop points in the title race...</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fa7xejyd32fvuar5hpa2n2yi/bafkreihmiirsvleuft2q6m2jj5e2xw6bdy3erhjfcmd4tn2o25vrkucvze@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 04, 7:42pm • ♥ 84 • <a href="https://bsky.app/profile/theathleticfc.bsky.social/post/3mbmolwmqh72g">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Enzo Fernández stuns Manchester City with last-gasp equaliser for managerless Chelsea</p>
+<p class="meta">Jan 04, 8:00pm • ♥ 28 • <a href="https://bsky.app/profile/theguardian.com/post/3mbmpmr5rel2t">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theathleticfc.bsky.social</span>
+<p class="text">Manchester City’s failure to kill off games came back to haunt them, punished for a second-half performance that paled in contrast to their dominance in the first.
+
+As much as it felt like Reijnders’ opening goal had been coming, so too had Fernandez’s 94th-minute equaliser.
+
+🔗 bit.ly/49kLYl5</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fa7xejyd32fvuar5hpa2n2yi/bafkreiblha7zav6kg5h5qgslhwri56buqsdmeombppwjkwttebzzvfeqxe@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 04, 8:07pm • ♥ 45 • <a href="https://bsky.app/profile/theathleticfc.bsky.social/post/3mbmpypg2s22h">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mbofbwcxj42z">New Wave of Quarterbacks Conquers NFL as Mahomes, Burrow Stumble</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">In a season when stalwarts like Patrick Mahomes, Joe Burrow and Baker Mayfield stumbled, the top playoff teams are led by passers coming off breakout campaigns. on.wsj.com/4pmnXA4</p>
+<p class="meta">Jan 05, 12:00pm • ♥ 2 • <a href="https://bsky.app/profile/wsj.com/post/3mbofbwcxj42z">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mbnqikhzmy27">Russian Weightlifting Champion Jailed for 'Plotting Sabotage and Assassinations'</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">The weightlifting champion jailed by Russia for ‘plotting sabotage and assassinations’</p>
+<p class="meta">Jan 05, 5:48am • ♥ 95 • <a href="https://bsky.app/profile/theguardian.com/post/3mbnqikhzmy27">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@metcostume.bsky.social</span>
+<p class="text">Ensemble
+https://botfrens.com/collections/223/contents/97054</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:6qnikm7qt6cckwztni5p5eto/bafkreie56ejrglfbtatcesw5qqhv5aau4pg2rphjeft3iheaaztlrsskjy@jpeg" alt="Gift of Mrs. William R. Witherell, 1953" loading="lazy">
+</div>
+<p class="meta">Jan 05, 3:40pm • ♥ 1 • <a href="https://bsky.app/profile/metcostume.bsky.social/post/3mborjt2us32n">View</a></p>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@slimewave.me</span>
+<p class="text">Doing this challenge called “January” where I try to make it through the whole month of January</p>
+<p class="meta">Jan 04, 8:03pm • ♥ 1557 • <a href="https://bsky.app/profile/slimewave.me/post/3mbmpsmcksc2w">View</a></p>
+</article>
+</section>
+<details class="section" open>
+<summary><h2>Film</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theguardian.com/post/3mbnpspltdi27">Mickey Rourke Launches Fundraiser After Eviction Threat Over ,000 Rent Debt</a></h3>
+<details open><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Mickey Rourke launches fundraiser to pay $60,000 in rent after threat of eviction</p>
+<p class="meta">Jan 05, 5:36am • ♥ 34 • <a href="https://bsky.app/profile/theguardian.com/post/3mbnpspltdi27">View</a></p>
+</div>
+</details>
+</article>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@moxiest.art</span>
+<p class="text">it's carbon monoxide leak day here on bluesky dot app</p>
+<p class="meta">Jan 04, 9:32pm • ♥ 846 • <a href="https://bsky.app/profile/moxiest.art/post/3mbmurruank2n">View</a></p>
+</article>
+</section>
+<details class="section" open>
+<summary><h2>Music</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/brooklynvegan.bsky.social/post/3mbop25weu22z">Peter Gabriel Announces New Album 'o\i' With Monthly Release Schedule</a></h3>
+<details open><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@brooklynvegan.bsky.social</span>
+<p class="text">Peter Gabriel announces new album 'o\i': hear &quot;Been Undone&quot; www.brooklynvegan.com/peter-gabrie...</p>
+<p class="meta">Jan 05, 2:55pm • ♥ 9 • <a href="https://bsky.app/profile/brooklynvegan.bsky.social/post/3mbop25weu22z">View</a></p>
+</div>
+</details>
+</article>
+</details>
+<details class="section" open>
+<summary><h2>Canadian Politics</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/davidpugliese.bsky.social/post/3mbomp3tphc2o">Canada Resists US Mining Interest Amid Annexation Concerns</a></h3>
+<details open><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@davidpugliese.bsky.social</span>
+<p class="text">www.theguardian.com/world/2026/j...</p>
+<p class="meta">Jan 05, 2:13pm • ♥ 16 • <a href="https://bsky.app/profile/davidpugliese.bsky.social/post/3mbomp3tphc2o">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/celeste.lgbt/post/3mbog56qzj22k">New Anti-Trans Legislative Risk Map Shows Alberta Worst in Canada</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@celeste.lgbt</span>
+<p class="text">Finally got around to updating my Canada Anti-Trans Risk Map. Here it is:
+
+J’ai finalement eu le temps de mettre à jour ma carte de risque de lois anti-trans au Canada. Le voici:
+
+(Web version TBA | version en ligne à venir)</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ckhgxna3isqjqtvegqu3wkoi/bafkreihprvsg6bivhezrnwqjrndnbd5kkbnt7rd5unlqjsenpy6k6cmheu@jpeg" alt="Canada Anti-Trans Legislative Risk Map
+
+In dark, crimson red (worst): Alberta
+In deep orange (high risk): Sask, Quebec
+In light orange (med risk): BC, ON, NS, YK, feds
+In blue (low risk): MB, NB, PE, NL, NT" loading="lazy" style="max-width:100%;max-height:200px;">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ckhgxna3isqjqtvegqu3wkoi/bafkreif7lg34eu6krjutaz33sd6c45zfxgw7irub47dmfikhfy5zfclxam@jpeg" alt="Carte du niveau de risque de lois anti-trans
+
+En rouge (le pire): Alberta
+En orange foncé (haut risque): Sask, Québec
+En orange pâle (risque moyen): BC, ON, NS, YK, gouv’t fédéral
+En bleu (bas risque): MB, NB, PE, NL, NT" loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 05, 12:16pm • ♥ 33 • <a href="https://bsky.app/profile/celeste.lgbt/post/3mbog56qzj22k">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/theglobeandmail.com/post/3mbofih4k5n2e">New Canadian Laws Take Effect in 2026: Taxes, Wages, and Labour Rules</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@theglobeandmail.com</span>
+<p class="text"></p>
+<p class="meta">Jan 05, 12:04pm • ♥ 3 • <a href="https://bsky.app/profile/theglobeandmail.com/post/3mbofih4k5n2e">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/thestar.com/post/3mbnr4ycx3c25">Oil Experts Say Canada Should Stay Competitive After Venezuela Seizure</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">Canada’s oil sector shouldn’t panic, stay competitive after Maduro’s seizure: experts</p>
+<p class="meta">Jan 05, 6:00am • ♥ 5 • <a href="https://bsky.app/profile/thestar.com/post/3mbnr4ycx3c25">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@wornonthisday.bsky.social</span>
+<p class="text">Worn #onthisday in 2023 by Cardinal Giovanni Battista Re at Pope Emeritus Benedict XVI's funeral in Vatican City. He chose the chasuble decorated with grapes, vines, and leaves because the late pontiff had said he wanted to be &quot;a humble worker in the vineyard of the Lord.&quot; #OTD @gettyimages.com</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:kuxv4jtfo3w6cnebiaticjil/bafkreiaa3e7rqrx72cyrxq5aragi7us7yqjnfthjus652wfduhksnhynem@jpeg" alt="Image" loading="lazy">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:kuxv4jtfo3w6cnebiaticjil/bafkreifkaxlfaxzrfkbhhw76pmlo6pqaayt4rzc6brsp6eynv5avjdfdju@jpeg" alt="Image" loading="lazy">
+</div>
+<p class="meta">Jan 05, 12:01pm • ♥ 7 • <a href="https://bsky.app/profile/wornonthisday.bsky.social/post/3mbofcwlbra2y">View</a></p>
+</article>
+</div>
+</details>
+<details class="section" open>
+<summary><h2>Toronto News</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/thestar.com/post/3mbofw367pc2s">Doug Ford's Return-to-Office Mandate Starts This Week Despite Union Objections</a></h3>
+<details open><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">‘A solution looking for a problem’: Doug Ford’s full time return to office mandate starts this week despite objections from union</p>
+<p class="meta">Jan 05, 12:12pm • ♥ 13 • <a href="https://bsky.app/profile/thestar.com/post/3mbofw367pc2s">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/nowtoronto.bsky.social/post/3mbop5hfhrs2m">Snowy Commute Welcomes Toronto Workers Back to Office in 2026</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@nowtoronto.bsky.social</span>
+<p class="text">Winter weather has rolled into #Toronto to kick off the 2026 work year. 
+
+nowtoronto.com/news/2026-sn...</p>
+<p class="meta">Jan 05, 2:57pm • ♥ 1 • <a href="https://bsky.app/profile/nowtoronto.bsky.social/post/3mbop5hfhrs2m">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/shawnmicallef.bsky.social/post/3mbnczw6ods2x">Ontario Place Bulldozed as Ford Government Pushes Ahead With Redevelopment</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@shawnmicallef.bsky.social</span>
+<p class="text">Goddamn Ontario Place. I managed not to really look at it till the end then I did.  Malevolent government.</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:zivafxyd4qecgvqg3bozligg/bafkreiaiaoy7owkspxiuquffqf256r5xpotz6auwiucg3niffrfbkyxo5a@jpeg" alt="Ontario place bulldozed " loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 05, 1:48am • ♥ 58 • <a href="https://bsky.app/profile/shawnmicallef.bsky.social/post/3mbnczw6ods2x">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/thestar.com/post/3mbmhtsdno22e">Ontario MPPs Who Are Doctors and Nurses Do Double Duty as Public Servants</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">From politics to patients: Ontario doctors and nurses who are MPPs do double duty as public servants</p>
+<p class="meta">Jan 04, 5:41pm • ♥ 6 • <a href="https://bsky.app/profile/thestar.com/post/3mbmhtsdno22e">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@metcostume.bsky.social</span>
+<p class="text">Morning dress
+https://botfrens.com/collections/223/contents/101925</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:6qnikm7qt6cckwztni5p5eto/bafkreihfm53qs4elnleypcaxyddwyou2h6fhl3o65hp775y4vasvbfknuq@jpeg" alt="Brooklyn Museum Costume Collection at The Metropolitan Museum of Art, Gift of the Brooklyn Museum, 2009; Gift of Hilda Loines, 1945" loading="lazy">
+</div>
+<p class="meta">Jan 05, 3:06pm • ♥ 10 • <a href="https://bsky.app/profile/metcostume.bsky.social/post/3mbopmy76sy24">View</a></p>
+</article>
+</div>
+</details>
+<details class="section" open>
+<summary><h2>US Politics</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/kyledcheney.bsky.social/post/3mboeqbe45c2e">More Than 300 Judges Rebuff Trump Bid to Expand Mandatory Detention for Deportations</a></h3>
+<details open><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@kyledcheney.bsky.social</span>
+<p class="text">NEW: More than 300 judges — including 33 appointed by Trump himself — have now rebuffed the Trump administration’s bid to dramatically expand efforts to lock people up while they fight deportation.  
+
+www.politico.com/news/2026/01/05/trump-administration-immigrants-mandatory-detention-00709494</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:euynv325eix7glyek377orak/bafkreiapvbl5ujsvyg5svao5ej5wpyjh4rpqpumdjpboes7sd6j5idd5ri@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 05, 11:51am • ♥ 1090 • <a href="https://bsky.app/profile/kyledcheney.bsky.social/post/3mboeqbe45c2e">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/aljazeera.com/post/3mbndphvdv227">Cuba Says 32 Cubans Killed During US Raid on Venezuela to Capture Maduro</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Havana declares two days of mourning for the Cubans killed in US’s raid to capture Nicolas Maduro.</p>
+<p class="meta">Jan 05, 2:00am • ♥ 231 • <a href="https://bsky.app/profile/aljazeera.com/post/3mbndphvdv227">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/esqueer.net/post/3mboleo6fhc2u">Utah Lawmakers Reject State Health Review Finding Trans Care Beneficial for Youth</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@esqueer.net</span>
+<p class="text">Utah commissioned it's department of health to do a systematic review of gender affirming care for trans youth. In a 1000 page plus report found it was beneficial and the evidence was substantial. The lawmakers rejected it anyways.
+
+www.deseret.com/politics/202...</p>
+<p class="meta">Jan 05, 1:49pm • ♥ 1452 • <a href="https://bsky.app/profile/esqueer.net/post/3mboleo6fhc2u">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/bloomberg.com/post/3mbmzoay7l423">Trump's 'Golden Dome' Missile Defense Plan Would Cost Astronomical Sum</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">Donald Trump wants a US air defense system that can fend off “any aerial attack.” We calculated the cost — and it’s astronomical</p>
+<p class="meta">Jan 04, 11:00pm • ♥ 43 • <a href="https://bsky.app/profile/bloomberg.com/post/3mbmzoay7l423">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@bencollins.bsky.social</span>
+<p class="text">Rough vibes on this website today, likely because people feel Hopeless and Helpless Because Can't Stop It and No One Who Is Supposed To Is Trying To So Now We're Fighting Each Other™. I recommend activities such as book, or potentially instrument if you like instrument, or even do talk on phone.</p>
+<p class="meta">Jan 05, 12:03am • ♥ 14172 • <a href="https://bsky.app/profile/bencollins.bsky.social/post/3mbn57dsobs2v">View</a></p>
+</article>
+</div>
+</details>
+<details class="section" open>
+<summary><h2>Geopolitics</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theguardian.com/post/3mbng5bn2sq26">Venezuela After Maduro: Uncertain Future as Regime Remains in Place</a></h3>
+<details open><summary>3 posts in story</summary>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Venezuela after Maduro: Oil, power and the limits of intervention https://aje.io/fx7yhj</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreie7ccnxrctfpoa3d5arpnrbnerkgqx7szcx3eiy6pi32rzkr2w2hm@jpeg" alt="Venezuela after Maduro: Oil, power and the limits of intervention" loading="lazy" style="max-width:100%;max-height:200px;">
+</div>
+<p class="meta">Jan 05, 12:30pm • ♥ 76 • <a href="https://bsky.app/profile/aljazeera.com/post/3mbogvy7amv2e">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Few in Caracas are celebrating as they face an uncertain post-Maduro future</p>
+<p class="meta">Jan 05, 2:43am • ♥ 190 • <a href="https://bsky.app/profile/theguardian.com/post/3mbng5bn2sq26">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theglobeandmail.com</span>
+<p class="text"></p>
+<p class="meta">Jan 05, 1:07am • ♥ 26 • <a href="https://bsky.app/profile/theglobeandmail.com/post/3mbnaqyz5hx2m">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/aljazeera.com/post/3mbnh2r4lzs2z">Trump's Venezuela Raid Escalates Concerns Over Potential War With Iran</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Experts say US military action in Caracas 'gives momentum' for conflict with Tehran and deals another blow to diplomacy.</p>
+<p class="meta">Jan 05, 3:00am • ♥ 91 • <a href="https://bsky.app/profile/aljazeera.com/post/3mbnh2r4lzs2z">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mbopbuk26o2e">Israel Flexes New Diplomatic Muscle With Recognition of Somaliland</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Israel’s recognition of Somaliland cements its newfound confidence in the international diplomatic arena.</p>
+<p class="meta">Jan 05, 2:59pm • ♥ 1 • <a href="https://bsky.app/profile/wsj.com/post/3mbopbuk26o2e">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mbofkqn44g26">Three Children Killed in Iran Protests as Security Forces Target Demonstrators</a></h4>
+<details open><summary>1 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Three children dead in Iran protests as security forces accused of ‘indiscriminate targeting’</p>
+<p class="meta">Jan 05, 12:05pm • ♥ 43 • <a href="https://bsky.app/profile/theguardian.com/post/3mbofkqn44g26">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<span class="author">@paultassi.bsky.social</span>
+<p class="text">greetings from hell</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:mwqolme4t5d43fpldbxdqcxe/bafkreigdxdbrmvkkf3hvnsj6ronf5qygcymlq467ploxgbit3o7cwoif2u@jpeg" alt="Image" loading="lazy">
+</div>
+<p class="meta">Jan 04, 7:11pm • ♥ 3694 • <a href="https://bsky.app/profile/paultassi.bsky.social/post/3mbmmuood7s2m">View</a></p>
+</article>
+</div>
+</details>
+</body>
+</html>
