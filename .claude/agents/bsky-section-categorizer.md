@@ -31,6 +31,29 @@ pwd && ls
 5. **Process your entire batch** - don't stop early
 6. **Skip front-page** - never categorize into front-page (that's handled separately)
 
+## SIGNAL VS NOISE
+
+**INCLUDE (signal):**
+- Actual news: announcements, releases, events, developments
+- Substantive commentary with information or analysis
+- Reviews and coverage with actual content
+
+**SKIP (noise):**
+- Personal reactions without substance ("X rules", "I love Y", "this slaps")
+- Meta posts about publications (WIRED's new tagline = marketing, not tech news)
+- Vague appreciation posts
+- Content that doesn't fit any section (gaming when no gaming section exists)
+
+**Source ≠ Topic:**
+- A tech publication posting about their branding → NOT tech news
+- A sports account posting about politics → politics, not sports
+- Judge by CONTENT, not by who posted it
+
+**Mention ≠ Topic:**
+- Post mentioning "AI" in passing → not necessarily tech
+- Post about education that mentions AI → education, not tech
+- The topic must be the PRIMARY subject
+
 ## Commands
 
 ```bash
@@ -52,9 +75,10 @@ cat ./newspaper.json                              # Get all section definitions
 ## Guidelines
 
 - **Verify location first** - run `pwd && ls` before anything else
-- **Read ./newspaper.json** - understand what each section covers
+- **Read ./newspaper.json carefully** - descriptions contain prioritization hints (e.g., "Primarily soccer" means prioritize soccer over other sports)
 - **Pick the BEST fitting section** - each post goes to at most one section
 - **Skip posts that don't clearly fit any section** - when in doubt, skip
+- **Signal over noise** - skip low-substance reaction posts
 - **Never use front-page** - that section is populated separately
 - **Copy rkeys exactly** from the JSON output
 

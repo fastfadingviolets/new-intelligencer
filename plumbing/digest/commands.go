@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"time"
 
 	"github.com/gofrs/flock"
@@ -445,6 +446,26 @@ var compileCmd = &cobra.Command{
 			return err
 		}
 
+		// Validate all stories have headline and priority
+		var unprocessed []string
+		for id, story := range storyGroups {
+			if story.Headline == "" || story.Priority == 0 {
+				missing := []string{}
+				if story.Headline == "" {
+					missing = append(missing, "headline")
+				}
+				if story.Priority == 0 {
+					missing = append(missing, "priority")
+				}
+				unprocessed = append(unprocessed, fmt.Sprintf("  %s [%s] (missing: %s)", id, story.SectionID, joinStrings(missing, ", ")))
+			}
+		}
+		if len(unprocessed) > 0 {
+			sort.Strings(unprocessed)
+			return fmt.Errorf("compile blocked: %d stories are unprocessed\n%s\n\nRun `./bin/digest show-unprocessed` for details",
+				len(unprocessed), joinStrings(unprocessed, "\n"))
+		}
+
 		// Validate front page: exactly one headline, and it must not be opinion
 		var frontPageHeadlines []string
 		for id := range storyGroups {
@@ -744,7 +765,6 @@ var createStoryCmd = &cobra.Command{
 		summary, _ := cmd.Flags().GetString("summary")
 		articleURL, _ := cmd.Flags().GetString("article-url")
 		opinion, _ := cmd.Flags().GetBool("opinion")
-		frontPage, _ := cmd.Flags().GetBool("front-page")
 		priority, _ := cmd.Flags().GetInt("priority")
 
 		if section == "" {
@@ -821,7 +841,6 @@ var createStoryCmd = &cobra.Command{
 			IsOpinion:   opinion,
 			SectionID:   section,
 			Role:        role,
-			IsFrontPage: frontPage,
 			Priority:    priority,
 		}
 
@@ -887,18 +906,31 @@ var addSuiGenerisCmd = &cobra.Command{
 	},
 }
 
-// digest set-front-page
-var setFrontPageCmd = &cobra.Command{
-	Use:   "set-front-page STORY_ID",
-	Short: "Mark a story for front page display",
+// digest move-story
+var moveStoryCmd = &cobra.Command{
+	Use:   "move-story STORY_ID --to SECTION",
+	Short: "Move a story and all its posts to a different section",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		storyID := args[0]
+		toSection, _ := cmd.Flags().GetString("to")
+
+		if toSection == "" {
+			return fmt.Errorf("--to is required")
+		}
 
 		dir, err := GetWorkspaceDir()
 		if err != nil {
 			return err
 		}
+
+		// Use file lock to prevent race conditions
+		lockPath := filepath.Join(dir, "categories.lock")
+		fileLock := flock.New(lockPath)
+		if err := fileLock.Lock(); err != nil {
+			return fmt.Errorf("acquiring lock: %w", err)
+		}
+		defer fileLock.Unlock()
 
 		// Load story groups
 		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
@@ -911,15 +943,50 @@ var setFrontPageCmd = &cobra.Command{
 			return fmt.Errorf("story not found: %s", storyID)
 		}
 
-		story.IsFrontPage = true
+		fromSection := story.SectionID
+		if fromSection == toSection {
+			return fmt.Errorf("story is already in section '%s'", toSection)
+		}
+
+		// Load categories to move posts
+		cats, err := LoadCategories(filepath.Join(dir, "categories.json"))
+		if err != nil {
+			return err
+		}
+
+		// Move all posts from source to destination section
+		for _, rkey := range story.PostRkeys {
+			removeFromCategory(rkey, cats)
+		}
+
+		// Add to destination section
+		destCat := cats[toSection]
+		destCat.Visible = append(destCat.Visible, story.PostRkeys...)
+		cats[toSection] = destCat
+
+		// Update story
+		if story.OriginalSection == "" {
+			story.OriginalSection = fromSection
+		}
+		story.SectionID = toSection
 		storyGroups[storyID] = story
 
-		// Save
+		// Save both
+		if err := SaveCategories(filepath.Join(dir, "categories.json"), cats); err != nil {
+			return err
+		}
 		if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
 			return err
 		}
 
-		fmt.Printf("Marked %s for front page: %s\n", storyID, story.Headline)
+		headline := story.Headline
+		if headline == "" {
+			headline = story.DraftHeadline
+		}
+		if headline == "" {
+			headline = "(no headline)"
+		}
+		fmt.Printf("Moved %s from '%s' to '%s': %s\n", storyID, fromSection, toSection, headline)
 		return nil
 	},
 }
@@ -1107,6 +1174,482 @@ var setPrimaryCmd = &cobra.Command{
 	},
 }
 
+// digest create-story-group - for consolidator (no headline/priority required)
+var createStoryGroupCmd = &cobra.Command{
+	Use:   "create-story-group --section ID --rkeys RKEY...",
+	Short: "Create a story group without headline (for consolidation step)",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		section, _ := cmd.Flags().GetString("section")
+		rkeys, _ := cmd.Flags().GetStringSlice("rkeys")
+		draftHeadline, _ := cmd.Flags().GetString("draft-headline")
+		primary, _ := cmd.Flags().GetString("primary")
+
+		if section == "" {
+			return fmt.Errorf("--section is required")
+		}
+		if len(rkeys) == 0 {
+			return fmt.Errorf("--rkeys is required (at least one rkey)")
+		}
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
+		}
+
+		// Load existing story groups
+		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+		if err != nil {
+			return err
+		}
+
+		// Generate next ID
+		nextNum := len(storyGroups) + 1
+		id := fmt.Sprintf("sg_%03d", nextNum)
+		for {
+			if _, exists := storyGroups[id]; !exists {
+				break
+			}
+			nextNum++
+			id = fmt.Sprintf("sg_%03d", nextNum)
+		}
+
+		// Use first rkey as primary if not specified
+		if primary == "" {
+			primary = rkeys[0]
+		}
+
+		// Create story group (no headline/priority required)
+		story := StoryGroup{
+			ID:            id,
+			DraftHeadline: draftHeadline,
+			PostRkeys:     rkeys,
+			PrimaryRkey:   primary,
+			SectionID:     section,
+		}
+
+		storyGroups[id] = story
+
+		// Save
+		if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
+			return err
+		}
+
+		if draftHeadline != "" {
+			fmt.Printf("Created story group %s in '%s': %s (%d posts)\n", id, section, draftHeadline, len(rkeys))
+		} else {
+			fmt.Printf("Created story group %s in '%s' (%d posts)\n", id, section, len(rkeys))
+		}
+		return nil
+	},
+}
+
+// digest show-ungrouped - show posts not in any story group
+var showUngroupedCmd = &cobra.Command{
+	Use:   "show-ungrouped <section>",
+	Short: "Show posts in a section that are not in any story group",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		section := args[0]
+
+		wd, err := LoadWorkspace(workspaceDir)
+		if err != nil {
+			dir, _ := GetWorkspaceDir()
+			wd, err = LoadWorkspace(dir)
+			if err != nil {
+				return err
+			}
+		}
+
+		storyGroups, err := LoadStoryGroups(filepath.Join(wd.Dir, "story-groups.json"))
+		if err != nil {
+			return err
+		}
+
+		// Get all rkeys in category
+		catData, ok := wd.Categories[section]
+		if !ok {
+			return fmt.Errorf("section not found: %s", section)
+		}
+
+		// Build set of rkeys already in story groups for this section
+		grouped := make(map[string]bool)
+		for _, story := range storyGroups {
+			if story.SectionID == section {
+				for _, rkey := range story.PostRkeys {
+					grouped[rkey] = true
+				}
+			}
+		}
+
+		// Find ungrouped posts
+		var ungroupedRkeys []string
+		for _, rkey := range catData.Visible {
+			if !grouped[rkey] {
+				ungroupedRkeys = append(ungroupedRkeys, rkey)
+			}
+		}
+
+		// Get full posts
+		posts := []Post{}
+		for _, rkey := range ungroupedRkeys {
+			if idx, ok := wd.Index[rkey]; ok && idx < len(wd.Posts) {
+				posts = append(posts, wd.Posts[idx])
+			}
+		}
+
+		displayPosts := FormatForDisplay(posts)
+
+		data, _ := json.MarshalIndent(displayPosts, "", "  ")
+		fmt.Println(string(data))
+
+		return nil
+	},
+}
+
+// digest list-stories - list story groups with filters
+var listStoriesCmd = &cobra.Command{
+	Use:   "list-stories",
+	Short: "List story groups",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		section, _ := cmd.Flags().GetString("section")
+		all, _ := cmd.Flags().GetBool("all")
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
+		}
+
+		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+		if err != nil {
+			return err
+		}
+
+		// Collect and filter stories
+		var stories []StoryGroup
+		for _, story := range storyGroups {
+			if section != "" && story.SectionID != section {
+				continue
+			}
+			stories = append(stories, story)
+		}
+
+		if len(stories) == 0 {
+			if section != "" {
+				fmt.Printf("No stories in section '%s'\n", section)
+			} else if all {
+				fmt.Println("No stories found")
+			}
+			return nil
+		}
+
+		// Group by section if showing all
+		if all || section == "" {
+			sectionStories := make(map[string][]StoryGroup)
+			for _, story := range stories {
+				sectionStories[story.SectionID] = append(sectionStories[story.SectionID], story)
+			}
+
+			for sec, secStories := range sectionStories {
+				fmt.Printf("\n[%s] %d stories:\n", sec, len(secStories))
+				for _, story := range secStories {
+					headline := story.Headline
+					if headline == "" {
+						headline = story.DraftHeadline
+					}
+					if headline == "" {
+						headline = "(no headline)"
+					}
+					fmt.Printf("  %s (%d posts): %s\n", story.ID, len(story.PostRkeys), headline)
+				}
+			}
+		} else {
+			fmt.Printf("[%s] %d stories:\n", section, len(stories))
+			for _, story := range stories {
+				headline := story.Headline
+				if headline == "" {
+					headline = story.DraftHeadline
+				}
+				if headline == "" {
+					headline = "(no headline)"
+				}
+				fmt.Printf("  %s (%d posts): %s\n", story.ID, len(story.PostRkeys), headline)
+			}
+		}
+
+		return nil
+	},
+}
+
+// digest update-story - modify an existing story
+var updateStoryCmd = &cobra.Command{
+	Use:   "update-story STORY_ID --headline TEXT --priority N",
+	Short: "Set headline and priority for a story (both required)",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		storyID := args[0]
+		headline, _ := cmd.Flags().GetString("headline")
+		role, _ := cmd.Flags().GetString("role")
+		priority, _ := cmd.Flags().GetInt("priority")
+		opinion, _ := cmd.Flags().GetBool("opinion")
+
+		// Require both headline and priority
+		if headline == "" || priority <= 0 {
+			return fmt.Errorf("both --headline and --priority are required")
+		}
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
+		}
+
+		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+		if err != nil {
+			return err
+		}
+
+		story, ok := storyGroups[storyID]
+		if !ok {
+			return fmt.Errorf("story not found: %s", storyID)
+		}
+
+		// Check if priority is already used in this section
+		for id := range storyGroups {
+			existing := storyGroups[id]
+			if id != storyID && existing.SectionID == story.SectionID && existing.Priority == priority {
+				return fmt.Errorf("priority %d already used in section '%s' by story '%s'", priority, story.SectionID, id)
+			}
+		}
+
+		// Update fields
+		story.Headline = headline
+		story.Priority = priority
+
+		if role != "" {
+			story.Role = role
+		}
+		if cmd.Flags().Changed("opinion") {
+			story.IsOpinion = opinion
+			if opinion {
+				story.Role = "opinion"
+			}
+		}
+
+		storyGroups[storyID] = story
+
+		if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
+			return err
+		}
+
+		fmt.Printf("Updated %s: headline=%q priority=%d\n", storyID, headline, priority)
+		return nil
+	},
+}
+
+// digest show-unprocessed - show stories without headline or priority
+var showUnprocessedCmd = &cobra.Command{
+	Use:   "show-unprocessed [section-id]",
+	Short: "List stories that need headline and priority set",
+	Args:  cobra.MaximumNArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		filterSection := ""
+		if len(args) == 1 {
+			filterSection = args[0]
+		}
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
+		}
+
+		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+		if err != nil {
+			return err
+		}
+
+		// Group unprocessed stories by section
+		unprocessed := make(map[string][]string)
+		for id, story := range storyGroups {
+			if filterSection != "" && story.SectionID != filterSection {
+				continue
+			}
+			if story.Headline == "" || story.Priority == 0 {
+				unprocessed[story.SectionID] = append(unprocessed[story.SectionID], id)
+			}
+		}
+
+		if len(unprocessed) == 0 {
+			fmt.Println("All stories have headlines and priorities set!")
+			return nil
+		}
+
+		// Sort sections for consistent output
+		var sections []string
+		for section := range unprocessed {
+			sections = append(sections, section)
+		}
+		sort.Strings(sections)
+
+		total := 0
+		for _, section := range sections {
+			ids := unprocessed[section]
+			sort.Strings(ids)
+			fmt.Printf("[%s] %d unprocessed:\n", section, len(ids))
+			for _, id := range ids {
+				story := storyGroups[id]
+				missing := []string{}
+				if story.Headline == "" {
+					missing = append(missing, "headline")
+				}
+				if story.Priority == 0 {
+					missing = append(missing, "priority")
+				}
+				fmt.Printf("  %s (missing: %s)\n", id, joinStrings(missing, ", "))
+			}
+			total += len(ids)
+			fmt.Println()
+		}
+		fmt.Printf("Total unprocessed: %d stories\n", total)
+		return nil
+	},
+}
+
+// digest auto-group-remaining - wrap ungrouped posts into single-post stories
+var autoGroupRemainingCmd = &cobra.Command{
+	Use:   "auto-group-remaining",
+	Short: "Create single-post story groups for all ungrouped posts",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
+		}
+
+		cats, err := LoadCategories(filepath.Join(dir, "categories.json"))
+		if err != nil {
+			return err
+		}
+
+		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+		if err != nil {
+			return err
+		}
+
+		// Build set of all rkeys in story groups by section
+		groupedBySection := make(map[string]map[string]bool)
+		for _, story := range storyGroups {
+			if groupedBySection[story.SectionID] == nil {
+				groupedBySection[story.SectionID] = make(map[string]bool)
+			}
+			for _, rkey := range story.PostRkeys {
+				groupedBySection[story.SectionID][rkey] = true
+			}
+		}
+
+		// Create story groups for ungrouped posts
+		created := 0
+		for section, catData := range cats {
+			if catData.IsHidden {
+				continue
+			}
+			grouped := groupedBySection[section]
+			if grouped == nil {
+				grouped = make(map[string]bool)
+			}
+
+			for _, rkey := range catData.Visible {
+				if grouped[rkey] {
+					continue
+				}
+
+				// Generate next ID
+				nextNum := len(storyGroups) + 1
+				id := fmt.Sprintf("sg_%03d", nextNum)
+				for {
+					if _, exists := storyGroups[id]; !exists {
+						break
+					}
+					nextNum++
+					id = fmt.Sprintf("sg_%03d", nextNum)
+				}
+
+				story := StoryGroup{
+					ID:          id,
+					PostRkeys:   []string{rkey},
+					PrimaryRkey: rkey,
+					SectionID:   section,
+				}
+				storyGroups[id] = story
+				created++
+			}
+		}
+
+		if created == 0 {
+			fmt.Println("All posts are already in story groups")
+			return nil
+		}
+
+		if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
+			return err
+		}
+
+		fmt.Printf("Created %d single-post story groups\n", created)
+		return nil
+	},
+}
+
+// digest add-to-story - add posts to an existing story
+var addToStoryCmd = &cobra.Command{
+	Use:   "add-to-story STORY_ID RKEY...",
+	Short: "Add posts to an existing story group",
+	Args:  cobra.MinimumNArgs(2),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		storyID := args[0]
+		newRkeys := args[1:]
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
+		}
+
+		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+		if err != nil {
+			return err
+		}
+
+		story, ok := storyGroups[storyID]
+		if !ok {
+			return fmt.Errorf("story not found: %s", storyID)
+		}
+
+		// Add new rkeys (avoid duplicates)
+		existing := make(map[string]bool)
+		for _, rkey := range story.PostRkeys {
+			existing[rkey] = true
+		}
+		added := 0
+		for _, rkey := range newRkeys {
+			if !existing[rkey] {
+				story.PostRkeys = append(story.PostRkeys, rkey)
+				existing[rkey] = true
+				added++
+			}
+		}
+
+		if added == 0 {
+			fmt.Printf("All rkeys already in story %s\n", storyID)
+			return nil
+		}
+
+		storyGroups[storyID] = story
+
+		if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
+			return err
+		}
+
+		fmt.Printf("Added %d posts to %s (now %d total)\n", added, storyID, len(story.PostRkeys))
+		return nil
+	},
+}
+
 func init() {
 	// init flags
 	initCmd.Flags().String("since", "", "Start time for fetching (default: 24h ago)")
@@ -1139,8 +1682,26 @@ func init() {
 	createStoryCmd.Flags().String("summary", "", "Optional summary text")
 	createStoryCmd.Flags().String("article-url", "", "Optional article URL")
 	createStoryCmd.Flags().Bool("opinion", false, "Mark as opinion piece")
-	createStoryCmd.Flags().Bool("front-page", false, "Mark for front page")
 	createStoryCmd.Flags().Int("priority", 0, "Story priority (1 = highest, required)")
+
+	// move-story flags
+	moveStoryCmd.Flags().String("to", "", "Destination section ID (required)")
+
+	// create-story-group flags
+	createStoryGroupCmd.Flags().String("section", "", "Section ID (required)")
+	createStoryGroupCmd.Flags().StringSlice("rkeys", nil, "Post rkeys for this story (required)")
+	createStoryGroupCmd.Flags().String("draft-headline", "", "Optional draft headline")
+	createStoryGroupCmd.Flags().String("primary", "", "Primary rkey (default: first rkey)")
+
+	// list-stories flags
+	listStoriesCmd.Flags().String("section", "", "Filter by section")
+	listStoriesCmd.Flags().Bool("all", false, "Show all stories")
+
+	// update-story flags
+	updateStoryCmd.Flags().String("headline", "", "Set headline")
+	updateStoryCmd.Flags().String("role", "", "Set role (headline, featured, opinion)")
+	updateStoryCmd.Flags().Int("priority", 0, "Set priority (1 = highest)")
+	updateStoryCmd.Flags().Bool("opinion", false, "Mark as opinion piece")
 }
 
 // joinStrings joins strings with a separator

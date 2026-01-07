@@ -25,6 +25,22 @@ func formatPostTime(t time.Time) string {
 	return t.Format("Jan 02, 3:04pm")
 }
 
+// getHeadline returns the effective headline for a story
+// Fallback: Headline > DraftHeadline > Embed Title > "(Untitled Story)"
+func getHeadline(group *StoryGroup, post Post) string {
+	if group.Headline != "" {
+		return group.Headline
+	}
+	if group.DraftHeadline != "" {
+		return group.DraftHeadline
+	}
+	// Try embed title from primary post
+	if post.ExternalLink != nil && post.ExternalLink.Title != "" {
+		return post.ExternalLink.Title
+	}
+	return "(Untitled Story)"
+}
+
 // escapeMarkdown escapes special markdown characters
 // Note: For quoted text in references, we generally don't need heavy escaping
 // as it's in a quote context. But this function is here for future use.
@@ -77,7 +93,7 @@ func CompileDigest(
 	if frontPageGroups.Headline != nil {
 		headline := frontPageGroups.Headline
 		post := postIndex[headline.PrimaryRkey]
-		md.WriteString(fmt.Sprintf("### TOP STORY: [%s](%s)\n\n", headline.Headline, postURL(post)))
+		md.WriteString(fmt.Sprintf("### TOP STORY: [%s](%s)\n\n", getHeadline(headline, post), postURL(post)))
 		if headline.Summary != "" {
 			md.WriteString(headline.Summary + "\n\n")
 		}
@@ -89,12 +105,12 @@ func CompileDigest(
 		}
 	}
 
-	// Front page featured
-	if len(frontPageGroups.Featured) > 0 {
-		md.WriteString("**Featured Stories:**\n")
-		for _, group := range frontPageGroups.Featured {
+	// Front page stories
+	if len(frontPageGroups.Stories) > 0 {
+		md.WriteString("**Stories:**\n")
+		for _, group := range frontPageGroups.Stories {
 			post := postIndex[group.PrimaryRkey]
-			md.WriteString(fmt.Sprintf("- [%s](%s)\n", group.Headline, postURL(post)))
+			md.WriteString(fmt.Sprintf("- [%s](%s)\n", getHeadline(group, post), postURL(post)))
 			for _, rkey := range group.PostRkeys {
 				referenced[rkey] = true
 			}
@@ -108,7 +124,7 @@ func CompileDigest(
 		for _, group := range frontPageGroups.Opinions {
 			post := postIndex[group.PrimaryRkey]
 			snippet := truncateText(post.Text, 100)
-			md.WriteString(fmt.Sprintf("- [Opinion: %s](%s)\n  > %s - @%s\n\n", group.Headline, postURL(post), snippet, post.Author.Handle))
+			md.WriteString(fmt.Sprintf("- [Opinion: %s](%s)\n  > %s - @%s\n\n", getHeadline(group, post), postURL(post), snippet, post.Author.Handle))
 			for _, rkey := range group.PostRkeys {
 				referenced[rkey] = true
 			}
@@ -138,7 +154,7 @@ func CompileDigest(
 			if sectionGroups.Headline != nil {
 				headline := sectionGroups.Headline
 				post := postIndex[headline.PrimaryRkey]
-				md.WriteString(fmt.Sprintf("### Headline: [%s](%s)\n\n", headline.Headline, postURL(post)))
+				md.WriteString(fmt.Sprintf("### Headline: [%s](%s)\n\n", getHeadline(headline, post), postURL(post)))
 				if headline.Summary != "" {
 					md.WriteString(headline.Summary + "\n\n")
 				}
@@ -147,12 +163,12 @@ func CompileDigest(
 				}
 			}
 
-			// Featured
-			if len(sectionGroups.Featured) > 0 {
-				md.WriteString("**Featured:**\n")
-				for i, group := range sectionGroups.Featured {
+			// Stories
+			if len(sectionGroups.Stories) > 0 {
+				md.WriteString("**Stories:**\n")
+				for i, group := range sectionGroups.Stories {
 					post := postIndex[group.PrimaryRkey]
-					md.WriteString(fmt.Sprintf("%d. [%s](%s)\n", i+1, group.Headline, postURL(post)))
+					md.WriteString(fmt.Sprintf("%d. [%s](%s)\n", i+1, getHeadline(group, post), postURL(post)))
 					for _, rkey := range group.PostRkeys {
 						referenced[rkey] = true
 					}
@@ -166,7 +182,7 @@ func CompileDigest(
 				for _, group := range sectionGroups.Opinions {
 					post := postIndex[group.PrimaryRkey]
 					snippet := truncateText(post.Text, 80)
-					md.WriteString(fmt.Sprintf("- [Opinion: %s](%s)\n  > %s - @%s\n\n", group.Headline, postURL(post), snippet, post.Author.Handle))
+					md.WriteString(fmt.Sprintf("- [Opinion: %s](%s)\n  > %s - @%s\n\n", getHeadline(group, post), postURL(post), snippet, post.Author.Handle))
 					for _, rkey := range group.PostRkeys {
 						referenced[rkey] = true
 					}
@@ -270,7 +286,7 @@ func CompileDigest(
 // GroupedStories holds categorized story groups for a section or front page
 type GroupedStories struct {
 	Headline *StoryGroup
-	Featured []*StoryGroup
+	Stories  []*StoryGroup // Regular stories, ordered by priority
 	Opinions []*StoryGroup
 }
 
@@ -287,16 +303,16 @@ func getFrontPageGroups(groups StoryGroups) GroupedStories {
 		switch group.Role {
 		case "headline":
 			result.Headline = &groupCopy
-		case "featured":
-			result.Featured = append(result.Featured, &groupCopy)
 		case "opinion":
 			result.Opinions = append(result.Opinions, &groupCopy)
+		default:
+			result.Stories = append(result.Stories, &groupCopy)
 		}
 	}
 
 	// Sort by priority (lower = higher priority)
-	sort.Slice(result.Featured, func(i, j int) bool {
-		return result.Featured[i].Priority < result.Featured[j].Priority
+	sort.Slice(result.Stories, func(i, j int) bool {
+		return result.Stories[i].Priority < result.Stories[j].Priority
 	})
 	sort.Slice(result.Opinions, func(i, j int) bool {
 		return result.Opinions[i].Priority < result.Opinions[j].Priority
@@ -317,16 +333,16 @@ func getSectionGroups(groups StoryGroups, sectionID string) GroupedStories {
 		switch group.Role {
 		case "headline":
 			result.Headline = &groupCopy
-		case "featured":
-			result.Featured = append(result.Featured, &groupCopy)
 		case "opinion":
 			result.Opinions = append(result.Opinions, &groupCopy)
+		default:
+			result.Stories = append(result.Stories, &groupCopy)
 		}
 	}
 
 	// Sort by priority (lower = higher priority)
-	sort.Slice(result.Featured, func(i, j int) bool {
-		return result.Featured[i].Priority < result.Featured[j].Priority
+	sort.Slice(result.Stories, func(i, j int) bool {
+		return result.Stories[i].Priority < result.Stories[j].Priority
 	})
 	sort.Slice(result.Opinions, func(i, j int) bool {
 		return result.Opinions[i].Priority < result.Opinions[j].Priority
@@ -335,8 +351,8 @@ func getSectionGroups(groups StoryGroups, sectionID string) GroupedStories {
 	return result
 }
 
-// truncateStories limits the total number of stories (headline + featured + opinions)
-// to maxStories. Headline is always kept, featured and opinions are truncated proportionally.
+// truncateStories limits the total number of stories (headline + stories + opinions)
+// to maxStories. Headline is always kept, stories and opinions are truncated proportionally.
 func truncateStories(groups *GroupedStories, maxStories int) {
 	if maxStories <= 0 {
 		return // No limit
@@ -348,39 +364,39 @@ func truncateStories(groups *GroupedStories, maxStories int) {
 		headlineCount = 1
 	}
 
-	// Calculate how many featured + opinions we can keep
+	// Calculate how many stories + opinions we can keep
 	remaining := maxStories - headlineCount
 	if remaining <= 0 {
 		// Only room for headline
-		groups.Featured = nil
+		groups.Stories = nil
 		groups.Opinions = nil
 		return
 	}
 
-	totalNonHeadline := len(groups.Featured) + len(groups.Opinions)
+	totalNonHeadline := len(groups.Stories) + len(groups.Opinions)
 	if totalNonHeadline <= remaining {
 		return // Already within limit
 	}
 
-	// Truncate: prioritize featured over opinions, but keep at least 1 opinion if there are any
+	// Truncate: prioritize stories over opinions, but keep at least 1 opinion if there are any
 	if len(groups.Opinions) > 0 && remaining > 0 {
 		// Keep at least 1 opinion
-		featuredSlots := remaining - 1
-		if len(groups.Featured) <= featuredSlots {
-			// All featured fit, truncate opinions
-			opinionSlots := remaining - len(groups.Featured)
+		storySlots := remaining - 1
+		if len(groups.Stories) <= storySlots {
+			// All stories fit, truncate opinions
+			opinionSlots := remaining - len(groups.Stories)
 			if len(groups.Opinions) > opinionSlots {
 				groups.Opinions = groups.Opinions[:opinionSlots]
 			}
 		} else {
-			// Truncate featured, keep 1 opinion
-			groups.Featured = groups.Featured[:featuredSlots]
+			// Truncate stories, keep 1 opinion
+			groups.Stories = groups.Stories[:storySlots]
 			groups.Opinions = groups.Opinions[:1]
 		}
 	} else {
-		// No opinions, just truncate featured
-		if len(groups.Featured) > remaining {
-			groups.Featured = groups.Featured[:remaining]
+		// No opinions, just truncate stories
+		if len(groups.Stories) > remaining {
+			groups.Stories = groups.Stories[:remaining]
 		}
 	}
 }
@@ -651,7 +667,7 @@ func CompileDigestHTML(
 	gridGapsNeeded := 0
 
 	// Front page grid gap
-	fpCount := len(frontPageGroups.Featured) + len(frontPageGroups.Opinions)
+	fpCount := len(frontPageGroups.Stories) + len(frontPageGroups.Opinions)
 	if fpCount > 0 && fpCount%2 == 1 {
 		gridGapsNeeded++
 	}
@@ -663,10 +679,10 @@ func CompileDigestHTML(
 		if section.MaxStories > 0 {
 			truncateStories(&groups, section.MaxStories)
 		}
-		if groups.Headline == nil && len(groups.Featured) == 0 && len(groups.Opinions) == 0 {
+		if groups.Headline == nil && len(groups.Stories) == 0 && len(groups.Opinions) == 0 {
 			continue
 		}
-		count := len(groups.Featured) + len(groups.Opinions)
+		count := len(groups.Stories) + len(groups.Opinions)
 		if count > 0 && count%2 == 1 {
 			gridGapsNeeded++
 		}
@@ -860,11 +876,11 @@ a:hover { text-decoration: underline; }
 		writeHeadlineStory(&html, frontPageGroups.Headline, postIndex)
 	}
 
-	// Featured + Opinions in grid (same style)
-	if len(frontPageGroups.Featured) > 0 || len(frontPageGroups.Opinions) > 0 {
-		gridCount := len(frontPageGroups.Featured) + len(frontPageGroups.Opinions)
+	// Stories + Opinions in grid (same style)
+	if len(frontPageGroups.Stories) > 0 || len(frontPageGroups.Opinions) > 0 {
+		gridCount := len(frontPageGroups.Stories) + len(frontPageGroups.Opinions)
 		html.WriteString("<div class=\"stories-grid\">\n")
-		for _, group := range frontPageGroups.Featured {
+		for _, group := range frontPageGroups.Stories {
 			writeGridStory(&html, group, postIndex, false)
 		}
 		for _, group := range frontPageGroups.Opinions {
@@ -890,7 +906,7 @@ a:hover { text-decoration: underline; }
 		}
 
 		// Skip empty sections
-		if sectionGroups.Headline == nil && len(sectionGroups.Featured) == 0 && len(sectionGroups.Opinions) == 0 {
+		if sectionGroups.Headline == nil && len(sectionGroups.Stories) == 0 && len(sectionGroups.Opinions) == 0 {
 			continue
 		}
 
@@ -913,11 +929,11 @@ a:hover { text-decoration: underline; }
 			writeHeadlineStory(&html, sectionGroups.Headline, postIndex)
 		}
 
-		// Featured + Opinions in grid (same style)
-		if len(sectionGroups.Featured) > 0 || len(sectionGroups.Opinions) > 0 {
-			gridCount := len(sectionGroups.Featured) + len(sectionGroups.Opinions)
+		// Stories + Opinions in grid (same style)
+		if len(sectionGroups.Stories) > 0 || len(sectionGroups.Opinions) > 0 {
+			gridCount := len(sectionGroups.Stories) + len(sectionGroups.Opinions)
 			html.WriteString("<div class=\"stories-grid\">\n")
-			for _, group := range sectionGroups.Featured {
+			for _, group := range sectionGroups.Stories {
 				writeGridStory(&html, group, postIndex, false)
 			}
 			for _, group := range sectionGroups.Opinions {
@@ -1001,7 +1017,7 @@ document.addEventListener('keydown', function(e) {
 func writeHeadlineStory(html *strings.Builder, group *StoryGroup, postIndex map[string]Post) {
 	post := postIndex[group.PrimaryRkey]
 	html.WriteString("<article class=\"headline-story\">\n")
-	html.WriteString(fmt.Sprintf("<h3><a href=\"%s\">%s</a></h3>\n", escapeHTML(postURL(post)), escapeHTML(group.Headline)))
+	html.WriteString(fmt.Sprintf("<h3><a href=\"%s\">%s</a></h3>\n", escapeHTML(postURL(post)), escapeHTML(getHeadline(group, post))))
 	if group.Summary != "" {
 		html.WriteString(fmt.Sprintf("<p>%s</p>\n", escapeHTML(group.Summary)))
 	}
@@ -1017,12 +1033,12 @@ func writeHeadlineStory(html *strings.Builder, group *StoryGroup, postIndex map[
 	html.WriteString("</article>\n")
 }
 
-// writeGridStory writes a featured or opinion story in the grid
+// writeGridStory writes a story or opinion in the grid
 func writeGridStory(html *strings.Builder, group *StoryGroup, postIndex map[string]Post, isOpinion bool) {
 	post := postIndex[group.PrimaryRkey]
 	html.WriteString("<article class=\"story\">\n")
 
-	headline := group.Headline
+	headline := getHeadline(group, post)
 	if isOpinion {
 		headline = "Opinion: " + headline
 	}

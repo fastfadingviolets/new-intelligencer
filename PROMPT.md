@@ -21,20 +21,49 @@ Then invoke subagents in sequence.
 
 Each agent categorizes its batch into all sections (except front-page). Wait for all to complete.
 
-## Step 2: Front Page Selection
+## Step 2: Story Consolidation
 
-After all section categorizers complete:
+After all section categorizers complete, consolidate related posts into stories:
+
+1. Run `./bin/digest list-categories --with-counts` to see which sections have posts
+2. For each news section with posts, spawn a `bsky-consolidator` agent IN PARALLEL:
+   - Each agent processes one section
+   - Groups related posts into story groups
+   - Sets draft headlines (optional)
+
+Wait for all consolidators to complete.
+
+## Step 3: Front Page Selection
+
+After consolidation is complete:
 
 ```
-bsky-front-page-selector - pick 4-6 top stories for front page
+bsky-front-page-selector - pick 4-6 top STORIES (not individual posts) for front page
 ```
 
-## Step 3: Story Editing
+This agent moves entire story groups to the front-page section.
+
+## Step 4: Headlines & Priorities (Parallel)
 
 After front page is selected:
 
+1. Run `./bin/digest auto-group-remaining` to wrap ungrouped posts into single-post stories
+2. Run `./bin/digest list-categories --with-counts` to see which sections have stories
+3. For each section with stories, spawn a `bsky-headline-editor` agent IN PARALLEL:
+   - Each agent processes ONE section
+   - Sets headline and priority for EVERY story in that section
+   - Verifies completion with `./bin/digest show-unprocessed <section-id>`
+
+Wait for all headline editors to complete.
+
+## Step 5: Compile
+
+After all headlines and priorities are set:
+
+```bash
+./bin/digest compile
 ```
-bsky-story-editor - create story groups, pick headlines, check primary links, compile
-```
+
+**Compile will FAIL if any stories are missing headlines or priorities.** If it fails, check `./bin/digest show-unprocessed` and re-run headline editors for incomplete sections.
 
 The digest workspace will be in `digest-DD-MM-YYYY/` directory with all state files.

@@ -152,17 +152,18 @@ type NewspaperConfig struct {
 
 // StoryGroup represents consolidated posts about same news story (created by agent)
 type StoryGroup struct {
-	ID          string   `json:"id"`
-	Headline    string   `json:"headline"`
-	Summary     string   `json:"summary,omitempty"`
-	ArticleURL  string   `json:"article_url,omitempty"`
-	PostRkeys   []string `json:"post_rkeys"`
-	PrimaryRkey string   `json:"primary_rkey"`
-	IsOpinion   bool     `json:"is_opinion"`
-	SectionID   string   `json:"section_id"`
-	Role        string   `json:"role"`       // "headline", "featured", "opinion"
-	IsFrontPage bool     `json:"front_page"` // if true, appears on front page only
-	Priority    int      `json:"priority"`   // 1 = most important, higher = less important
+	ID              string   `json:"id"`
+	Headline        string   `json:"headline,omitempty"`         // Final headline (set in headline step)
+	DraftHeadline   string   `json:"draft_headline,omitempty"`   // Consolidator's suggested headline
+	Summary         string   `json:"summary,omitempty"`
+	ArticleURL      string   `json:"article_url,omitempty"`
+	PostRkeys       []string `json:"post_rkeys"`
+	PrimaryRkey     string   `json:"primary_rkey"`
+	IsOpinion       bool     `json:"is_opinion"`
+	SectionID       string   `json:"section_id"`                 // Current section (changes when story moves)
+	OriginalSection string   `json:"original_section,omitempty"` // Where story came from (for context)
+	Role            string   `json:"role,omitempty"`             // "headline", "featured", "opinion"
+	Priority        int      `json:"priority,omitempty"`         // 1 = most important, higher = less important
 }
 
 // StoryGroups maps story group ID to story group data
