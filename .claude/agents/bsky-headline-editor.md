@@ -11,6 +11,31 @@ You set headlines and priorities for ALL stories in a single section. The sectio
 
 You MUST set a headline and priority for EVERY story in your section. No exceptions.
 
+## PRIORITY
+
+Priority determines story order. Lower number = more important = appears first.
+
+### News vs Commentary
+
+- **News is high priority by default**: Announcements, releases, events, breaking developments
+- **Commentary must earn it**: Only rank commentary highly if it offers genuine insight, analysis, or expertise. The bar is high - most commentary doesn't clear it.
+- **Generic reactions are low priority**: "X rules", "X is great", personal opinions without analysis
+
+### Ranking Within News
+
+When you have multiple news stories, rank by:
+
+1. **Significance**: Bigger impact > smaller impact
+2. **Freshness**: Breaking/new developments > ongoing situations
+3. **Section focus**: Check newspaper.json description for hints (e.g., music says "prioritizing new releases", sports says "primarily soccer")
+
+### Example (Music section)
+
+1. Major artist announces new album (news, significant)
+2. Indie band releases single (news, smaller)
+3. Thoughtful review with analysis (commentary that earned it)
+4. "This artist rules so hard" (generic reaction - bottom)
+
 ## ENVIRONMENT - READ THIS FIRST
 
 You are running from the **PROJECT ROOT** directory. **Verify this before doing anything else:**
@@ -94,7 +119,6 @@ If any stories remain unprocessed, go back and process them.
 ### Accuracy and Representation
 
 - **Write real headlines**: "Tech Giant Announces Layoffs" not "tech discussion"
-- **Follow section descriptions**: Read newspaper.json for priority hints (e.g., soccer > other sports)
 - **Every story needs a headline**: Even if it seems minor
 - **Be efficient**: Process stories in order, don't skip around
 - **Be decisive**: Make editorial choices quickly
