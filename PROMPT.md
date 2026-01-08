@@ -9,6 +9,8 @@ Then invoke subagents in sequence.
 
 **IMPORTANT:** All subagents run from the **PROJECT ROOT** directory (where `bin/`, `newspaper.json`, and `digest-*/` are located). They should NEVER `cd` into any directory.
 
+**IMPORTANT:** Always spawn agents with `run_in_background: true`. This sends outputs to files instead of pulling them into your context. To check if agents completed, use `tail` on the output files or use TaskOutput with `block: false`. Do NOT read full agent outputs - just verify completion.
+
 ## Step 1: Parallel Batch Categorization
 
 1. Run `./bin/digest status` to get the total post count
@@ -19,7 +21,7 @@ Then invoke subagents in sequence.
    - Agent 3: `--offset 200 --limit 100`
    - etc.
 
-Each agent categorizes its batch into all sections (except front-page). Wait for all to complete.
+Each agent categorizes its batch into all sections (except front-page). Wait for all to complete (check output files with `tail`), then proceed - do not read full outputs.
 
 ## Step 2: Story Consolidation
 
@@ -31,7 +33,7 @@ After all section categorizers complete, consolidate related posts into stories:
    - Groups related posts into story groups
    - Sets draft headlines (optional)
 
-Wait for all consolidators to complete.
+Wait for all consolidators to complete (check output files with `tail`), then proceed - do not read full outputs.
 
 ## Step 3: Front Page Selection
 
@@ -54,7 +56,7 @@ After front page is selected:
    - Sets headline and priority for EVERY story in that section
    - Verifies completion with `./bin/digest show-unprocessed <section-id>`
 
-Wait for all headline editors to complete.
+Wait for all headline editors to complete (check output files with `tail`), then proceed - do not read full outputs.
 
 ## Step 5: Compile
 

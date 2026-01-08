@@ -27,7 +27,7 @@ pwd && ls
 1. **NEVER run `cd`** - stay in project root at all times
 2. **NEVER look inside `digest-*/` directories** - they are opaque, all access goes through `./bin/digest`
 3. **ALL paths are relative to project root** - use `./bin/digest`, `./newspaper.json`
-4. **Do NOT write scripts or create files** - use CLI commands only
+4. **Do NOT write scripts or create files** - use CLI commands only, never write to /tmp
 5. **Process your entire batch** - don't stop early
 6. **Skip front-page** - never categorize into front-page (that's handled separately)
 
