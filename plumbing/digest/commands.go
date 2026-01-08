@@ -211,8 +211,10 @@ var readPostsCmd = &cobra.Command{
 		// Format for display with thread info
 		displayPosts := FormatForDisplayWithThreads(roots, wd)
 
-		// Fetch and encode first image for each post
-		FetchImagesForDisplay(displayPosts)
+		// Fetch and encode first image for each post (only if --images flag is set)
+		if includeImages, _ := cmd.Flags().GetBool("images"); includeImages {
+			FetchImagesForDisplay(displayPosts)
+		}
 
 		data, _ := json.MarshalIndent(displayPosts, "", "  ")
 		fmt.Println(string(data))
@@ -1333,6 +1335,7 @@ func init() {
 	// read-posts flags
 	readPostsCmd.Flags().Int("offset", 0, "Skip first N posts")
 	readPostsCmd.Flags().Int("limit", 20, "Show M posts")
+	readPostsCmd.Flags().Bool("images", false, "Include base64-encoded images for agent viewing")
 
 	// categorize flags
 	categorizeCmd.Flags().Bool("move", false, "Move posts from existing category (for front-page selection)")
