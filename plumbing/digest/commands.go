@@ -13,6 +13,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// withLock executes fn while holding an exclusive lock on lockFile
+func withLock(dir, lockFile string, fn func() error) error {
+	lockPath := filepath.Join(dir, lockFile)
+	fileLock := flock.New(lockPath)
+	if err := fileLock.Lock(); err != nil {
+		return err
+	}
+	defer fileLock.Unlock()
+	return fn()
+}
+
 // findPostCategory returns the category ID a post is in, or empty string if not found
 func findPostCategory(rkey string, cats Categories) string {
 	for catID, cat := range cats {
@@ -670,39 +681,41 @@ var addSuiGenerisCmd = &cobra.Command{
 			return err
 		}
 
-		// Load existing content picks
-		contentPicks, err := LoadContentPicks(filepath.Join(dir, "content-picks.json"))
-		if err != nil {
-			return err
-		}
+		return withLock(dir, "content-picks.lock", func() error {
+			// Load existing content picks
+			contentPicks, err := LoadContentPicks(filepath.Join(dir, "content-picks.json"))
+			if err != nil {
+				return err
+			}
 
-		// Get or create section picks
-		picks, ok := contentPicks[section]
-		if !ok {
-			picks = ContentPicks{SectionID: section, SuiGeneris: []string{}}
-		}
+			// Get or create section picks
+			picks, ok := contentPicks[section]
+			if !ok {
+				picks = ContentPicks{SectionID: section, SuiGeneris: []string{}}
+			}
 
-		// Add new rkeys (avoid duplicates)
-		existing := make(map[string]bool)
-		for _, rkey := range picks.SuiGeneris {
-			existing[rkey] = true
-		}
-		for _, rkey := range rkeys {
-			if !existing[rkey] {
-				picks.SuiGeneris = append(picks.SuiGeneris, rkey)
+			// Add new rkeys (avoid duplicates)
+			existing := make(map[string]bool)
+			for _, rkey := range picks.SuiGeneris {
 				existing[rkey] = true
 			}
-		}
+			for _, rkey := range rkeys {
+				if !existing[rkey] {
+					picks.SuiGeneris = append(picks.SuiGeneris, rkey)
+					existing[rkey] = true
+				}
+			}
 
-		contentPicks[section] = picks
+			contentPicks[section] = picks
 
-		// Save
-		if err := SaveContentPicks(filepath.Join(dir, "content-picks.json"), contentPicks); err != nil {
-			return err
-		}
+			// Save
+			if err := SaveContentPicks(filepath.Join(dir, "content-picks.json"), contentPicks); err != nil {
+				return err
+			}
 
-		fmt.Printf("Added %d sui generis picks to '%s'\n", len(rkeys), section)
-		return nil
+			fmt.Printf("Added %d sui generis picks to '%s'\n", len(rkeys), section)
+			return nil
+		})
 	},
 }
 
@@ -1154,46 +1167,48 @@ var updateStoryCmd = &cobra.Command{
 			return err
 		}
 
-		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
-		if err != nil {
-			return err
-		}
-
-		story, ok := storyGroups[storyID]
-		if !ok {
-			return fmt.Errorf("story not found: %s", storyID)
-		}
-
-		// Check if priority is already used in this section
-		for id := range storyGroups {
-			existing := storyGroups[id]
-			if id != storyID && existing.SectionID == story.SectionID && existing.Priority == priority {
-				return fmt.Errorf("priority %d already used in section '%s' by story '%s'", priority, story.SectionID, id)
+		return withLock(dir, "story-groups.lock", func() error {
+			storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+			if err != nil {
+				return err
 			}
-		}
 
-		// Update fields
-		story.Headline = headline
-		story.Priority = priority
-
-		if role != "" {
-			story.Role = role
-		}
-		if cmd.Flags().Changed("opinion") {
-			story.IsOpinion = opinion
-			if opinion {
-				story.Role = "opinion"
+			story, ok := storyGroups[storyID]
+			if !ok {
+				return fmt.Errorf("story not found: %s", storyID)
 			}
-		}
 
-		storyGroups[storyID] = story
+			// Check if priority is already used in this section
+			for id := range storyGroups {
+				existing := storyGroups[id]
+				if id != storyID && existing.SectionID == story.SectionID && existing.Priority == priority {
+					return fmt.Errorf("priority %d already used in section '%s' by story '%s'", priority, story.SectionID, id)
+				}
+			}
 
-		if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
-			return err
-		}
+			// Update fields
+			story.Headline = headline
+			story.Priority = priority
 
-		fmt.Printf("Updated %s: headline=%q priority=%d\n", storyID, headline, priority)
-		return nil
+			if role != "" {
+				story.Role = role
+			}
+			if cmd.Flags().Changed("opinion") {
+				story.IsOpinion = opinion
+				if opinion {
+					story.Role = "opinion"
+				}
+			}
+
+			storyGroups[storyID] = story
+
+			if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
+				return err
+			}
+
+			fmt.Printf("Updated %s: headline=%q priority=%d\n", storyID, headline, priority)
+			return nil
+		})
 	},
 }
 
@@ -1280,71 +1295,73 @@ var autoGroupRemainingCmd = &cobra.Command{
 			return err
 		}
 
-		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
-		if err != nil {
-			return err
-		}
-
-		// Build set of all rkeys in story groups by section
-		groupedBySection := make(map[string]map[string]bool)
-		for _, story := range storyGroups {
-			if groupedBySection[story.SectionID] == nil {
-				groupedBySection[story.SectionID] = make(map[string]bool)
-			}
-			for _, rkey := range story.PostRkeys {
-				groupedBySection[story.SectionID][rkey] = true
-			}
-		}
-
-		// Create story groups for ungrouped posts
-		created := 0
-		for section, catData := range cats {
-			if catData.IsHidden {
-				continue
-			}
-			grouped := groupedBySection[section]
-			if grouped == nil {
-				grouped = make(map[string]bool)
+		return withLock(dir, "story-groups.lock", func() error {
+			storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+			if err != nil {
+				return err
 			}
 
-			for _, rkey := range catData.Visible {
-				if grouped[rkey] {
+			// Build set of all rkeys in story groups by section
+			groupedBySection := make(map[string]map[string]bool)
+			for _, story := range storyGroups {
+				if groupedBySection[story.SectionID] == nil {
+					groupedBySection[story.SectionID] = make(map[string]bool)
+				}
+				for _, rkey := range story.PostRkeys {
+					groupedBySection[story.SectionID][rkey] = true
+				}
+			}
+
+			// Create story groups for ungrouped posts
+			created := 0
+			for section, catData := range cats {
+				if catData.IsHidden {
 					continue
 				}
+				grouped := groupedBySection[section]
+				if grouped == nil {
+					grouped = make(map[string]bool)
+				}
 
-				// Generate next ID
-				nextNum := len(storyGroups) + 1
-				id := fmt.Sprintf("sg_%03d", nextNum)
-				for {
-					if _, exists := storyGroups[id]; !exists {
-						break
+				for _, rkey := range catData.Visible {
+					if grouped[rkey] {
+						continue
 					}
-					nextNum++
-					id = fmt.Sprintf("sg_%03d", nextNum)
-				}
 
-				story := StoryGroup{
-					ID:          id,
-					PostRkeys:   []string{rkey},
-					PrimaryRkey: rkey,
-					SectionID:   section,
+					// Generate next ID
+					nextNum := len(storyGroups) + 1
+					id := fmt.Sprintf("sg_%03d", nextNum)
+					for {
+						if _, exists := storyGroups[id]; !exists {
+							break
+						}
+						nextNum++
+						id = fmt.Sprintf("sg_%03d", nextNum)
+					}
+
+					story := StoryGroup{
+						ID:          id,
+						PostRkeys:   []string{rkey},
+						PrimaryRkey: rkey,
+						SectionID:   section,
+					}
+					storyGroups[id] = story
+					created++
 				}
-				storyGroups[id] = story
-				created++
 			}
-		}
 
-		if created == 0 {
-			fmt.Println("All posts are already in story groups")
+			if created == 0 {
+				fmt.Println("All posts are already in story groups")
+				return nil
+			}
+
+			if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
+				return err
+			}
+
+			fmt.Printf("Created %d single-post story groups\n", created)
 			return nil
-		}
-
-		if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
-			return err
-		}
-
-		fmt.Printf("Created %d single-post story groups\n", created)
-		return nil
+		})
 	},
 }
 
@@ -1362,43 +1379,45 @@ var addToStoryCmd = &cobra.Command{
 			return err
 		}
 
-		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
-		if err != nil {
-			return err
-		}
-
-		story, ok := storyGroups[storyID]
-		if !ok {
-			return fmt.Errorf("story not found: %s", storyID)
-		}
-
-		// Add new rkeys (avoid duplicates)
-		existing := make(map[string]bool)
-		for _, rkey := range story.PostRkeys {
-			existing[rkey] = true
-		}
-		added := 0
-		for _, rkey := range newRkeys {
-			if !existing[rkey] {
-				story.PostRkeys = append(story.PostRkeys, rkey)
-				existing[rkey] = true
-				added++
+		return withLock(dir, "story-groups.lock", func() error {
+			storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+			if err != nil {
+				return err
 			}
-		}
 
-		if added == 0 {
-			fmt.Printf("All rkeys already in story %s\n", storyID)
+			story, ok := storyGroups[storyID]
+			if !ok {
+				return fmt.Errorf("story not found: %s", storyID)
+			}
+
+			// Add new rkeys (avoid duplicates)
+			existing := make(map[string]bool)
+			for _, rkey := range story.PostRkeys {
+				existing[rkey] = true
+			}
+			added := 0
+			for _, rkey := range newRkeys {
+				if !existing[rkey] {
+					story.PostRkeys = append(story.PostRkeys, rkey)
+					existing[rkey] = true
+					added++
+				}
+			}
+
+			if added == 0 {
+				fmt.Printf("All rkeys already in story %s\n", storyID)
+				return nil
+			}
+
+			storyGroups[storyID] = story
+
+			if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
+				return err
+			}
+
+			fmt.Printf("Added %d posts to %s (now %d total)\n", added, storyID, len(story.PostRkeys))
 			return nil
-		}
-
-		storyGroups[storyID] = story
-
-		if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
-			return err
-		}
-
-		fmt.Printf("Added %d posts to %s (now %d total)\n", added, storyID, len(story.PostRkeys))
-		return nil
+		})
 	},
 }
 
@@ -1468,57 +1487,59 @@ For headlines:
 			return err
 		}
 
-		bp, err := loadBatchProgress(dir)
-		if err != nil {
-			return err
-		}
-
-		switch stage {
-		case "categorization":
-			if limit == 0 {
-				return fmt.Errorf("--limit is required for categorization stage")
+		return withLock(dir, "batches.lock", func() error {
+			bp, err := loadBatchProgress(dir)
+			if err != nil {
+				return err
 			}
-			// Check if already recorded
-			for _, b := range bp.Categorization {
-				if b.Offset == offset && b.Limit == limit {
-					fmt.Printf("Batch %d-%d already marked complete\n", offset, offset+limit)
-					return nil
+
+			switch stage {
+			case "categorization":
+				if limit == 0 {
+					return fmt.Errorf("--limit is required for categorization stage")
 				}
-			}
-			bp.Categorization = append(bp.Categorization, CatBatch{Offset: offset, Limit: limit})
-			fmt.Printf("Marked categorization batch %d-%d complete\n", offset, offset+limit)
-
-		case "consolidation":
-			if section == "" {
-				return fmt.Errorf("--section is required for consolidation stage")
-			}
-			for _, s := range bp.Consolidation {
-				if s == section {
-					fmt.Printf("Consolidation for %s already marked complete\n", section)
-					return nil
+				// Check if already recorded
+				for _, b := range bp.Categorization {
+					if b.Offset == offset && b.Limit == limit {
+						fmt.Printf("Batch %d-%d already marked complete\n", offset, offset+limit)
+						return nil
+					}
 				}
-			}
-			bp.Consolidation = append(bp.Consolidation, section)
-			fmt.Printf("Marked consolidation for %s complete\n", section)
+				bp.Categorization = append(bp.Categorization, CatBatch{Offset: offset, Limit: limit})
+				fmt.Printf("Marked categorization batch %d-%d complete\n", offset, offset+limit)
 
-		case "headlines":
-			if section == "" {
-				return fmt.Errorf("--section is required for headlines stage")
-			}
-			for _, s := range bp.Headlines {
-				if s == section {
-					fmt.Printf("Headlines for %s already marked complete\n", section)
-					return nil
+			case "consolidation":
+				if section == "" {
+					return fmt.Errorf("--section is required for consolidation stage")
 				}
+				for _, s := range bp.Consolidation {
+					if s == section {
+						fmt.Printf("Consolidation for %s already marked complete\n", section)
+						return nil
+					}
+				}
+				bp.Consolidation = append(bp.Consolidation, section)
+				fmt.Printf("Marked consolidation for %s complete\n", section)
+
+			case "headlines":
+				if section == "" {
+					return fmt.Errorf("--section is required for headlines stage")
+				}
+				for _, s := range bp.Headlines {
+					if s == section {
+						fmt.Printf("Headlines for %s already marked complete\n", section)
+						return nil
+					}
+				}
+				bp.Headlines = append(bp.Headlines, section)
+				fmt.Printf("Marked headlines for %s complete\n", section)
+
+			default:
+				return fmt.Errorf("unknown stage: %s (use categorization, consolidation, or headlines)", stage)
 			}
-			bp.Headlines = append(bp.Headlines, section)
-			fmt.Printf("Marked headlines for %s complete\n", section)
 
-		default:
-			return fmt.Errorf("unknown stage: %s (use categorization, consolidation, or headlines)", stage)
-		}
-
-		return saveBatchProgress(dir, bp)
+			return saveBatchProgress(dir, bp)
+		})
 	},
 }
 
