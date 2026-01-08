@@ -508,6 +508,83 @@ var statusCmd = &cobra.Command{
 		fmt.Printf("  Categorized: %d\n", categorized)
 		fmt.Printf("  Uncategorized: %d\n\n", len(uncategorized))
 
+		// Show batch progress
+		bp, _ := loadBatchProgress(wd.Dir)
+		if bp != nil {
+			// Categorization progress
+			expectedCatBatches := (len(wd.Posts) + 99) / 100 // ceil(posts/100)
+			completedCatBatches := len(bp.Categorization)
+			if completedCatBatches > 0 || expectedCatBatches > 0 {
+				if completedCatBatches >= expectedCatBatches {
+					fmt.Printf("Categorization: %d/%d batches complete\n", completedCatBatches, expectedCatBatches)
+				} else {
+					fmt.Printf("Categorization: %d/%d batches complete (in progress)\n", completedCatBatches, expectedCatBatches)
+				}
+			}
+
+			// Consolidation progress - sections with posts (non-front-page)
+			sectionsWithPosts := []string{}
+			for cat := range wd.Categories {
+				if cat != "front-page" {
+					catData := wd.Categories[cat]
+					if len(catData.Visible) > 0 || len(catData.Hidden) > 0 {
+						sectionsWithPosts = append(sectionsWithPosts, cat)
+					}
+				}
+			}
+			if len(sectionsWithPosts) > 0 {
+				completedConsolidation := len(bp.Consolidation)
+				missing := []string{}
+				for _, s := range sectionsWithPosts {
+					found := false
+					for _, c := range bp.Consolidation {
+						if c == s {
+							found = true
+							break
+						}
+					}
+					if !found {
+						missing = append(missing, s)
+					}
+				}
+				if len(missing) == 0 {
+					fmt.Printf("Consolidation: %d/%d sections complete\n", completedConsolidation, len(sectionsWithPosts))
+				} else {
+					fmt.Printf("Consolidation: %d/%d sections complete (missing: %s)\n", completedConsolidation, len(sectionsWithPosts), joinStrings(missing, ", "))
+				}
+			}
+
+			// Headlines progress - sections with stories
+			storyGroups, _ := LoadStoryGroups(filepath.Join(wd.Dir, "story-groups.json"))
+			sectionsWithStories := make(map[string]bool)
+			for _, story := range storyGroups {
+				sectionsWithStories[story.SectionID] = true
+			}
+			if len(sectionsWithStories) > 0 {
+				completedHeadlines := len(bp.Headlines)
+				missing := []string{}
+				for s := range sectionsWithStories {
+					found := false
+					for _, h := range bp.Headlines {
+						if h == s {
+							found = true
+							break
+						}
+					}
+					if !found {
+						missing = append(missing, s)
+					}
+				}
+				if len(missing) == 0 {
+					fmt.Printf("Headlines: %d/%d sections complete\n", completedHeadlines, len(sectionsWithStories))
+				} else {
+					fmt.Printf("Headlines: %d/%d sections complete (missing: %s)\n", completedHeadlines, len(sectionsWithStories), joinStrings(missing, ", "))
+				}
+			}
+
+			fmt.Println()
+		}
+
 		// Separate visible and hidden categories
 		visibleCats := make(map[string]int)
 		hiddenCats := make(map[string]int)
@@ -1325,6 +1402,126 @@ var addToStoryCmd = &cobra.Command{
 	},
 }
 
+// BatchProgress tracks completion of parallel workflow stages
+type BatchProgress struct {
+	Categorization []CatBatch `json:"categorization,omitempty"`
+	Consolidation  []string   `json:"consolidation,omitempty"`
+	Headlines      []string   `json:"headlines,omitempty"`
+}
+
+type CatBatch struct {
+	Offset int `json:"offset"`
+	Limit  int `json:"limit"`
+}
+
+func loadBatchProgress(dir string) (*BatchProgress, error) {
+	path := filepath.Join(dir, "batches.json")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return &BatchProgress{}, nil
+		}
+		return nil, err
+	}
+	var bp BatchProgress
+	if err := json.Unmarshal(data, &bp); err != nil {
+		return nil, err
+	}
+	return &bp, nil
+}
+
+func saveBatchProgress(dir string, bp *BatchProgress) error {
+	path := filepath.Join(dir, "batches.json")
+	data, err := json.MarshalIndent(bp, "", "  ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(path, data, 0644)
+}
+
+// digest mark-batch-done
+var markBatchDoneCmd = &cobra.Command{
+	Use:   "mark-batch-done",
+	Short: "Mark a workflow batch as complete",
+	Long: `Mark a workflow stage batch as complete.
+
+For categorization:
+  ./bin/digest mark-batch-done --stage categorization --offset 0 --limit 100
+
+For consolidation:
+  ./bin/digest mark-batch-done --stage consolidation --section music
+
+For headlines:
+  ./bin/digest mark-batch-done --stage headlines --section music`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		stage, _ := cmd.Flags().GetString("stage")
+		offset, _ := cmd.Flags().GetInt("offset")
+		limit, _ := cmd.Flags().GetInt("limit")
+		section, _ := cmd.Flags().GetString("section")
+
+		if stage == "" {
+			return fmt.Errorf("--stage is required (categorization, consolidation, headlines)")
+		}
+
+		dir, err := GetWorkspaceDir()
+		if err != nil {
+			return err
+		}
+
+		bp, err := loadBatchProgress(dir)
+		if err != nil {
+			return err
+		}
+
+		switch stage {
+		case "categorization":
+			if limit == 0 {
+				return fmt.Errorf("--limit is required for categorization stage")
+			}
+			// Check if already recorded
+			for _, b := range bp.Categorization {
+				if b.Offset == offset && b.Limit == limit {
+					fmt.Printf("Batch %d-%d already marked complete\n", offset, offset+limit)
+					return nil
+				}
+			}
+			bp.Categorization = append(bp.Categorization, CatBatch{Offset: offset, Limit: limit})
+			fmt.Printf("Marked categorization batch %d-%d complete\n", offset, offset+limit)
+
+		case "consolidation":
+			if section == "" {
+				return fmt.Errorf("--section is required for consolidation stage")
+			}
+			for _, s := range bp.Consolidation {
+				if s == section {
+					fmt.Printf("Consolidation for %s already marked complete\n", section)
+					return nil
+				}
+			}
+			bp.Consolidation = append(bp.Consolidation, section)
+			fmt.Printf("Marked consolidation for %s complete\n", section)
+
+		case "headlines":
+			if section == "" {
+				return fmt.Errorf("--section is required for headlines stage")
+			}
+			for _, s := range bp.Headlines {
+				if s == section {
+					fmt.Printf("Headlines for %s already marked complete\n", section)
+					return nil
+				}
+			}
+			bp.Headlines = append(bp.Headlines, section)
+			fmt.Printf("Marked headlines for %s complete\n", section)
+
+		default:
+			return fmt.Errorf("unknown stage: %s (use categorization, consolidation, or headlines)", stage)
+		}
+
+		return saveBatchProgress(dir, bp)
+	},
+}
+
 func init() {
 	// init flags
 	initCmd.Flags().String("since", "", "Start time for fetching (default: 24h ago)")
@@ -1364,6 +1561,12 @@ func init() {
 	updateStoryCmd.Flags().String("role", "", "Set role (headline, featured, opinion)")
 	updateStoryCmd.Flags().Int("priority", 0, "Set priority (1 = highest)")
 	updateStoryCmd.Flags().Bool("opinion", false, "Mark as opinion piece")
+
+	// mark-batch-done flags
+	markBatchDoneCmd.Flags().String("stage", "", "Stage name (categorization, consolidation, headlines)")
+	markBatchDoneCmd.Flags().Int("offset", 0, "Batch offset (for categorization)")
+	markBatchDoneCmd.Flags().Int("limit", 0, "Batch limit (for categorization)")
+	markBatchDoneCmd.Flags().String("section", "", "Section ID (for consolidation/headlines)")
 }
 
 // joinStrings joins strings with a separator

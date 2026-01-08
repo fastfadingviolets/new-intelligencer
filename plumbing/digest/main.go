@@ -55,4 +55,5 @@ func init() {
 	rootCmd.AddCommand(showUnprocessedCmd)
 	rootCmd.AddCommand(autoGroupRemainingCmd)
 	rootCmd.AddCommand(addToStoryCmd)
+	rootCmd.AddCommand(markBatchDoneCmd)
 }

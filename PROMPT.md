@@ -9,7 +9,19 @@ Then invoke subagents in sequence.
 
 **IMPORTANT:** All subagents run from the **PROJECT ROOT** directory (where `bin/`, `newspaper.json`, and `digest-*/` are located). They should NEVER `cd` into any directory.
 
-**IMPORTANT:** Always spawn agents with `run_in_background: true`. This sends outputs to files instead of pulling them into your context. To check if agents completed, use `tail` on the output files or use TaskOutput with `block: false`. Do NOT read full agent outputs - just verify completion.
+**IMPORTANT:** Always spawn agents with `run_in_background: true`. This keeps agent outputs out of your context.
+
+## Checking Stage Completion
+
+Each agent marks itself done when finished. Use `./bin/digest status` to check progress:
+
+```
+Categorization: 12/12 batches complete
+Consolidation: 6/8 sections complete (missing: sports, film)
+Headlines: 4/8 sections complete (missing: sports, film, music, politics-us)
+```
+
+**Wait until each stage shows N/N complete before proceeding to the next step.**
 
 ## Step 1: Parallel Batch Categorization
 
@@ -21,7 +33,7 @@ Then invoke subagents in sequence.
    - Agent 3: `--offset 200 --limit 100`
    - etc.
 
-Each agent categorizes its batch into all sections (except front-page). Wait for all to complete (check output files with `tail`), then proceed - do not read full outputs.
+Each agent categorizes its batch into all sections (except front-page). Wait for `./bin/digest status` to show "Categorization: N/N batches complete" before proceeding.
 
 ## Step 2: Story Consolidation
 
@@ -33,7 +45,7 @@ After all section categorizers complete, consolidate related posts into stories:
    - Groups related posts into story groups
    - Sets draft headlines (optional)
 
-Wait for all consolidators to complete (check output files with `tail`), then proceed - do not read full outputs.
+Wait for `./bin/digest status` to show "Consolidation: N/N sections complete" before proceeding.
 
 ## Step 3: Front Page Selection
 
@@ -56,7 +68,7 @@ After front page is selected:
    - Sets headline and priority for EVERY story in that section
    - Verifies completion with `./bin/digest show-unprocessed <section-id>`
 
-Wait for all headline editors to complete (check output files with `tail`), then proceed - do not read full outputs.
+Wait for `./bin/digest status` to show "Headlines: N/N sections complete" before proceeding.
 
 ## Step 5: Compile
 

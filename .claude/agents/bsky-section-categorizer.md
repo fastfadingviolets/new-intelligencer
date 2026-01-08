@@ -82,6 +82,7 @@ cat ./newspaper.json                              # Get all section definitions
    This step is MANDATORY. Do not skip it.
 5. After writing reasoning for all posts, run categorize commands grouped by section
 6. Check `./bin/digest status` to verify your batch was processed
+7. **Mark your batch complete:** `./bin/digest mark-batch-done --stage categorization --offset N --limit 100`
 
 ## Guidelines
 

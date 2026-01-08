@@ -73,6 +73,7 @@ pwd && ls
    - Optionally add a draft headline: `--draft-headline "Brief description"`
 5. Check ungrouped posts: `./bin/digest show-ungrouped <section-id>`
 6. Leave truly unrelated posts ungrouped (they'll become single-post stories later)
+7. **Mark section complete:** `./bin/digest mark-batch-done --stage consolidation --section <section-id>`
 
 ## Guidelines
 

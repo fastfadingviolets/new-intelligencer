@@ -114,6 +114,11 @@ For each story in your section:
 
 If any stories remain unprocessed, go back and process them.
 
+### Step 5: Mark Section Complete
+```bash
+./bin/digest mark-batch-done --stage headlines --section <section-id>
+```
+
 ## Guidelines
 
 ### Accuracy and Representation
