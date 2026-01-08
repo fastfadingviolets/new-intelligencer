@@ -68,8 +68,19 @@ cat ./newspaper.json                              # Get all section definitions
 1. **First: verify location** with `pwd && ls`
 2. Read `./newspaper.json` to understand ALL sections (except front-page)
 3. Read your assigned batch: `./bin/digest read-posts --offset N --limit 100`
-4. For each post, decide: which section does it best fit? (or none)
-5. Categorize posts by section: `./bin/digest categorize <section-id> rkey1 rkey2...`
+4. **REQUIRED: Write out your reasoning for EVERY post before categorizing:**
+   ```
+   [rkey] - [what the post is actually about] → [section-id or SKIP]
+   ```
+   Example:
+   ```
+   3abc123 - Newcastle vs Leeds match result → sports
+   3def456 - Someone saying "I love this movie" → SKIP (no substance)
+   3ghi789 - New album announcement from Iron & Wine → music
+   3jkl012 - Political commentary about gender pronouns → politics-us (or SKIP)
+   ```
+   This step is MANDATORY. Do not skip it.
+5. After writing reasoning for all posts, run categorize commands grouped by section
 6. Check `./bin/digest status` to verify your batch was processed
 
 ## Guidelines
