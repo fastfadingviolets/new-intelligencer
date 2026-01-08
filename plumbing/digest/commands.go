@@ -249,14 +249,13 @@ var categorizeCmd = &cobra.Command{
 			return err
 		}
 
-		// Use file lock to prevent race conditions with parallel agents
-		lockPath := filepath.Join(dir, "categories.lock")
-		fileLock := flock.New(lockPath)
-		if err := fileLock.Lock(); err != nil {
-			return fmt.Errorf("acquiring lock: %w", err)
-		}
-		defer fileLock.Unlock()
+		return categorizeInDir(dir, category, rkeys, moveFlag)
+	},
+}
 
+// categorizeInDir categorizes posts in the given workspace directory
+func categorizeInDir(dir, category string, rkeys []string, moveFlag bool) error {
+	return withLock(dir, "categories.lock", func() error {
 		// Load workspace AFTER acquiring lock (data may have changed)
 		wd, err := LoadWorkspace(dir)
 		if err != nil {
@@ -321,7 +320,7 @@ var categorizeCmd = &cobra.Command{
 			fmt.Printf("Categorized %d posts into '%s'\n", len(newRkeys), category)
 		}
 		return nil
-	},
+	})
 }
 
 // digest list-categories
@@ -961,6 +960,13 @@ var createStoryGroupCmd = &cobra.Command{
 			return err
 		}
 
+		return createStoryGroupInDir(dir, section, rkeys, draftHeadline, primary)
+	},
+}
+
+// createStoryGroupInDir creates a story group in the given workspace directory
+func createStoryGroupInDir(dir, section string, rkeys []string, draftHeadline, primary string) error {
+	return withLock(dir, "story-groups.lock", func() error {
 		// Load existing story groups
 		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
 		if err != nil {
@@ -1005,7 +1011,7 @@ var createStoryGroupCmd = &cobra.Command{
 			fmt.Printf("Created story group %s in '%s' (%d posts)\n", id, section, len(rkeys))
 		}
 		return nil
-	},
+	})
 }
 
 // digest show-ungrouped - show posts not in any story group
@@ -1156,6 +1162,7 @@ var updateStoryCmd = &cobra.Command{
 		role, _ := cmd.Flags().GetString("role")
 		priority, _ := cmd.Flags().GetInt("priority")
 		opinion, _ := cmd.Flags().GetBool("opinion")
+		opinionChanged := cmd.Flags().Changed("opinion")
 
 		// Require both headline and priority
 		if headline == "" || priority <= 0 {
@@ -1167,49 +1174,54 @@ var updateStoryCmd = &cobra.Command{
 			return err
 		}
 
-		return withLock(dir, "story-groups.lock", func() error {
-			storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
-			if err != nil {
-				return err
-			}
-
-			story, ok := storyGroups[storyID]
-			if !ok {
-				return fmt.Errorf("story not found: %s", storyID)
-			}
-
-			// Check if priority is already used in this section
-			for id := range storyGroups {
-				existing := storyGroups[id]
-				if id != storyID && existing.SectionID == story.SectionID && existing.Priority == priority {
-					return fmt.Errorf("priority %d already used in section '%s' by story '%s'", priority, story.SectionID, id)
-				}
-			}
-
-			// Update fields
-			story.Headline = headline
-			story.Priority = priority
-
-			if role != "" {
-				story.Role = role
-			}
-			if cmd.Flags().Changed("opinion") {
-				story.IsOpinion = opinion
-				if opinion {
-					story.Role = "opinion"
-				}
-			}
-
-			storyGroups[storyID] = story
-
-			if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
-				return err
-			}
-
-			fmt.Printf("Updated %s: headline=%q priority=%d\n", storyID, headline, priority)
-			return nil
-		})
+		return updateStoryInDir(dir, storyID, headline, priority, role, opinion, opinionChanged)
 	},
+}
+
+// updateStoryInDir updates a story in the given workspace directory
+func updateStoryInDir(dir, storyID, headline string, priority int, role string, opinion, opinionChanged bool) error {
+	return withLock(dir, "story-groups.lock", func() error {
+		storyGroups, err := LoadStoryGroups(filepath.Join(dir, "story-groups.json"))
+		if err != nil {
+			return err
+		}
+
+		story, ok := storyGroups[storyID]
+		if !ok {
+			return fmt.Errorf("story not found: %s", storyID)
+		}
+
+		// Check if priority is already used in this section
+		for id := range storyGroups {
+			existing := storyGroups[id]
+			if id != storyID && existing.SectionID == story.SectionID && existing.Priority == priority {
+				return fmt.Errorf("priority %d already used in section '%s' by story '%s'", priority, story.SectionID, id)
+			}
+		}
+
+		// Update fields
+		story.Headline = headline
+		story.Priority = priority
+
+		if role != "" {
+			story.Role = role
+		}
+		if opinionChanged {
+			story.IsOpinion = opinion
+			if opinion {
+				story.Role = "opinion"
+			}
+		}
+
+		storyGroups[storyID] = story
+
+		if err := SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups); err != nil {
+			return err
+		}
+
+		fmt.Printf("Updated %s: headline=%q priority=%d\n", storyID, headline, priority)
+		return nil
+	})
 }
 
 // digest show-unprocessed - show stories without headline or priority
@@ -1487,60 +1499,65 @@ For headlines:
 			return err
 		}
 
-		return withLock(dir, "batches.lock", func() error {
-			bp, err := loadBatchProgress(dir)
-			if err != nil {
-				return err
-			}
-
-			switch stage {
-			case "categorization":
-				if limit == 0 {
-					return fmt.Errorf("--limit is required for categorization stage")
-				}
-				// Check if already recorded
-				for _, b := range bp.Categorization {
-					if b.Offset == offset && b.Limit == limit {
-						fmt.Printf("Batch %d-%d already marked complete\n", offset, offset+limit)
-						return nil
-					}
-				}
-				bp.Categorization = append(bp.Categorization, CatBatch{Offset: offset, Limit: limit})
-				fmt.Printf("Marked categorization batch %d-%d complete\n", offset, offset+limit)
-
-			case "consolidation":
-				if section == "" {
-					return fmt.Errorf("--section is required for consolidation stage")
-				}
-				for _, s := range bp.Consolidation {
-					if s == section {
-						fmt.Printf("Consolidation for %s already marked complete\n", section)
-						return nil
-					}
-				}
-				bp.Consolidation = append(bp.Consolidation, section)
-				fmt.Printf("Marked consolidation for %s complete\n", section)
-
-			case "headlines":
-				if section == "" {
-					return fmt.Errorf("--section is required for headlines stage")
-				}
-				for _, s := range bp.Headlines {
-					if s == section {
-						fmt.Printf("Headlines for %s already marked complete\n", section)
-						return nil
-					}
-				}
-				bp.Headlines = append(bp.Headlines, section)
-				fmt.Printf("Marked headlines for %s complete\n", section)
-
-			default:
-				return fmt.Errorf("unknown stage: %s (use categorization, consolidation, or headlines)", stage)
-			}
-
-			return saveBatchProgress(dir, bp)
-		})
+		return markBatchDoneInDir(dir, stage, offset, limit, section)
 	},
+}
+
+// markBatchDoneInDir marks a batch as complete in the given workspace directory
+func markBatchDoneInDir(dir, stage string, offset, limit int, section string) error {
+	return withLock(dir, "batches.lock", func() error {
+		bp, err := loadBatchProgress(dir)
+		if err != nil {
+			return err
+		}
+
+		switch stage {
+		case "categorization":
+			if limit == 0 {
+				return fmt.Errorf("--limit is required for categorization stage")
+			}
+			// Check if already recorded
+			for _, b := range bp.Categorization {
+				if b.Offset == offset && b.Limit == limit {
+					fmt.Printf("Batch %d-%d already marked complete\n", offset, offset+limit)
+					return nil
+				}
+			}
+			bp.Categorization = append(bp.Categorization, CatBatch{Offset: offset, Limit: limit})
+			fmt.Printf("Marked categorization batch %d-%d complete\n", offset, offset+limit)
+
+		case "consolidation":
+			if section == "" {
+				return fmt.Errorf("--section is required for consolidation stage")
+			}
+			for _, s := range bp.Consolidation {
+				if s == section {
+					fmt.Printf("Consolidation for %s already marked complete\n", section)
+					return nil
+				}
+			}
+			bp.Consolidation = append(bp.Consolidation, section)
+			fmt.Printf("Marked consolidation for %s complete\n", section)
+
+		case "headlines":
+			if section == "" {
+				return fmt.Errorf("--section is required for headlines stage")
+			}
+			for _, s := range bp.Headlines {
+				if s == section {
+					fmt.Printf("Headlines for %s already marked complete\n", section)
+					return nil
+				}
+			}
+			bp.Headlines = append(bp.Headlines, section)
+			fmt.Printf("Marked headlines for %s complete\n", section)
+
+		default:
+			return fmt.Errorf("unknown stage: %s (use categorization, consolidation, or headlines)", stage)
+		}
+
+		return saveBatchProgress(dir, bp)
+	})
 }
 
 func init() {

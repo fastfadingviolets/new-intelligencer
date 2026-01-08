@@ -7,7 +7,7 @@ bin:
 	mkdir -p bin
 
 test:
-	cd plumbing/digest && go test -v ./...
+	cd plumbing/digest && go test -race -count=3 -v ./...
 
 clean:
 	rm -rf bin/
