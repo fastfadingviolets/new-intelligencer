@@ -1028,8 +1028,8 @@ func writeHeadlineStory(html *strings.Builder, group *StoryGroup, postIndex map[
 		html.WriteString(fmt.Sprintf("<p>%s</p>\n", escapeHTML(group.Summary)))
 	}
 
-	// Always show posts expanded
-	html.WriteString(fmt.Sprintf("<details open><summary>%d posts in story</summary>\n", len(group.PostRkeys)))
+	// Start collapsed - user can expand to see posts
+	html.WriteString(fmt.Sprintf("<details><summary>%d posts in story</summary>\n", len(group.PostRkeys)))
 	for _, rkey := range group.PostRkeys {
 		if p, ok := postIndex[rkey]; ok {
 			writeStoryPost(html, p)
@@ -1050,8 +1050,8 @@ func writeGridStory(html *strings.Builder, group *StoryGroup, postIndex map[stri
 	}
 	html.WriteString(fmt.Sprintf("<h4><a href=\"%s\">%s</a></h4>\n", escapeHTML(postURL(post)), escapeHTML(headline)))
 
-	// Always show posts expanded
-	html.WriteString(fmt.Sprintf("<details open><summary>%d posts</summary>\n", len(group.PostRkeys)))
+	// Start collapsed - user can expand to see posts
+	html.WriteString(fmt.Sprintf("<details><summary>%d posts</summary>\n", len(group.PostRkeys)))
 	for _, rkey := range group.PostRkeys {
 		if p, ok := postIndex[rkey]; ok {
 			writeStoryPost(html, p)
