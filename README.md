@@ -1,10 +1,17 @@
 # Bluesky Daily Digest Agent
 
-A Claude Code agent that summarizes your Bluesky feed and produces a daily report.
+A multi-agent system that creates newspaper-style daily digests from your Bluesky timeline.
 
 ## What This Does
 
-This agent fetches your Bluesky timeline from the last 24 hours and provides a concise summary including post counts, top contributors, and interesting patterns.
+This project uses Claude Code agents to transform your Bluesky feed into a curated daily digest:
+
+1. **Fetches** posts from your timeline (last 24 hours)
+2. **Categorizes** posts into newspaper sections (tech, sports, music, politics, etc.)
+3. **Consolidates** related posts into story groups
+4. **Selects** top stories for the front page
+5. **Generates** headlines and priority rankings
+6. **Compiles** everything into markdown and HTML digests
 
 ## Prerequisites
 
@@ -17,7 +24,7 @@ This agent fetches your Bluesky timeline from the last 24 hours and provides a c
 ### 1. Generate a Bluesky App Password
 
 1. Open the Bluesky app
-2. Go to **Settings � Privacy and Security � App Passwords**
+2. Go to **Settings → Privacy and Security → App Passwords**
 3. Click **"Add App Password"**
 4. Name it "Daily Digest Agent"
 5. Save the generated password (format: `xxxx-xxxx-xxxx-xxxx`)
@@ -34,10 +41,10 @@ The first time you run the agent, macOS will prompt you to allow access. Click *
 ### 3. Build the Tool
 
 ```bash
-make
+make build
 ```
 
-This compiles the `bsky` binary to `./bin/bsky`.
+This compiles the `digest` binary to `./bin/digest`.
 
 ## Usage
 
@@ -47,37 +54,89 @@ This compiles the `bsky` binary to `./bin/bsky`.
 ./run.sh
 ```
 
-This runs the agent with the default prompt: "build my report for today".
+This runs the full digest workflow with Claude Code agents.
 
-### Custom Prompt
+### Key Commands
 
 ```bash
-./run.sh "analyze the last 12 hours"
+# Initialize a new workspace for today
+./bin/digest init
+
+# Fetch posts from your timeline
+./bin/digest fetch
+
+# Check workflow progress
+./bin/digest status
+
+# Compile the final digest
+./bin/digest compile
 ```
 
-### Direct Usage with Claude Code
+### Using Claude Code Agents
 
 ```bash
 source env.sh
-claude "Use bsky-digest subagent: your prompt here"
+claude "Use bsky-section-categorizer to process posts"
 ```
 
-## How It Works
+## Workflow Pipeline
 
-1. `env.sh` loads your Bluesky credentials from macOS Keychain
-2. Claude Code invokes the `bsky-digest` persistent subagent (configured in `.claude/agents/bsky-digest.md`)
-3. The subagent runs `./bin/bsky fetch-feed` to fetch your timeline
-4. Claude analyzes the JSON output and generates a summary
-5. Results are presented in a concise format
+The digest creation follows a 6-stage pipeline:
 
-## Subagent System
+```
+FETCH → CATEGORIZE → CONSOLIDATE → FRONT PAGE → HEADLINES → COMPILE
+```
 
-This project uses Claude Code's persistent subagent system. The `bsky-digest` subagent is configured with:
-- **Tools**: Bash (for running the feed fetcher)
-- **Model**: Haiku (fast and efficient for digest generation)
-- **System Prompt**: Detailed instructions for analyzing feed data and formatting output
+| Stage | Agent | Description |
+|-------|-------|-------------|
+| Fetch | CLI | Pull posts from Bluesky API |
+| Categorize | `bsky-section-categorizer` | Sort posts into sections |
+| Consolidate | `bsky-consolidator` | Group related posts into stories |
+| Front Page | `bsky-front-page-selector` | Pick 4-6 top stories |
+| Headlines | `bsky-headline-editor` | Set headlines and priorities |
+| Compile | CLI | Generate markdown and HTML |
 
-The subagent configuration is stored in `.claude/agents/bsky-digest.md` and is automatically available to Claude Code.
+## Agent Architecture
+
+Four specialized Claude Code agents orchestrate the workflow:
+
+| Agent | Role |
+|-------|------|
+| **bsky-section-categorizer** | Evaluates posts and assigns them to newspaper sections |
+| **bsky-consolidator** | Groups posts about the same story/event together |
+| **bsky-front-page-selector** | Curates the most important stories for the front page |
+| **bsky-headline-editor** | Sets headlines, priorities, and story roles |
+
+Agent configurations are in `.claude/agents/`.
+
+## Output Formats
+
+The `compile` command generates two output files in the workspace directory:
+
+- **`digest.md`** - Markdown format with sections, headlines, and post links
+- **`digest.html`** - HTML rendering with embedded media and external link cards
+
+## Development
+
+### Build
+
+```bash
+make build
+```
+
+### Test
+
+```bash
+make test
+```
+
+Runs 112 tests with Go's race detector enabled (`-race -count=3`).
+
+### Clean
+
+```bash
+make clean
+```
 
 ## Security
 
