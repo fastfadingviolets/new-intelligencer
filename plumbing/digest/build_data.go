@@ -113,7 +113,7 @@ func BuildDigestData(
 	}
 
 	return &DigestData{
-		Title:           "The Daily Digest",
+		Title:           "The New Intelligencer",
 		Date:            formatDigestDate(config.CreatedAt),
 		Sections:        sidebarSections,
 		FrontPage:       frontPage,
