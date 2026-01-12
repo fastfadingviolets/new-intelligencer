@@ -395,10 +395,8 @@ var showCategoryCmd = &cobra.Command{
 // digest compile
 var compileCmd = &cobra.Command{
 	Use:   "compile",
-	Short: "Generate markdown and HTML digest",
+	Short: "Generate HTML digest",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		output, _ := cmd.Flags().GetString("output")
-
 		wd, err := LoadWorkspace(workspaceDir)
 		if err != nil {
 			dir, _ := GetWorkspaceDir()
@@ -463,27 +461,11 @@ var compileCmd = &cobra.Command{
 				joinStrings(frontPageHeadlines, "\n  - "))
 		}
 
-		// Generate markdown digest
-		markdown, err := CompileDigest(wd.Posts, wd.Categories, storyGroups, newspaperConfig, contentPicks, config)
-		if err != nil {
-			return err
-		}
-
 		// Generate HTML digest
 		htmlContent, err := CompileDigestHTML(wd.Posts, wd.Categories, storyGroups, newspaperConfig, contentPicks, config)
 		if err != nil {
 			return err
 		}
-
-		// Write markdown
-		mdOutput := output
-		if mdOutput == "" {
-			mdOutput = filepath.Join(wd.Dir, "digest.md")
-		}
-		if err := os.WriteFile(mdOutput, []byte(markdown), 0644); err != nil {
-			return err
-		}
-		fmt.Printf("Compiled markdown digest to %s\n", mdOutput)
 
 		// Write HTML
 		htmlOutput := filepath.Join(wd.Dir, "digest.html")
@@ -1734,9 +1716,6 @@ func init() {
 
 	// list-categories flags
 	listCategoriesCmd.Flags().Bool("with-counts", true, "Show post counts")
-
-	// compile flags
-	compileCmd.Flags().String("output", "", "Output file (default: workspace/digest.md)")
 
 	// move-story flags
 	moveStoryCmd.Flags().String("to", "", "Destination section ID (required)")

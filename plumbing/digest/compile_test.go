@@ -370,24 +370,6 @@ func TestTruncateText(t *testing.T) {
 // Smoke Tests (Non-Brittle)
 // ============================================
 
-func TestCompileDigest_ReturnsNonEmpty(t *testing.T) {
-	posts := []Post{{Rkey: "test1", Text: "Test post", Author: Author{Handle: "test.bsky.social"}}}
-	cats := Categories{"tech": {Visible: []string{"test1"}}}
-	storyGroups := StoryGroups{
-		"sg1": {ID: "sg1", SectionID: "tech", PrimaryRkey: "test1", Headline: "Test Story", Priority: 1},
-	}
-	newspaperConfig := NewspaperConfig{
-		Sections: []NewspaperSection{{ID: "tech", Name: "Technology"}},
-	}
-	contentPicks := AllContentPicks{}
-	config := Config{CreatedAt: time.Now()}
-
-	result, err := CompileDigest(posts, cats, storyGroups, newspaperConfig, contentPicks, config)
-
-	require.NoError(t, err)
-	assert.NotEmpty(t, result)
-}
-
 func TestCompileDigestHTML_ReturnsNonEmpty(t *testing.T) {
 	posts := []Post{{Rkey: "test1", Text: "Test post", Author: Author{Handle: "test.bsky.social"}}}
 	cats := Categories{"tech": {Visible: []string{"test1"}}}
@@ -404,20 +386,6 @@ func TestCompileDigestHTML_ReturnsNonEmpty(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.NotEmpty(t, result)
-}
-
-func TestCompileDigest_HandlesEmptyInput(t *testing.T) {
-	posts := []Post{}
-	cats := Categories{}
-	storyGroups := StoryGroups{}
-	newspaperConfig := NewspaperConfig{Sections: []NewspaperSection{}}
-	contentPicks := AllContentPicks{}
-	config := Config{CreatedAt: time.Now()}
-
-	result, err := CompileDigest(posts, cats, storyGroups, newspaperConfig, contentPicks, config)
-
-	require.NoError(t, err)
-	assert.NotEmpty(t, result) // Should still have header
 }
 
 func TestCompileDigestHTML_HandlesEmptyInput(t *testing.T) {
