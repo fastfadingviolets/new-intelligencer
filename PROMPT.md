@@ -11,17 +11,17 @@ Then invoke subagents in sequence.
 
 **IMPORTANT:** Always spawn agents with `run_in_background: true`. This keeps agent outputs out of your context.
 
-## Checking Stage Completion
+## Waiting for Stage Completion
 
-Each agent marks itself done when finished. Use `./bin/digest status` to check progress:
+Each agent marks itself done when finished. Use `--wait-for` to block until a stage completes:
 
+```bash
+./bin/digest status --wait-for categorization   # blocks until all batches done
+./bin/digest status --wait-for consolidation    # blocks until all sections consolidated
+./bin/digest status --wait-for headlines        # blocks until all headlines set
 ```
-Categorization: 12/12 batches complete
-Consolidation: 6/8 sections complete (missing: sports, film)
-Headlines: 4/8 sections complete (missing: sports, film, music, politics-us)
-```
 
-**Wait until each stage shows N/N complete before proceeding to the next step.**
+This prints progress updates and returns when the stage is complete (or errors on timeout).
 
 ## Step 1: Parallel Batch Categorization
 
@@ -33,7 +33,11 @@ Headlines: 4/8 sections complete (missing: sports, film, music, politics-us)
    - Agent 3: `--offset 200 --limit 100`
    - etc.
 
-Each agent categorizes its batch into all sections (except front-page). Wait for `./bin/digest status` to show "Categorization: N/N batches complete" before proceeding.
+Each agent categorizes its batch into all sections (except front-page). After spawning all agents, run:
+
+```bash
+./bin/digest status --wait-for categorization
+```
 
 ## Step 2: Story Consolidation
 
@@ -45,7 +49,11 @@ After all section categorizers complete, consolidate related posts into stories:
    - Groups related posts into story groups
    - Sets draft headlines (optional)
 
-Wait for `./bin/digest status` to show "Consolidation: N/N sections complete" before proceeding.
+After spawning all agents, run:
+
+```bash
+./bin/digest status --wait-for consolidation
+```
 
 ## Step 3: Front Page Selection
 
@@ -68,7 +76,11 @@ After front page is selected:
    - Sets headline and priority for EVERY story in that section
    - Verifies completion with `./bin/digest show-unprocessed <section-id>`
 
-Wait for `./bin/digest status` to show "Headlines: N/N sections complete" before proceeding.
+After spawning all agents, run:
+
+```bash
+./bin/digest status --wait-for headlines
+```
 
 ## Step 5: Compile
 

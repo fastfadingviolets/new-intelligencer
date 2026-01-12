@@ -7,8 +7,13 @@ import (
 )
 
 var (
-	version = "0.1.0"
+	version      = "0.1.0"
 	workspaceDir string // Global flag for workspace directory
+
+	// Status command flags
+	statusWaitFor  string
+	statusTimeout  int
+	statusInterval int
 )
 
 func main() {
@@ -56,4 +61,9 @@ func init() {
 	rootCmd.AddCommand(autoGroupRemainingCmd)
 	rootCmd.AddCommand(addToStoryCmd)
 	rootCmd.AddCommand(markBatchDoneCmd)
+
+	// Status command flags
+	statusCmd.Flags().StringVar(&statusWaitFor, "wait-for", "", "Block until stage completes (categorization|consolidation|headlines)")
+	statusCmd.Flags().IntVar(&statusTimeout, "timeout", 600, "Timeout in seconds when using --wait-for")
+	statusCmd.Flags().IntVar(&statusInterval, "interval", 5, "Poll interval in seconds when using --wait-for")
 }

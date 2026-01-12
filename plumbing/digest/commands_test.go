@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -290,4 +291,149 @@ func TestMarkBatchDone_Idempotent(t *testing.T) {
 	require.NoError(t, err)
 	// Should only have 1 entry, not 10
 	assert.Len(t, bp.Categorization, 1)
+}
+
+// Test 9: isStageComplete for categorization
+
+func TestIsStageComplete_Categorization(t *testing.T) {
+	dir := t.TempDir()
+	setupTestPosts(t, dir, 250) // 3 batches expected (ceil(250/100) = 3)
+	initTestBatchProgress(t, dir)
+
+	wd, err := LoadWorkspace(dir)
+	require.NoError(t, err)
+	bp, err := loadBatchProgress(dir)
+	require.NoError(t, err)
+
+	// No batches done yet
+	assert.False(t, isStageComplete("categorization", wd, bp))
+
+	// Mark 2 of 3 batches done
+	require.NoError(t, markBatchDoneInDir(dir, "categorization", 0, 100, ""))
+	require.NoError(t, markBatchDoneInDir(dir, "categorization", 100, 100, ""))
+	bp, _ = loadBatchProgress(dir)
+	assert.False(t, isStageComplete("categorization", wd, bp))
+
+	// Mark final batch done
+	require.NoError(t, markBatchDoneInDir(dir, "categorization", 200, 100, ""))
+	bp, _ = loadBatchProgress(dir)
+	assert.True(t, isStageComplete("categorization", wd, bp))
+}
+
+// Test 10: isStageComplete for consolidation
+
+func TestIsStageComplete_Consolidation(t *testing.T) {
+	dir := t.TempDir()
+	setupTestPosts(t, dir, 10)
+	initTestBatchProgress(t, dir)
+
+	// Setup categories with known sections
+	cats := Categories{
+		"tech":   CategoryData{Visible: []string{"rkey_001"}},
+		"sports": CategoryData{Visible: []string{"rkey_002"}},
+	}
+	require.NoError(t, SaveCategories(filepath.Join(dir, "categories.json"), cats))
+
+	wd, err := LoadWorkspace(dir)
+	require.NoError(t, err)
+	bp, err := loadBatchProgress(dir)
+	require.NoError(t, err)
+
+	// No sections consolidated
+	assert.False(t, isStageComplete("consolidation", wd, bp))
+
+	// Mark one section
+	require.NoError(t, markBatchDoneInDir(dir, "consolidation", 0, 0, "tech"))
+	bp, _ = loadBatchProgress(dir)
+	assert.False(t, isStageComplete("consolidation", wd, bp))
+
+	// Mark all sections
+	require.NoError(t, markBatchDoneInDir(dir, "consolidation", 0, 0, "sports"))
+	bp, _ = loadBatchProgress(dir)
+	assert.True(t, isStageComplete("consolidation", wd, bp))
+}
+
+// Test 11: isStageComplete for headlines
+
+func TestIsStageComplete_Headlines(t *testing.T) {
+	dir := t.TempDir()
+	setupTestPosts(t, dir, 10)
+	initTestBatchProgress(t, dir)
+
+	// Create story groups in two sections
+	storyGroups := StoryGroups{
+		"story1": StoryGroup{ID: "story1", SectionID: "tech", PostRkeys: []string{"rkey_001"}},
+		"story2": StoryGroup{ID: "story2", SectionID: "music", PostRkeys: []string{"rkey_002"}},
+	}
+	require.NoError(t, SaveStoryGroups(filepath.Join(dir, "story-groups.json"), storyGroups))
+
+	wd, err := LoadWorkspace(dir)
+	require.NoError(t, err)
+	bp, err := loadBatchProgress(dir)
+	require.NoError(t, err)
+
+	// No headlines done
+	assert.False(t, isStageComplete("headlines", wd, bp))
+
+	// Mark one section
+	require.NoError(t, markBatchDoneInDir(dir, "headlines", 0, 0, "tech"))
+	bp, _ = loadBatchProgress(dir)
+	assert.False(t, isStageComplete("headlines", wd, bp))
+
+	// Mark all sections
+	require.NoError(t, markBatchDoneInDir(dir, "headlines", 0, 0, "music"))
+	bp, _ = loadBatchProgress(dir)
+	assert.True(t, isStageComplete("headlines", wd, bp))
+}
+
+// Test 12: waitForStage timeout
+
+func TestWaitForStage_Timeout(t *testing.T) {
+	dir := t.TempDir()
+	setupTestPosts(t, dir, 100)
+	initTestBatchProgress(t, dir)
+
+	// Should timeout (200ms) since no batches are marked done
+	err := waitForStage(dir, "categorization", 200*time.Millisecond, 50*time.Millisecond)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "timeout")
+}
+
+// Test 13: waitForStage immediate completion
+
+func TestWaitForStage_AlreadyComplete(t *testing.T) {
+	dir := t.TempDir()
+	setupTestPosts(t, dir, 50) // 1 batch
+	initTestBatchProgress(t, dir)
+
+	// Pre-mark batch as done
+	require.NoError(t, markBatchDoneInDir(dir, "categorization", 0, 100, ""))
+
+	// Should return immediately
+	err := waitForStage(dir, "categorization", 1*time.Second, 100*time.Millisecond)
+	assert.NoError(t, err)
+}
+
+// Test 14: getStageProgress output
+
+func TestGetStageProgress(t *testing.T) {
+	dir := t.TempDir()
+	setupTestPosts(t, dir, 250) // 3 batches
+	initTestBatchProgress(t, dir)
+
+	wd, err := LoadWorkspace(dir)
+	require.NoError(t, err)
+	bp, err := loadBatchProgress(dir)
+	require.NoError(t, err)
+
+	// Initially 0/3
+	progress := getStageProgress("categorization", wd, bp)
+	assert.Equal(t, "0/3 batches complete", progress)
+
+	// After 2 batches
+	markBatchDoneInDir(dir, "categorization", 0, 100, "")
+	markBatchDoneInDir(dir, "categorization", 100, 100, "")
+	bp, _ = loadBatchProgress(dir)
+	progress = getStageProgress("categorization", wd, bp)
+	assert.Equal(t, "2/3 batches complete", progress)
 }

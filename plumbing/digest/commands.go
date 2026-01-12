@@ -496,18 +496,175 @@ var compileCmd = &cobra.Command{
 	},
 }
 
+// getSectionsWithPosts returns sections that have categorized posts (excluding front-page)
+func getSectionsWithPosts(cats Categories) []string {
+	sections := []string{}
+	for cat := range cats {
+		if cat != "front-page" {
+			catData := cats[cat]
+			if len(catData.Visible) > 0 || len(catData.Hidden) > 0 {
+				sections = append(sections, cat)
+			}
+		}
+	}
+	sort.Strings(sections)
+	return sections
+}
+
+// getSectionsWithStories returns sections that have story groups
+func getSectionsWithStories(storyGroups StoryGroups) []string {
+	sectionsMap := make(map[string]bool)
+	for _, story := range storyGroups {
+		sectionsMap[story.SectionID] = true
+	}
+	sections := []string{}
+	for s := range sectionsMap {
+		sections = append(sections, s)
+	}
+	sort.Strings(sections)
+	return sections
+}
+
+// isStageComplete checks if a workflow stage is complete
+func isStageComplete(stage string, wd *WorkspaceData, bp *BatchProgress) bool {
+	if bp == nil {
+		return false
+	}
+	switch stage {
+	case "categorization":
+		expected := (len(wd.Posts) + 99) / 100 // ceil(posts/100)
+		return len(bp.Categorization) >= expected
+	case "consolidation":
+		sections := getSectionsWithPosts(wd.Categories)
+		if len(sections) == 0 {
+			return true // No sections to consolidate
+		}
+		for _, s := range sections {
+			found := false
+			for _, c := range bp.Consolidation {
+				if c == s {
+					found = true
+					break
+				}
+			}
+			if !found {
+				return false
+			}
+		}
+		return true
+	case "headlines":
+		storyGroups, _ := LoadStoryGroups(filepath.Join(wd.Dir, "story-groups.json"))
+		sections := getSectionsWithStories(storyGroups)
+		if len(sections) == 0 {
+			return true // No sections with stories
+		}
+		for _, s := range sections {
+			found := false
+			for _, h := range bp.Headlines {
+				if h == s {
+					found = true
+					break
+				}
+			}
+			if !found {
+				return false
+			}
+		}
+		return true
+	}
+	return false
+}
+
+// getStageProgress returns a progress string like "5/12 batches complete"
+func getStageProgress(stage string, wd *WorkspaceData, bp *BatchProgress) string {
+	if bp == nil {
+		return "0/? (no batch progress file)"
+	}
+	switch stage {
+	case "categorization":
+		expected := (len(wd.Posts) + 99) / 100
+		completed := len(bp.Categorization)
+		return fmt.Sprintf("%d/%d batches complete", completed, expected)
+	case "consolidation":
+		sections := getSectionsWithPosts(wd.Categories)
+		completed := len(bp.Consolidation)
+		return fmt.Sprintf("%d/%d sections complete", completed, len(sections))
+	case "headlines":
+		storyGroups, _ := LoadStoryGroups(filepath.Join(wd.Dir, "story-groups.json"))
+		sections := getSectionsWithStories(storyGroups)
+		completed := len(bp.Headlines)
+		return fmt.Sprintf("%d/%d sections complete", completed, len(sections))
+	}
+	return "unknown stage"
+}
+
+// waitForStage blocks until the stage is complete or timeout
+func waitForStage(dir string, stage string, timeout time.Duration, interval time.Duration) error {
+	deadline := time.Now().Add(timeout)
+	lastProgress := ""
+
+	fmt.Printf("Waiting for %s...\n", stage)
+
+	for {
+		// Reload workspace data each iteration to get fresh state
+		wd, err := LoadWorkspace(dir)
+		if err != nil {
+			return fmt.Errorf("loading workspace: %w", err)
+		}
+
+		bp, _ := loadBatchProgress(dir)
+
+		progress := getStageProgress(stage, wd, bp)
+		if progress != lastProgress {
+			fmt.Printf("  %s\n", progress)
+			lastProgress = progress
+		}
+
+		if isStageComplete(stage, wd, bp) {
+			return nil
+		}
+
+		if time.Now().After(deadline) {
+			return fmt.Errorf("timeout waiting for %s to complete", stage)
+		}
+
+		time.Sleep(interval)
+	}
+}
+
 // digest status
 var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "Show workspace status",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		wd, err := LoadWorkspace(workspaceDir)
-		if err != nil {
-			dir, _ := GetWorkspaceDir()
-			wd, err = LoadWorkspace(dir)
+		dir := workspaceDir
+		if dir == "" {
+			var err error
+			dir, err = GetWorkspaceDir()
 			if err != nil {
 				return err
 			}
+		}
+
+		// Handle --wait-for flag
+		if statusWaitFor != "" {
+			validStages := map[string]bool{
+				"categorization": true,
+				"consolidation":  true,
+				"headlines":      true,
+			}
+			if !validStages[statusWaitFor] {
+				return fmt.Errorf("invalid stage %q: must be categorization, consolidation, or headlines", statusWaitFor)
+			}
+
+			timeout := time.Duration(statusTimeout) * time.Second
+			interval := time.Duration(statusInterval) * time.Second
+			return waitForStage(dir, statusWaitFor, timeout, interval)
+		}
+
+		wd, err := LoadWorkspace(dir)
+		if err != nil {
+			return err
 		}
 
 		fmt.Printf("Digest: %s/\n\n", wd.Dir)
