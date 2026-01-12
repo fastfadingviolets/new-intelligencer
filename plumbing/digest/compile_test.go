@@ -1,12 +1,26 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
+	"os"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+// loadConfig loads a Config from a JSON file
+func loadConfig(path string) (Config, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return Config{}, err
+	}
+	var config Config
+	err = json.Unmarshal(data, &config)
+	return config, err
+}
 
 // ============================================
 // Sorting Tests
@@ -418,4 +432,54 @@ func TestCompileDigestHTML_HandlesEmptyInput(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.NotEmpty(t, result) // Should still have HTML structure
+}
+
+// ============================================
+// Golden File Tests
+// ============================================
+
+var updateGolden = flag.Bool("update-golden", false, "Update golden files")
+
+func TestCompileDigestHTML_GoldenFile(t *testing.T) {
+	// Load fixtures
+	posts, err := LoadPosts("testdata/fixtures/posts.json")
+	require.NoError(t, err, "Failed to load posts fixture")
+
+	cats, err := LoadCategories("testdata/fixtures/categories.json")
+	require.NoError(t, err, "Failed to load categories fixture")
+
+	storyGroups, err := LoadStoryGroups("testdata/fixtures/story-groups.json")
+	require.NoError(t, err, "Failed to load story-groups fixture")
+
+	newspaperConfig, err := LoadNewspaperConfig("testdata/fixtures/newspaper.json")
+	require.NoError(t, err, "Failed to load newspaper fixture")
+
+	config, err := loadConfig("testdata/fixtures/config.json")
+	require.NoError(t, err, "Failed to load config fixture")
+
+	// No content picks for this test
+	contentPicks := AllContentPicks{}
+
+	// Generate HTML
+	got, err := CompileDigestHTML(posts, cats, storyGroups, newspaperConfig, contentPicks, config)
+	require.NoError(t, err, "CompileDigestHTML failed")
+
+	goldenPath := "testdata/golden/digest.html"
+
+	if *updateGolden {
+		err := os.WriteFile(goldenPath, []byte(got), 0644)
+		require.NoError(t, err, "Failed to update golden file")
+		t.Log("Updated golden file")
+		return
+	}
+
+	golden, err := os.ReadFile(goldenPath)
+	require.NoError(t, err, "Failed to read golden file")
+
+	if got != string(golden) {
+		// Write actual output for debugging
+		actualPath := "testdata/golden/digest.html.actual"
+		os.WriteFile(actualPath, []byte(got), 0644)
+		t.Errorf("Output does not match golden file.\nActual output written to: %s\nRun with -update-golden to update.", actualPath)
+	}
 }

@@ -1,0 +1,19 @@
+{
+  "sections": [
+    {"id": "front-page", "name": "Front Page", "type": "news", "description": "The day's most important stories", "max_stories": 5},
+    {"id": "tech", "name": "Technology", "type": "news", "description": "Information technology industry news", "max_stories": 5},
+    {"id": "finance", "name": "Finance", "type": "news", "description": "Finance industry news", "max_stories": 5},
+    {"id": "sports", "name": "Sports", "type": "news", "description": "Sports coverage. Primarily soccer.", "max_stories": 4},
+    {"id": "film", "name": "Film", "type": "news", "description": "Film coverage and reviews", "max_stories": 4},
+    {"id": "music", "name": "Music", "type": "news", "description": "Music coverage, prioritizing new releases", "max_stories": 4},
+    {"id": "literature", "name": "Literature", "type": "news", "description": "Book reviews and publishing industry news", "max_stories": 4},
+
+    {"id": "politics-ca", "name": "Canadian Politics", "type": "news", "description": "Canadian federal politics, national news", "max_stories": 4},
+    {"id": "local-news", "name": "Toronto News", "type": "news", "description": "Local Toronto and Greater Toronto Area (GTA) news. NOT New York, NOT other cities.", "max_stories": 4},
+    {"id": "politics-us", "name": "US Politics", "type": "news", "description": "American politics and US national news", "max_stories": 4},
+    {"id": "geopolitics", "name": "Geopolitics", "type": "news", "description": "Global politics, international news", "max_stories": 4},
+
+    {"id": "fashion", "name": "Fashion", "type": "content", "description": "Images of outfits and objects", "max_stories": 5},
+    {"id": "vibes", "name": "Vibes & Shitposts", "type": "content", "description": "One-liners, humorous remarks, witty observations", "max_stories": 3}
+  ]
+}

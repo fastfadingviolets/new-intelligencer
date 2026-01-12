@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Digest - 12 January 2026</title>
+<style>
+:root {
+  --bg: #f5f1e8;
+  --text: #1a1a1a;
+  --muted: #555;
+  --border: #d4cfc4;
+  --accent: #8b0000;
+  --section-bg: #ece7db;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  max-width: min(1200px, 90vw);
+  margin: 0 auto;
+  padding: clamp(1rem, 2vw, 3rem);
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+}
+h1 {
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  text-align: center;
+  border-bottom: 3px double var(--text);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; }
+
+/* Section headers - distinctive */
+.section > summary { list-style: none; cursor: pointer; }
+.section > summary::-webkit-details-marker { display: none; }
+.section > summary h2 {
+  text-align: center;
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: var(--section-bg);
+  padding: 0.75rem 1rem;
+  margin: 2rem 0 1.5rem;
+  border-top: 3px double var(--border);
+  border-bottom: 3px double var(--border);
+}
+.section > summary h2::after { content: " ▼"; font-size: 0.7em; color: var(--muted); }
+.section:not([open]) > summary h2::after { content: " ▶"; }
+
+/* Headline story - full width, prominent */
+.headline-story { margin-bottom: 1.5rem; }
+.headline-story h3 {
+  font-size: clamp(1.3rem, 1rem + 1vw, 1.8rem);
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+.headline-story h3 a { color: var(--text); }
+.headline-story h3 a:hover { color: var(--accent); }
+
+/* Stories grid - 2 columns */
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1rem, 2vw, 2rem) clamp(1.5rem, 3vw, 3rem);
+  margin-bottom: 1.5rem;
+}
+.story { border-top: 1px solid var(--border); padding-top: 0.75rem; }
+.story h4 {
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.3rem);
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+.story h4 a { color: var(--text); }
+.story h4 a:hover { color: var(--accent); }
+
+/* Expanded post list */
+.story details, .headline-story details { margin-top: 0.25rem; }
+.story details[open] summary, .headline-story details[open] summary { margin-bottom: 0.5rem; }
+.story summary, .headline-story summary { font-size: 0.85em; color: var(--muted); cursor: pointer; list-style: none; }
+.story summary::-webkit-details-marker, .headline-story summary::-webkit-details-marker { display: none; }
+.story summary::before, .headline-story summary::before { content: "▶ "; font-size: 0.8em; }
+.story details[open] summary::before, .headline-story details[open] summary::before { content: "▼ "; }
+.post { margin: 0.5rem 0; padding-left: 0.75rem; border-left: 2px solid var(--border); }
+.post .author { color: var(--accent); }
+.post .text { color: var(--text); margin: 0.25rem 0; }
+.post .meta { color: var(--muted); font-size: 0.85em; }
+
+/* From the Feed section */
+.content-break { margin: 2rem 0; padding: 1rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.content-break-label { font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; }
+
+/* Feed card - used everywhere for "From the Feed" posts */
+.feed-card {
+  background: var(--section-bg);
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+.feed-card .label {
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.feed-card .author { font-weight: bold; }
+.feed-card .text { margin: 0.25rem 0; }
+.feed-card .meta { color: var(--muted); font-size: 0.85em; }
+.feed-card .images img { max-width: 100%; max-height: 150px; margin: 0.5rem 0; cursor: pointer; }
+
+/* Lightbox */
+.lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
+.lightbox-close { position: absolute; top: 1rem; right: 1rem; color: white; font-size: 2rem; cursor: pointer; background: none; border: none; padding: 0.5rem; }
+.lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); color: white; font-size: 3rem; cursor: pointer; background: none; border: none; padding: 1rem; opacity: 0.7; }
+.lightbox-nav:hover { opacity: 1; }
+.lightbox-nav.prev { left: 1rem; }
+.lightbox-nav.next { right: 1rem; }
+.lightbox-nav:disabled { opacity: 0.2; cursor: default; }
+.lightbox-counter { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); color: white; font-size: 0.9rem; }
+.images img { cursor: pointer; }
+
+/* Link cards */
+.link-card { display: flex; gap: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 0.5rem 0; text-decoration: none; color: inherit; }
+.link-card:hover { border-color: var(--accent); }
+.link-card img { width: 100px; height: 100px; object-fit: cover; flex-shrink: 0; }
+.link-card .link-info { padding: 0.5rem; min-width: 0; }
+.link-card .link-title { font-weight: bold; font-size: 0.9em; color: var(--text); }
+.link-card .link-desc { font-size: 0.85em; color: var(--muted); margin: 0.25rem 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.link-card .link-domain { font-size: 0.75em; color: var(--muted); }
+
+/* Thread replies */
+.thread-replies { margin-top: 0.5rem; border-left: 2px solid var(--border); padding-left: 0.75rem; margin-left: 0.5rem; }
+.thread-replies summary { font-size: 0.85em; color: var(--muted); cursor: pointer; margin-bottom: 0.5rem; }
+.thread-reply { margin: 0.75rem 0; padding: 0.5rem; background: var(--bg); border-radius: 4px; }
+.thread-reply .author { color: var(--accent); font-size: 0.9em; }
+.thread-reply .text { margin: 0.25rem 0; font-size: 0.95em; }
+.thread-reply .meta { color: var(--muted); font-size: 0.8em; }
+.thread-reply .images img { max-width: 100%; max-height: 120px; margin: 0.25rem 0; cursor: pointer; }
+
+/* Sidebar navigation - large screens (fixed left) */
+.sidebar {
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 180px;
+  z-index: 100;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  padding: 1rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar li { margin: 0; }
+.sidebar a {
+  display: block;
+  padding: 10px 16px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar a:hover { color: var(--text); border-left-color: var(--border); text-decoration: none; background: var(--section-bg); }
+.sidebar a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 600; background: var(--section-bg); }
+
+/* Sidebar - medium/small screens (sticky top bar) */
+@media (max-width: 1500px) {
+  .sidebar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    border-radius: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: var(--section-bg);
+  }
+  .sidebar ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
+    padding: 0.5rem;
+  }
+  .sidebar li { margin: 0; }
+  .sidebar a {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 4px;
+  }
+  .sidebar a:hover { background: var(--bg); border-left: none; border-bottom-color: var(--border); }
+  .sidebar a.active { background: var(--bg); border-left: none; border-bottom-color: var(--accent); }
+}
+@media (max-width: 600px) {
+  .sidebar a { padding: 6px 8px; font-size: 0.75rem; }
+}
+
+@media (max-width: 600px) {
+  .stories-grid { grid-template-columns: 1fr; }
+}
+@media print { body { max-width: none; background: white; } }
+</style>
+</head>
+<body>
+<h1>The Daily Digest</h1>
+<p class="subtitle">12 January 2026</p>
+<nav class="sidebar">
+<ul>
+<li><a href="#section-front-page">Front Page</a></li>
+<li><a href="#section-tech">Technology</a></li>
+<li><a href="#section-finance">Finance</a></li>
+<li><a href="#section-sports">Sports</a></li>
+<li><a href="#section-film">Film</a></li>
+<li><a href="#section-music">Music</a></li>
+<li><a href="#section-literature">Literature</a></li>
+<li><a href="#section-politics-ca">Canadian Politics</a></li>
+<li><a href="#section-local-news">Toronto News</a></li>
+<li><a href="#section-politics-us">US Politics</a></li>
+<li><a href="#section-geopolitics">Geopolitics</a></li>
+</ul>
+</nav>
+<details class="section" id="section-front-page" open>
+<summary><h2>Front Page</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theguardian.com/post/3mc66agy4os27">Grateful Dead's Bob Weir Dies</a></h3>
+<details><summary>6 posts in story</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Bob Weir obituary</p>
+<a href="https://www.theguardian.com/music/2026/jan/11/bob-weir-obituary?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768155356" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreicw3kgcakyioqol6v57j3fjeivb527f33jsaqctinghqcb3mww4jm@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Bob Weir obituary</div>
+<div class="link-desc">One of the founding members of the Grateful Dead, brilliant guitarist and writer of many of the group’s key songs</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:37pm • ♥ 86 • <a href="https://bsky.app/profile/theguardian.com/post/3mc66agy4os27">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Bob Weir remained completely in touch with the Grateful Dead’s wild wonder. I’ll never forget playing with him | Aaron Dessner</p>
+<a href="https://www.theguardian.com/music/2026/jan/11/bob-weir-remained-completely-in-touch-with-the-grateful-deads-wild-wonder-ill-never-forget-playing-with-him?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768154188" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreigtmsi2zqf5ety5zzdpfxjem32l2mfdke72bsklhrxn5hwr5sh6cu@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Bob Weir remained completely in touch with the Grateful Dead’s wild wonder. I’ll never forget playing with him | Aaron Dessner</div>
+<div class="link-desc">The Dead were a formative band for the National. Getting to play with Bob felt like entering a portal into their myst...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:23pm • ♥ 92 • <a href="https://bsky.app/profile/theguardian.com/post/3mc65ht25wd2n">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Bob Weir was a songwriting powerhouse for the Grateful Dead – and the chief custodian of their legacy</p>
+<a href="https://www.theguardian.com/music/2026/jan/11/bob-weir-was-a-songwriting-powerhouse-for-the-grateful-dead-and-the-chief-custodian-of-their-legacy?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768146213" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreigfkiyg22kf2xjkul7p74bqw4653fuvzgglhfnkz7lepgp2niruvi@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Bob Weir was a songwriting powerhouse for the Grateful Dead – and the chief custodian of their legacy</div>
+<div class="link-desc">‘The Kid’s jazz-influenced rhythm guitar made him utterly integral to the Dead and his later collaborations solid...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:10pm • ♥ 92 • <a href="https://bsky.app/profile/theguardian.com/post/3mc64r3bofc24">View</a></p>
+</div>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">The rhythm guitarist and singer brought sophisticated playing, a breezy voice and a grand sonic vision to the band, whose legacy he celebrated in various groups for decades after its dissolution. on.wsj.com/4qgJlIp</p>
+<a href="https://on.wsj.com/4qgJlIp" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreianraja7veowg3gswrxkvcirtalkwb5ejiohskwomhdcidqgnjfcu@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Remembering Bob Weir, a Pioneering Member of the Grateful Dead</div>
+<div class="link-desc">The rhythm guitarist and singer brought sophisticated playing, a breezy voice and a grand sonic vision to the band, w...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 10:00pm • ♥ 18 • <a href="https://bsky.app/profile/wsj.com/post/3mc6jku7u6e2g">View</a></p>
+</div>
+<div class="post">
+<span class="author">@archive.org</span>
+<p class="text">Bob Weir gave us songs to sing and shows to remember. Relive decades of Grateful Dead live recordings in the Live Music Archive. 🌹💀 archive.org/details/Grat...</p>
+<a href="https://archive.org/details/GratefulDead" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Internet Archive: Digital Library of Free &amp; Borrowable Texts, Movies, Music &amp; Wayback Machine</div>
+<div class="link-domain">archive.org</div>
+</div>
+</a>
+<p class="meta">Jan 11, 11:44pm • ♥ 389 • <a href="https://bsky.app/profile/archive.org/post/3mc6pfpdcik2j">View</a></p>
+</div>
+<div class="post">
+<span class="author">@stereogum.com</span>
+<p class="text">The Grateful Dead’s Mickey Hart has paid tribute to his late bandmate Bob Weir. “We lived together, played together, and made music together that ended up changing the world,” he writes. “Still cannot believe he’s gone. I miss you so much already, dear friend.”
+
+stereogum.com/2484813/bob-...</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:r5qqbgz6n5huvcsvzzm6fsit/bafkreifybc3ufclnswc2su5rdkhwgfrmdtl45ltdgwbxk4inxvw6gcly44@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc74nfju2k22" data-idx="0" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:r5qqbgz6n5huvcsvzzm6fsit/bafkreihh63obfvorj5yklhkaataydy7dhezkywvrliiowo4xgkp2hmqht4@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc74nfju2k22" data-idx="1" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:r5qqbgz6n5huvcsvzzm6fsit/bafkreid7armpe2s73pywolbm7b7f374ywihexdpjfrndcfon6tzj5irpni@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc74nfju2k22" data-idx="2" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:r5qqbgz6n5huvcsvzzm6fsit/bafkreihx64ljryfzpbhbcjfdh2v2v6kbzlfevscscqah4dchdsprerjs7e@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc74nfju2k22" data-idx="3" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 3:41am • ♥ 51 • <a href="https://bsky.app/profile/stereogum.com/post/3mc74nfju2k22">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc6subk7ar23">DOJ Launches Criminal Investigation Into Fed Chair Powell</a></h4>
+<details><summary>13 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Breaking: The Fed received grand jury subpoenas from the DOJ that threatened a criminal indictment related to Powell’s testimony about the central bank’s renovations.</p>
+<a href="https://on.wsj.com/3NhR22s" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreidqdkjzbzt5jxqwpctl54sktqwj77v6expvaq6fo2yk5jr7uqblwu@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Federal Reserve Received Justice Department Subpoena Threatening Criminal Indictment</div>
+<div class="link-desc">Chair Powell said the investigation was a pretext as part of President Trump’s ongoing campaign to pressure the Fed...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 12:46am • ♥ 19 • <a href="https://bsky.app/profile/wsj.com/post/3mc6subk7ar23">View</a></p>
+</div>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">Federal Reserve Chair Jerome Powell said the US central bank had been served grand jury subpoenas from the Justice Department threatening a criminal indictment related to his June congressional testimony on ongoing renovations of the Fed’s headquarters. bloom.bg/4pzfBpa
+
+📷: Al Drago/Bloomberg</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreiaxjhj4ye3rtp4popwmhwrfnmybswgm27uobygamlskcjn4r5puca@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc6smbhbzk2e" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 12:41am • ♥ 150 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc6smbhbzk2e">View</a></p>
+</div>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">Federal Reserve Chair Jerome Powell said the US central bank had been served grand jury subpoenas from the Justice Department threatening a criminal indictment related to his June congressional testimony on renovations of the Fed’s headquarters</p>
+<a href="https://bloom.bg/4qgPyUJ" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreibzsc67ikjmahocdqmlccckhv6wqenu4hj7akmlzihq3a6xv3h77y@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Powell Says Justice Department Served Fed With Subpoenas</div>
+<div class="link-desc">Federal Reserve Chair Jerome Powell said the US central bank had been served grand jury subpoenas from the Justice De...</div>
+<div class="link-domain">bloom.bg</div>
+</div>
+</a>
+<p class="meta">Jan 12, 12:55am • ♥ 72 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc6tdsjd5y2w">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Central bank chair condemns 'intimidation' following grand jury subpoenas.</p>
+<a href="https://www.aljazeera.com/economy/2026/1/12/trump-administration-opens-criminal-probe-into-fed-chair-jerome-powell?utm_source=bluesky&amp;utm_medium=social&amp;utm_campaign=socialPulse" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreibydn4qj3ipfmzfciqekhtd3ugd447lq4qzbcq5p7bcgwja7lcifa@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Trump administration opens criminal probe into Fed Chair Jerome Powell</div>
+<div class="link-desc">Central bank chair condemns 'intimidation' following grand jury subpoenas.</div>
+<div class="link-domain">www.aljazeera.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:30am • ♥ 155 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc6vcbxek52l">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Dollar weakens after US prosecutors launch criminal investigation into Federal Reserve chair Jerome Powell – business live</p>
+<a href="https://www.theguardian.com/business/live/2026/jan/12/us-prosecutors-criminal-investigation-federal-reserve-chair-jerome-powell-dollar-stock-market-gold-bitcoin-business-live-news-updates?utm_source=dlvr.it&amp;utm_medium=bluesky&amp;CMP=bsky_gu" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreicggjmney7uewsi5eij54b2x5zwhgwpygbigt3umbcvbfipbbgzxy@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Dollar weakens after US prosecutors launch criminal investigation into Federal Reserve chair Jerome Powell – business live</div>
+<div class="link-desc">Rolling coverage of the latest economic and financial news
+
+
+ * 
+
+Justice department opens investigation into Jerome ...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 8:00am • ♥ 208 • <a href="https://bsky.app/profile/theguardian.com/post/3mc7l3rwd7z2t">View</a></p>
+</div>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">For years, Federal Reserve Chair Jerome Powell avoided fighting President Trump. An extraordinary two-minute response Sunday night shows how that’s over. 🔗 on.wsj.com/3YAx8lQ</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreihp3la2jyd5cw4efz6wzdjcgusxlbarvd2drsnpctj52n54srbugy@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mca7os56vq2u" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 2:08pm • ♥ 21 • <a href="https://bsky.app/profile/wsj.com/post/3mca7os56vq2u">View</a></p>
+</div>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">The criminal investigation into Federal Reserve Chair Jerome Powell isn’t ultimately about the Fed’s headquarters, or Powell, or even interest rates. It’s about power, writes Greg Ip.</p>
+<a href="https://on.wsj.com/3YBMUwJ" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreigx6ohooono3xsm3z7v62xcwcy4ssccoq2gz3godakqvc2cz434ga@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Trump’s Investigation of Powell Is Also a Warning to the Next Fed Chair</div>
+<div class="link-desc">The investigation reflects the lengths to which the president will go to control the central bank.</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 6:10am • ♥ 60 • <a href="https://bsky.app/profile/wsj.com/post/3mc7ey4wky72t">View</a></p>
+</div>
+<div class="post">
+<span class="author">@olufemiotaiwo.bsky.social</span>
+<p class="text">hi, political philosopher here! this is not funny, central banks only do this when they're in extreme distress</p>
+<a href="https://bsky.app/profile/federalreserve.gov/post/3mc6san2usk2g" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Federal Reserve (@federalreserve.gov)</div>
+<div class="link-desc">Video message from Federal Reserve Chair Jerome H. Powell: 
+www.youtube.com/watch?v=KckG...
+www.federalreserve.gov/ne...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:04am • ♥ 9456 • <a href="https://bsky.app/profile/olufemiotaiwo.bsky.social/post/3mc6tub3hsc2s">View</a></p>
+</div>
+<div class="post">
+<span class="author">@cthomasjamh.bsky.social</span>
+<p class="text">This is the sort of statement that was expected from every university president and law firm partner over the last year. That those statements weren’t made played a huge part in where we are now and people will remember.</p>
+<a href="https://bsky.app/profile/joshuajfriedman.com/post/3mc6tbztvgc25" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Joshua J. Friedman (@joshuajfriedman.com)</div>
+<div class="link-desc">Jerome Powell: &quot;This is about whether the Fed will be able to continue to set interest rates based on evidence and ec...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:45am • ♥ 17986 • <a href="https://bsky.app/profile/cthomasjamh.bsky.social/post/3mc6w5a3by22l">View</a></p>
+</div>
+<div class="post">
+<span class="author">@junlper.beer</span>
+<p class="text">they just created 1,000,000 jerome powells</p>
+<a href="https://bsky.app/profile/federalreserve.gov/post/3mc6san2usk2g" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Federal Reserve (@federalreserve.gov)</div>
+<div class="link-desc">Video message from Federal Reserve Chair Jerome H. Powell: 
+www.youtube.com/watch?v=KckG...
+www.federalreserve.gov/ne...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 12, 3:33am • ♥ 1408 • <a href="https://bsky.app/profile/junlper.beer/post/3mc747liokc2f">View</a></p>
+</div>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">Federal Housing Finance Agency Director Bill Pulte was a driving force behind the Trump administration’s decision to subpoena the Federal Reserve, sources say, intensifying pressure on the central bank as President Trump prepares to pick a new Fed chief</p>
+<a href="https://bloom.bg/3LuX5jI" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreifj6ztwq5hdllswjgvjsf3whixccleznp57zb4ftkjdg35yqfuyiq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Bill Pulte Seen as Key Instigator Behind Powell Subpoena</div>
+<div class="link-desc">Federal Housing Finance Agency Director Bill Pulte was a driving force behind the Trump administration’s decision t...</div>
+<div class="link-domain">bloom.bg</div>
+</div>
+</a>
+<p class="meta">Jan 12, 5:06am • ♥ 62 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc7bewu45n27">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theglobeandmail.com</span>
+<p class="text"></p>
+<a href="https://www.theglobeandmail.com/investing/markets/inside-the-market/market-news/article-premarket-wall-street-futures-drop-as-us-prosecutors-target-feds/?utm_source=dlvr.it&amp;utm_medium=bluesky" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:y3xrmnwvkvsq4tqcsgwch4na/bafkreigzqv5nm6effjopf6rjxhu4kere57klmbhnazokny7bgvi65tdd3i@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Premarket: Wall Street futures drop as U.S. prosecutors target Fed’s Powell</div>
+<div class="link-desc">U.S. dollar falls, gold jumps on news</div>
+<div class="link-domain">www.theglobeandmail.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 10:15am • ♥ 7 • <a href="https://bsky.app/profile/theglobeandmail.com/post/3mc7so2s5w42m">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theglobeandmail.com</span>
+<p class="text"></p>
+<a href="https://www.theglobeandmail.com/investing/markets/inside-the-market/article-before-the-bell-what-every-canadian-investor-needs-to-know-today-1390/?utm_source=dlvr.it&amp;utm_medium=bluesky" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:y3xrmnwvkvsq4tqcsgwch4na/bafkreifdpbqwfkbhszzvecrz4dmnj74wt2hqwcwxxouh6auqcbupmqkefe@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Before the Bell: What every Canadian investor needs to know today</div>
+<div class="link-desc">A look at Monday morning’s market action</div>
+<div class="link-domain">www.theglobeandmail.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 10:15am • ♥ 1 • <a href="https://bsky.app/profile/theglobeandmail.com/post/3mc7snzdy5e2c">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc6at4iiz52h">ICE Killing of Renee Good Sparks Minneapolis Protests</a></h4>
+<details><summary>13 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Renee Nicole Good lived in a community where residents by the thousands are using text alerts, whistles and Google Docs to shadow federal agents.</p>
+<a href="https://on.wsj.com/3YvPB2X" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreicrxgifgei7chuiuy6uktsijxtxzm7c7qqkadltipvkwv7lakduqm@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Inside Minneapolis’s Sprawling Network of ICE Watchers</div>
+<div class="link-desc">Renee Nicole Good lived in a community where residents by the thousands are using text alerts, whistles and Google do...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 7:23pm • ♥ 53 • <a href="https://bsky.app/profile/wsj.com/post/3mc6at4iiz52h">View</a></p>
+</div>
+<div class="post">
+<span class="author">@transmetropolitanr.bsky.social</span>
+<p class="text">it's absolutely wild that very few people have heard about the ICE wagon getting torched in pennsylvania 
+
+www.tiktok.com/@johan.a.dia...
+
+www.instagram.com/reel/DTTIjP0...</p>
+<a href="https://bsky.app/profile/lurgabe.bsky.social/post/3mc6na5pchc2t" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Lur Gabe (@lurgabe.bsky.social)</div>
+<div class="link-desc">Coctel Molotov al poder.</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 11, 11:15pm • ♥ 875 • <a href="https://bsky.app/profile/transmetropolitanr.bsky.social/post/3mc6nrmvvfs2l">View</a></p>
+</div>
+<div class="post">
+<span class="author">@winston.cc</span>
+<p class="text">Please understand this is happening in literally dozens of locations around the city simultaneously. If an ICE vehicle stops, community members materialize in seconds and do everything they can to stop the kidnappings. We are under siege and using every tool to fight back.</p>
+<a href="https://bsky.app/profile/gaykwon.bsky.social/post/3mc6cymkwuc24" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Street Sharks Explained 🇨🇺🇵🇸 (@gaykwon.bsky.social)</div>
+<div class="link-desc">430k of us vs. 2k of them, we're gonna win this
+
+Cedar &amp; 31st I think</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 11, 8:45pm • ♥ 3619 • <a href="https://bsky.app/profile/winston.cc/post/3mc6ff74h7k2m">View</a></p>
+</div>
+<div class="post">
+<span class="author">@50501movement.bsky.social</span>
+<p class="text">BREAKING REPORTS: Ice has blocked off an entire street and is going door to door in Minneapolis. This has been also reported by @veronicadelacruztv.bsky.social 
+
+ICE is not meant to be an occupying army! We demand #ICEOUTforGood!</p>
+<p class="meta">Jan 11, 10:22pm • ♥ 1775 • <a href="https://bsky.app/profile/50501movement.bsky.social/post/3mc6kt3qa5s2x">View</a></p>
+</div>
+<div class="post">
+<span class="author">@wired.com</span>
+<p class="text">Just days into 2026, the killing of 37-year-old Renee Nicole Good by a federal immigration officer in Minneapolis, Minnesota, has sparked protests around the US.
+
+If you’re planning to protest, here’s how to safeguard your digital security.</p>
+<a href="https://www.wired.com/story/how-to-protest-safely-surveillance-digital-privacy/" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:inz4fkbbp7ms3ixufw6xuvdi/bafkreibbyizbpo4jgfw7syjzovtkcxa2h7i62s23uu2typwdesygq2stne@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">How to Protest Safely in the Age of Surveillance</div>
+<div class="link-desc">Law enforcement has more tools than ever to track your movements and access your communications. Here’s how to prot...</div>
+<div class="link-domain">www.wired.com</div>
+</div>
+</a>
+<p class="meta">Jan 08, 6:25pm • ♥ 3772 • <a href="https://bsky.app/profile/wired.com/post/3mbwm5vbm7k2c">View</a></p>
+</div>
+<div class="post">
+<span class="author">@wired.com</span>
+<p class="text">Jonathan Ross told a federal court about his professional background, including “hundreds” of encounters with drivers during enforcement actions, according to testimony obtained by WIRED. 
+wrd.cm/4pGLEUg</p>
+<a href="https://www.wired.com/story/ice-agent-jonathan-ross-renee-good-shooting-firearms-trainer-testimony/" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:inz4fkbbp7ms3ixufw6xuvdi/bafkreidkwmiqkbywg7no7exwvtwpo5g3wpaxrlstkal2sfhgtfpfo77dna@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">ICE Agent Who Reportedly Shot Renee Good Was a Firearms Trainer, Per Testimony</div>
+<div class="link-desc">Jonathan Ross told a federal court in December about his professional background, including “hundreds” of encount...</div>
+<div class="link-domain">www.wired.com</div>
+</div>
+</a>
+<p class="meta">Jan 09, 3:59am • ♥ 383 • <a href="https://bsky.app/profile/wired.com/post/3mbxmbfgeni2n">View</a></p>
+</div>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">Fear, resistance and noise. What I saw in Minneapolis in the days after Renee Good was killed #Opinion</p>
+<a href="https://www.thestar.com/opinion/star-columnists/fear-resistance-and-noise-what-i-saw-in-minneapolis-in-the-days-after-renee-good/article_a52261ff-09f5-48d4-9290-6b49685e7a99.html" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:w5pxbmkjntxfw6mt4emennhv/bafkreihysdbgvfe4f4uxbbi7ij62pz4d3wx5s6aajxlsarnmsxql52a2ge@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Richard Warnica: Fear, resistance and noise. What I saw in Minneapolis in the days after Renee Good was killed</div>
+<div class="link-desc">Wednesday’s tragedy has raised the stakes for the thousands of Minnesotans who’ve been organizing against ICE thi...</div>
+<div class="link-domain">www.thestar.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:02pm • ♥ 3 • <a href="https://bsky.app/profile/thestar.com/post/3mca3z3mkys25">View</a></p>
+</div>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">ICE’s online posts and advertisements set a dangerous tone #Opinion</p>
+<a href="https://www.thestar.com/opinion/contributors/ices-online-posts-and-advertisements-set-a-dangerous-tone/article_77163d81-d616-46df-8731-0702cd864539.html" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:w5pxbmkjntxfw6mt4emennhv/bafkreigaoo4nohkfl3zdppmph2bmmsx7p5p3cygp5tif2bhbmxffqj65m4@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Éric Blais: ICE’s online posts and advertisements set a dangerous tone</div>
+<div class="link-desc">The posts borrow the esthetics of online subcultures — video-game bravado, action-movie machismo — to sell enforc...</div>
+<div class="link-domain">www.thestar.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:41pm • ♥ 4 • <a href="https://bsky.app/profile/thestar.com/post/3mca65ulg4c22">View</a></p>
+</div>
+<div class="post">
+<span class="author">@unraveledpress.com</span>
+<p class="text">Outside the Whipple building in Minneapolis—
+
+Feds just emerged and unleashed pepper spray on demonstrators for approaching the driveway, sprayed one man directly in the face repeatedly. Pepper balls. 
+
+Air is toxic, there were children out here in strollers. Reporters caught unprepared.</p>
+<p class="meta">Jan 11, 7:39pm • ♥ 2245 • <a href="https://bsky.app/profile/unraveledpress.com/post/3mc6bpxqzks2b">View</a></p>
+</div>
+<div class="post">
+<span class="author">@joshgondelman.bsky.social</span>
+<p class="text">&quot;It wasn't murder, and if you say it was murder we will kill you, which again will not be murder.&quot;</p>
+<a href="https://bsky.app/profile/atrupar.com/post/3mc5roxkysk2g" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Aaron Rupar (@atrupar.com)</div>
+<div class="link-desc">Homan: &quot;We gotta stop the hateful rhetoric. Saying this officer is a murderer is dangerous. It's just ridiculous. It'...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 11, 5:04pm • ♥ 12133 • <a href="https://bsky.app/profile/joshgondelman.bsky.social/post/3mc5yztk3cc2k">View</a></p>
+</div>
+<div class="post">
+<span class="author">@evangreer.bsky.social</span>
+<p class="text">No. This is not a training issue. They are doing exactly what this administration wants: terrorizing marginalized people and suppressing dissent</p>
+<a href="https://bsky.app/profile/atrupar.com/post/3mc5tux3rz32f" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Aaron Rupar (@atrupar.com)</div>
+<div class="link-desc">Chris Murphy: &quot;The amount of training that's given to an ICE officer has been cut in half by this administration. The...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:19pm • ♥ 183 • <a href="https://bsky.app/profile/evangreer.bsky.social/post/3mc657uhpnk2u">View</a></p>
+</div>
+<div class="post">
+<span class="author">@owillis.bsky.social</span>
+<p class="text">Democrats officially going all in on the mealy mouthed “ICE needs training” narrative.
+
+No. ABOLISH ICE.</p>
+<a href="https://bsky.app/profile/atrupar.com/post/3mca6agoarx2h" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Aaron Rupar (@atrupar.com)</div>
+<div class="link-desc">WARNER: It used to take 5 to 6 months to get trained. They've now lowered the training period to 47 days. Why 47 days...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:45pm • ♥ 303 • <a href="https://bsky.app/profile/owillis.bsky.social/post/3mca6fuai2k2a">View</a></p>
+</div>
+<div class="post">
+<span class="author">@joshuaerlich.bsky.social</span>
+<p class="text">once again: ICE is operating as if they have a general warrant, the specific type of warrant the founders were most concerned about when drafting the 4th Amendment</p>
+<a href="https://bsky.app/profile/marklemley.bsky.social/post/3mc6rlsmgjc2y" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Mark Lemley (@marklemley.bsky.social)</div>
+<div class="link-desc">Not remotely legal. Minnesota needs to arrest these thugs breaking down doors right now, before they start grabbing e...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 12, 12:29am • ♥ 4624 • <a href="https://bsky.app/profile/joshuaerlich.bsky.social/post/3mc6rwm7i622z">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mc5qqymaxb2n">Iran Protest Death Toll Reaches 538 as Trump Weighs Military Action</a></h4>
+<details><summary>19 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Iran arrests protest leaders as crackdown intensifies amid threat of US intervention</p>
+<a href="https://www.theguardian.com/world/2026/jan/11/iran-arrests-protest-leaders-as-crackdown-intensifies-amid-threat-of-us-intervention?utm_source=dlvr.it&amp;utm_medium=bluesky&amp;CMP=bsky_gu" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreigrumhho3ik34rdgvfv6ttibgfbes3lkahjkztn7thntvb3ssznfe@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Iran arrests protest leaders as crackdown intensifies amid threat of US intervention</div>
+<div class="link-desc">Washington and Tehran step up war of words over Donald Trump’s threat to intervene in response to unrest
+
+Iranian a...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 2:36pm • ♥ 54 • <a href="https://bsky.app/profile/theguardian.com/post/3mc5qqymaxb2n">View</a></p>
+</div>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Weakened by war, Iran’s regime faces its toughest challenge, writes Yaroslav Trofimov.</p>
+<a href="https://on.wsj.com/3LaGOQZ" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreibblef6vfjddwq7g57utrvgsrczl2mros3gx7y2j3fzwh4vnu6ttm@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Weakened by War, Iran’s Regime Faces Its Toughest Challenge Yet</div>
+<div class="link-desc">Iranian leaders’ last claim to legitimacy was shattered in the war with Israel.</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 6:47am • ♥ 9 • <a href="https://bsky.app/profile/wsj.com/post/3mc7h2aparx2t">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Ella Baron on Iran’s anti-government protests – cartoon</p>
+<a href="https://www.theguardian.com/commentisfree/picture/2026/jan/11/ella-baron-iran-anti-government-protests-cartoon?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768156406" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreiamjj5pd6q2yq4ia6qew5kjk52ugbhup22vqbq2fgynybujngkryi@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Ella Baron on Iran’s anti-government protests – cartoon</div>
+<div class="link-desc">Unrest has been continuing in Iran for two weeks, with crowds targeting the regime of the supreme leader, Ali Khamenei</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:45pm • ♥ 22 • <a href="https://bsky.app/profile/theguardian.com/post/3mc66pawxt32y">View</a></p>
+</div>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">Death toll in crackdown on protests in Iran spikes to at least 538, activists say</p>
+<a href="https://www.thestar.com/news/world/middle-east/death-toll-in-crackdown-on-protests-in-iran-spikes-to-at-least-538-activists-say/article_f786f606-88a1-53fd-b194-df9fef7f2ab6.html" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:w5pxbmkjntxfw6mt4emennhv/bafkreihwu6ohg7sn2so5hgfi56wx274c3pp7z6goameinegx6syuladto4@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Death toll in crackdown on protests in Iran spikes to at least 538, activists say</div>
+<div class="link-desc">Over 10,600 people have been detained, said the U.S.-based Human Rights Activists News Agency.</div>
+<div class="link-domain">www.thestar.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:42pm • ♥ 19 • <a href="https://bsky.app/profile/thestar.com/post/3mc66kc44e22i">View</a></p>
+</div>
+<div class="post">
+<span class="author">@celeste.lgbt</span>
+<p class="text">Keep on denouncing the mass murders in Iran. The regime has killed thousands in the last few days alone. And it won’t stop killing until the revolution, driven by the people of Iran, succeeds.</p>
+<p class="meta">Jan 11, 9:42pm • ♥ 40 • <a href="https://bsky.app/profile/celeste.lgbt/post/3mc6ilipmas2j">View</a></p>
+</div>
+<div class="post">
+<span class="author">@lrb.co.uk</span>
+<p class="text">‘“What this government has done to Iran’s economy,” my passenger said, “no enemy could have accomplished. They frighten the people. So money goes into gold and coins. Then inflation rises.”’
+
+Raha Nik-Andish reports from Iran, on the blog.
+
+www.lrb.co.uk/blog/2026/ja...</p>
+<a href="https://www.lrb.co.uk/blog/2026/january/driving-in-the-dark" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:63zjpqfhowjsbfl26dipg3e2/bafkreidqyhzej3rcyeqnrl4yee6egd34vscbool3w3d4ggxm4fl26cxhem@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Raha Nik-Andish | Driving in the Dark</div>
+<div class="link-desc">This piece was written before Iran imposed an internet blackout on 8 January.Six months ago I thought about buying a ...</div>
+<div class="link-domain">www.lrb.co.uk</div>
+</div>
+</a>
+<p class="meta">Jan 11, 5:50pm • ♥ 12 • <a href="https://bsky.app/profile/lrb.co.uk/post/3mc63lrpgn22e">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Iran foreign minister claims protest unrest has ‘come under total control’</p>
+<a href="https://www.theguardian.com/global-development/2026/jan/12/iran-protests-crackdown-toll-foreign-minister?utm_source=dlvr.it&amp;utm_medium=bluesky&amp;CMP=bsky_gu" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreiawwcossvp77473cvdubf3cktfnln2yqoglepacyid7w3bsli3q6a@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Iran foreign minister claims protest unrest has ‘come under total control’</div>
+<div class="link-desc">Internet blackout hampering efforts to verify if violent crackdown has blunted movement’s momentum
+
+
+ * 
+
+Iran cris...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 11:54am • ♥ 35 • <a href="https://bsky.app/profile/theguardian.com/post/3mc7y675mo227">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Unpredictable Trump weighs up Iranian pleas for help against calls for restraint</p>
+<a href="https://www.theguardian.com/world/2026/jan/11/trump-wants-to-help-iranian-protesters-but-his-advice-is-conflicted?utm_source=dlvr.it&amp;utm_medium=bluesky&amp;CMP=bsky_gu" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreifps5efkmxbu3ziocmdrvg74rxhernc4zvdfmukorkqn5t7fwmhfm@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Unpredictable Trump weighs up Iranian pleas for help against calls for restraint</div>
+<div class="link-desc">Observers say if US gets response wrong to Tehran’s repression it could end up entrenching regime’s ​position
+
+...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:42am • ♥ 32 • <a href="https://bsky.app/profile/theguardian.com/post/3mc6vxvkwyv2y">View</a></p>
+</div>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">President Donald Trump said that the US is closely monitoring the protests in Iran and is mulling potential options as the Islamic Republic faces its third week of nationwide protests, the largest since 2022</p>
+<a href="https://bloom.bg/3Luh2qI" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreig36s752fueudrwgvm35ncf6iggcyhc3zuprxv64fagitvetdfiye@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Trump Says US Closely Monitoring Iran, Mulling Potential Options</div>
+<div class="link-desc">President Donald Trump said that the US is closely monitoring the protests in Iran and is mulling potential options a...</div>
+<div class="link-domain">bloom.bg</div>
+</div>
+</a>
+<p class="meta">Jan 12, 12:39am • ♥ 7 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc6shqs6oq2g">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Trump says he is considering ‘very strong’ military options against Iran as protester death toll climbs</p>
+<a href="https://www.theguardian.com/world/2026/jan/12/iran-protests-donald-trump-us-military-options?utm_source=dlvr.it&amp;utm_medium=bluesky&amp;CMP=bsky_gu" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreib2swhe7bgb5qjc33byt5y7xpbekivm4zdcayt452ka5dl42c7rmq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Trump says he is considering ‘very strong’ military options against Iran as protester death toll climbs</div>
+<div class="link-desc">US president claims ‘Iran wants to negotiate’ as rights groups report that regime’s crackdown on protest has ki...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 3:48am • ♥ 50 • <a href="https://bsky.app/profile/theguardian.com/post/3mc74z6peyr2n">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Iran's FM Abbas Araghchi says his country is ready for war but also for dialogue, after US President Donald Trump said the US is considering ‘very strong options’ in response to Iran’s crackdown on anti-gov't protests.</p>
+<p class="meta">Jan 12, 10:24am • ♥ 40 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc7t5num5k2l">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Iran crisis: Trump claims leader ‘wants to negotiate’ amid protest crackdown as he mulls US military response – latest updates</p>
+<a href="https://www.theguardian.com/world/live/2026/jan/12/iran-protest-crackdown-us-donald-trump-latest-news-updates?utm_source=dlvr.it&amp;utm_medium=bluesky&amp;CMP=bsky_gu" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreiexl6nc57iqihx3zbu4phf4ys666kiy6kmgathdr7fdwugvodypeq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Iran crisis: Trump claims leader ‘wants to negotiate’ amid protest crackdown as he mulls US military response – latest updates</div>
+<div class="link-desc">US president says he ‘may have to act’ before talks amid crackdown that rights group says has led to at least 538...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 9:48am • ♥ 21 • <a href="https://bsky.app/profile/theguardian.com/post/3mc7r4xpk5v2q">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Iran’s FM says protests became ‘bloody’ to give Trump intervention excuse https://aje.news/wj97aq</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreidzxp2xyxpo4ix64ae623jwcvs6rfvyi5ban3yeobgwktn6s43ah4@jpeg" alt="Iran’s FM says protests became ‘bloody’ to give Trump intervention excuse" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc7mrbkbbk2i" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 8:30am • ♥ 34 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc7mrbkbbk2i">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Iran’s FM Araghchi says Trump’s warning about possible military action against Tehran could encourage “terrorists” to target protesters and security forces ‌in order to invite foreign intervention.
+
+🔴 LIVE updates: aje.io/rffmdt</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreiemtr2fue32fv7mrzfwgptd22gx4uivyh5j7msuizqskzwvvrs6mm@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc7li3aygc2o" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 8:07am • ♥ 54 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc7li3aygc2o">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">President Donald Trump said the US is considering “very strong options,” including possible military action, over the deaths of protesters during unrest in Iran. 
+
+Nationwide protests over economic hardship have been met with mass arrests and a security crackdown.</p>
+<p class="meta">Jan 12, 7:59am • ♥ 42 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc7l3enee22g">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Iran’s fragmented opposition includes figures living abroad, such as Reza Pahlavi, the heir of the former monarch.</p>
+<a href="https://www.aljazeera.com/news/2026/1/12/which-are-irans-main-opposition-groups?utm_source=bluesky&amp;utm_medium=social&amp;utm_campaign=socialPulse" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreihlm2grfycawnyf4f4glyuwdhvme5z5r5pgs54y4fa4pnmuvxmyie@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Which are Iran's main opposition groups?</div>
+<div class="link-desc">Iran's fragmented opposition includes figures living abroad, such as Reza Pahlavi, the heir of the former monarch.</div>
+<div class="link-domain">www.aljazeera.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:00pm • ♥ 15 • <a href="https://bsky.app/profile/aljazeera.com/post/3mca3u45evr27">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Iran’s Pezeshkian pledges economic overhaul amid spiralling protests https://aje.news/bo4awx</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreicigof32crcsdzs2wtav3o3rwlxkb3colpzoax5jr4zlsdrr56sau@jpeg" alt="Iran’s Pezeshkian pledges economic overhaul amid spiralling protests" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc5trexby22e" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 3:30pm • ♥ 27 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc5trexby22e">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Iranian president calls for unity as protests triggered by an economic crisis escalate into the worst unrest in years. </p>
+<a href="https://www.aljazeera.com/news/liveblog/2026/1/11/iran-protests-live-tehran-says-it-will-hit-back-at-us-israel-if-attacked?utm_source=bluesky&amp;utm_medium=social&amp;utm_campaign=socialPulse" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreihwl67qjuar3ut3hkifjffuqatjrvtoica7zli2mraovvk4ntzpxe@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Iran says it will hit back at US, Israel if attacked as protests escalate</div>
+<div class="link-desc">Iranian president calls for unity as protests triggered by an economic crisis escalate into the worst unrest in years.</div>
+<div class="link-domain">www.aljazeera.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 3:00pm • ♥ 60 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc5s3pu2zf2z">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">US president says Washington is closely monitoring protests in Iran, and considering possible military intervention.</p>
+<a href="https://www.aljazeera.com/news/2026/1/12/trump-says-us-military-considering-very-strong-options-for-iran?utm_source=bluesky&amp;utm_medium=social&amp;utm_campaign=socialPulse" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreiaw2lfrhyno6s2tazc3w3yudu37w6tsknzeeo33bujxtlnaj6ektq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Trump says US military considering ‘very strong options' for Iran</div>
+<div class="link-desc">US president says Washington is closely monitoring protests in Iran and considering possible military intervention.</div>
+<div class="link-domain">www.aljazeera.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 2:30am • ♥ 44 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc6ynj7pby2h">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mc7gyjda3p2t">Trump Threatens Greenland Takeover as NATO Allies React</a></h4>
+<details><summary>7 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">What can the EU and Nato do to stop Trump from trying to claim Greenland?</p>
+<a href="https://www.theguardian.com/world/2026/jan/12/what-can-the-eu-and-nato-do-to-stop-trump-from-trying-to-claim-greenland?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768196564" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreigy6m3pzj5huxx3tfrslsbnoo3vcsf36ecq5kgyufomwhsn533qb4@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">What can the EU and Nato do to stop Trump from trying to claim Greenland?</div>
+<div class="link-desc">The territory and the European bloc are trying to see off the US president, who has said control of Greenland is esse...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 6:46am • ♥ 88 • <a href="https://bsky.app/profile/theguardian.com/post/3mc7gyjda3p2t">View</a></p>
+</div>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">A group of European countries, led by the UK and Germany, is discussing plans to boost their military presence in Greenland to show US President Donald Trump that they are serious about Arctic security and tamp down American threats to take over the self-ruling Danish territory.</p>
+<a href="https://bloom.bg/3Z3DvOC" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreib2p5gngbte6x2hpm2umaqqks43n36acptdakg6bgco4o4gadzru4@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">UK, Germany Discuss NATO Forces in Greenland to Calm US Threat</div>
+<div class="link-desc">A group of European countries, led by the UK and Germany, is discussing plans for a military presence in Greenland to...</div>
+<div class="link-domain">bloom.bg</div>
+</div>
+</a>
+<p class="meta">Jan 11, 9:15pm • ♥ 160 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc6h2j3hby2a">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Denmark is ready to defend its values, Mette Frederiksen says, as Trump renews threats to seize the Danish territory.</p>
+<a href="https://www.aljazeera.com/news/2026/1/12/denmarks-pm-says-greenland-showdown-at-decisive-moment?utm_source=bluesky&amp;utm_medium=social&amp;utm_campaign=socialPulse" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreia5puhus6i5zlf254l2jnadwwwlkfk5uuaebzawnfxlbiizuaim4a@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Denmark's PM says Greenland showdown at ‘decisive moment'</div>
+<div class="link-desc">Denmark is ready to defend its values, Mette Frederiksen says, as Trump renews threats to seize the Danish territory.</div>
+<div class="link-domain">www.aljazeera.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 2:00am • ♥ 162 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc6wxurjqb27">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Trump is ready to grab Greenland. The EU should move first – and offer it membership | Robert Habeck and Andreas Raspotnik</p>
+<a href="https://www.theguardian.com/commentisfree/2026/jan/12/donald-trump-greenland-eu-membership-europe?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768213358" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreiditnfac4ebfpm2hltvb2t367ogbir4vba6htul57nplrrhl7hepq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Trump is ready to grab Greenland. The EU should move first – and offer it membership | Robert Habeck and Andreas Raspotnik</div>
+<div class="link-desc">The US president’s threats to the territory show Europe needs a new strategy for its far north: one based on cooper...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 12:57pm • ♥ 206 • <a href="https://bsky.app/profile/theguardian.com/post/3mca3opwnp22i">View</a></p>
+</div>
+<div class="post">
+<span class="author">@chadbourn.bsky.social</span>
+<p class="text">French General Nicolas Richoux: “If the United States attacks Greenland, we should fight the Americans and turn them into the villains of history.”</p>
+<p class="meta">Jan 11, 1:12pm • ♥ 1440 • <a href="https://bsky.app/profile/chadbourn.bsky.social/post/3mc5m2mqdsc2i">View</a></p>
+</div>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">Many Greenlanders want independence from Denmark, but even more reject the idea of becoming a US satellite. Trump's covetous rhetoric is making the idea more complicated.</p>
+<a href="https://bloom.bg/4qNCypB" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreicaif5wzcyfg234ne2jpzmggeqm4sheogonoio3ywvzd6qoj5t3la@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">As Trump Eyes Greenland, Greenlanders in Denmark Debate Independence</div>
+<div class="link-desc">The Arctic island territory wants to be independent, not a US satellite. Trump’s rhetoric is making everything more...</div>
+<div class="link-domain">bloom.bg</div>
+</div>
+</a>
+<p class="meta">Jan 11, 3:00pm • ♥ 54 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc5s3ty7ao2x">View</a></p>
+</div>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">NATO’s “Baltic Sentry” mission — kicked off a year ago to shield critical infrastructure in the Baltic Sea — could serve as blueprint for a new “Arctic Sentry” mission, according to people familiar with the matter.</p>
+<a href="https://bloom.bg/49TW5hp" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreihmqjm6c6544kj4t4qtzc7poyrjg2cu55scqsy7c2vmhnwtj6ql7y@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Germany to Pitch NATO Mission in Arctic to Ease Greenland Strife</div>
+<div class="link-desc">Germany will propose setting up a joint NATO mission to monitor and protect security interests in the Arctic region i...</div>
+<div class="link-domain">bloom.bg</div>
+</div>
+</a>
+<p class="meta">Jan 11, 2:52pm • ♥ 53 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc5rnjmdpq2e">View</a></p>
+</div>
+</details>
+</article>
+</div>
+</details>
+<details class="section" id="section-tech" open>
+<summary><h2>Technology</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/aljazeera.com/post/3mc64lvy26c24">Musk Replaces Iran Flag Emoji on X Platform</a></h3>
+<details><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Elon Musk steps into Iran’s unrest as X replaces the country’s flag emoji on its web platform with the historic lion and sun, while Starlink restores access amid a nationwide internet blackout.
+
+#Infograph</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreia6tybesuusiyaefcy4h7zaradpd5auvky6pvcmq5crb3ixzaljpm@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc64lvy26c24" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 6:08pm • ♥ 66 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc64lvy26c24">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc7kilmfia2c">Chinese Chipmaker Prepares  Billion Share Sale</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">China’s national-champion memory-chip maker is preparing a $4 billion share offering, upending an industry dominated by South Korean and U.S. companies.</p>
+<a href="https://on.wsj.com/3YvOqAu" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreifxl4qwtzdupn2wq5h2lfpgnhjfnkh2rh77lqjdyyckoh4vcq25fq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">The Chinese Company Taking On the World’s Memory-Chip Giants</div>
+<div class="link-desc">As AI demand drives prices up, CXMT is overcoming Washington’s curbs to take on Micron and South Korean leaders.</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 7:49am • ♥ 9 • <a href="https://bsky.app/profile/wsj.com/post/3mc7kilmfia2c">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc7g6xdipo2s">AI Startup Mercor Employs Tens of Thousands of Contractors</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Buzzy AI startup Mercor employs tens of thousands of white-collar contractors. The catch? They have to be willing to train AI to one day do their jobs as well as they can.</p>
+<a href="https://on.wsj.com/4btFMKl" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreiaialna5ncnoccnm2mnreo2evb5bgsvwi27rotaxccsvrvqik733a@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Job Seekers Find a New Source of Income: Training AI to Do Their Old Roles</div>
+<div class="link-desc">Buzzy AI startup Mercor employs tens of thousands of white-collar contractors, and the gig is open to anyone with exp...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 6:32am • ♥ 12 • <a href="https://bsky.app/profile/wsj.com/post/3mc7g6xdipo2s">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mc62lz5uw72w">Warner Bros Discovery Streaming Deals Under Scrutiny</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Netflix and Paramount deals are both wrong for Warner Bros Discovery – and democracy</p>
+<a href="https://www.theguardian.com/commentisfree/2026/jan/11/netflix-paramount-warner-bros-discovery-democracy?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768151875" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreie5rag7cc264s5cx4kfylmharrh3i4y37xxjgqtuamkgo2bwrne3q@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Netflix and Paramount deals are both wrong for Warner Bros Discovery – and democracy</div>
+<div class="link-desc">A congressional hearing this week underscored the danger a WBD deal would pose to journalism and the American public</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 5:32pm • ♥ 97 • <a href="https://bsky.app/profile/theguardian.com/post/3mc62lz5uw72w">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/dollspace.gay/post/3mc67ftbvhc2y">Opinion: AI as CNC Machine for Software Engineering</a></h4>
+<details><summary>3 posts</summary>
+<div class="post">
+<span class="author">@dollspace.gay</span>
+<p class="text">This is the &quot;CNC machine&quot; for software engineering. It takes the &quot;raw&quot; power of a model and allows you to apply it with the precision, memory, and behavioral guardrails that you, as the human architect deem necessary.</p>
+<p class="meta">Jan 11, 6:58pm • ♥ 20 • <a href="https://bsky.app/profile/dollspace.gay/post/3mc67ftbvhc2y">View</a></p>
+</div>
+<div class="post">
+<span class="author">@jeremymorrell.dev</span>
+<p class="text">I really like this analogy. CNC is a whole new domain with a lot of new skills to pick up vs traditional machining, but almost all of the skills picked up in a career of traditional machining are still incredibly valuable with the increased automation</p>
+<a href="https://bsky.app/profile/dollspace.gay/post/3mc67ftbvhc2y" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Doll (@dollspace.gay)</div>
+<div class="link-desc">This is the &quot;CNC machine&quot; for software engineering. It takes the &quot;raw&quot; power of a model and allows you to apply it wi...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 11, 10:10pm • ♥ 24 • <a href="https://bsky.app/profile/jeremymorrell.dev/post/3mc6k5smkak2d">View</a></p>
+</div>
+<div class="post">
+<span class="author">@dulanyw.bsky.social</span>
+<p class="text">Love this analogy for AI:
+
+&quot;Use my guidance to carve the universe of infinite possibilities to my specifications&quot;</p>
+<a href="https://bsky.app/profile/dollspace.gay/post/3mc67ftbvhc2y" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Doll (@dollspace.gay)</div>
+<div class="link-desc">This is the &quot;CNC machine&quot; for software engineering. It takes the &quot;raw&quot; power of a model and allows you to apply it wi...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 11, 8:33pm • ♥ 9 • <a href="https://bsky.app/profile/dulanyw.bsky.social/post/3mc6eq74ty226">View</a></p>
+</div>
+</details>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/metcostume.bsky.social/post/3mc63iugqud2n">@metcostume.bsky.social</a>
+<p class="text">Breeches
+https://botfrens.com/collections/223/contents/100792</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:6qnikm7qt6cckwztni5p5eto/bafkreidyyrrsjbr4a2n5olooxfq4wxiyobnxvtxpu3ctyouqykigdtpkza@jpeg" alt="Purchase, Irene Lewisohn Bequest, 1988" loading="lazy" data-group="3mc63iugqud2n" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 5:48pm • ♥ 14 • <a href="https://bsky.app/profile/metcostume.bsky.social/post/3mc63iugqud2n">View</a></p>
+</article>
+</section>
+<details class="section" id="section-finance" open>
+<summary><h2>Finance</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/bloomberg.com/post/3mc7yjp7fdw2d">Barclays Shares Drop on Trump Credit Card Remarks</a></h3>
+<details><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">Barclays shares dropped the most in three months after Trump said that credit-card lenders would be breaking the law if they don’t heed his call to cap interest rates at 10% for one year</p>
+<a href="https://bloom.bg/4pDJkgp" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreictfoobzxoxasl2cnrp7fiorbpg2xbjav24l7uj2pgyji5emo2vdy@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Barclays Shares Tumble as Trump Slams Credit Card Interest Rates</div>
+<div class="link-desc">Shares in banks with credit card businesses in the US slumped after US President Donald Trump said that lenders would...</div>
+<div class="link-domain">bloom.bg</div>
+</div>
+</a>
+<p class="meta">Jan 12, 12:00pm • ♥ 21 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc7yjp7fdw2d">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc64yu6n4r2c">Venezuela's Oil Company Used Tether to Sidestep Sanctions</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Tether emerged as a vital tool for Venezuela’s state-run oil company to sidestep sanctions, and it has also offered a financial lifeline to everyday Venezuelans.</p>
+<a href="https://on.wsj.com/49e1fWg" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreicgux4vkwcj4tmwyjubk6k7zhxkcppng6mym2cmtxasjgrz2tqq2m@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Maduro’s Crypto-Backed Oil Deals Put Tether at Center of Venezuela Money Drama</div>
+<div class="link-desc">The stablecoin served as a tool to avoid sanctions and a lifeline for everyday citizens.</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:15pm • ♥ 9 • <a href="https://bsky.app/profile/wsj.com/post/3mc64yu6n4r2c">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc6bwdzatj2i">Copper Demand Drives Mining Megadeals</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Booming demand for copper is driving a spate of mining megadeals, in a rush to secure more of a metal essential to powering AI.</p>
+<a href="https://on.wsj.com/3LuiglZ" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreiabesgmcqtanw3rlsv4iqszruliybyxmyi2fd4f647cu274wx5mma@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Copper Is the Prize in Mining Megadeals</div>
+<div class="link-desc">Rio Tinto-Glencore merger talks underscore the growing demand for copper, driven in part by AI.</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 7:43pm • ♥ 13 • <a href="https://bsky.app/profile/wsj.com/post/3mc6bwdzatj2i">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc6mfwjtqe2k">Allegiant to Buy Sun Country Airlines for  Billion</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Allegiant Travel reached a roughly $1 billion deal to buy Sun Country Airlines as budget-focused U.S. airlines struggle with stiff competition from larger rivals.</p>
+<a href="https://on.wsj.com/49fXzDp" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreig5zmnvuj3quh5omr74scmfid63nkobklwk6jnzav2sncbofh6c5u@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Allegiant Travel to Buy Sun Country Airlines for About $1 Billion</div>
+<div class="link-desc">The proposed deal comes as budget carriers’ business models are under strain.</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 10:51pm • ♥ 6 • <a href="https://bsky.app/profile/wsj.com/post/3mc6mfwjtqe2k">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mca4ybd7ax2r">Lululemon Warns on Fourth-Quarter Earnings</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Lululemon Athletica said it expects fourth-quarter profit and revenue to come in at the high end of its previously issued forecasts, citing a strong holiday season on.wsj.com/4jyNDIx</p>
+<a href="https://on.wsj.com/4jyNDIx" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreieufsrwwh5bmhrch64zckb3ds7gpb2zpchrshaufrjwb6trwbn2gi@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Lululemon Sees Quarterly Profit at High End After Strong Holiday Sales</div>
+<div class="link-desc">Lululemon Athletica said it expects fourth-quarter profit and revenue to come in at the high end of its previously is...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:20pm • ♥ 4 • <a href="https://bsky.app/profile/wsj.com/post/3mca4ybd7ax2r">View</a></p>
+</div>
+</details>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/metcostume.bsky.social/post/3mc7mwqb6yd2e">@metcostume.bsky.social</a>
+<p class="text">Bonnet
+https://botfrens.com/collections/223/contents/100012</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:6qnikm7qt6cckwztni5p5eto/bafkreihgbtza75alpsrxnr36dphwoup7hy3sq7lgwrtjmp7nqhq622xd7u@jpeg" alt="Brooklyn Museum Costume Collection at The Metropolitan Museum of Art, Gift of the Brooklyn Museum, 2009; Designated Purchase Fund, 1980" loading="lazy" data-group="3mc7mwqb6yd2e" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 8:33am • ♥ 15 • <a href="https://bsky.app/profile/metcostume.bsky.social/post/3mc7mwqb6yd2e">View</a></p>
+</article>
+</section>
+<details class="section" id="section-sports" open>
+<summary><h2>Sports</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/wsj.com/post/3mc62qvlbk72i">Indiana Dominates Oregon to Reach College Football Championship</a></h3>
+<details><summary>2 posts in story</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">When Indiana and Miami square off with the national championship on the line Monday, it will mark a season finale unlike any the sport has witnessed in recent memory on.wsj.com/45E4dRz</p>
+<a href="https://on.wsj.com/45E4dRz" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreieiiolq5nz7g4e5bdkqinohy6an5nnmfu4ogomxu2qoclfdcnirxm@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">The College Football Title Game That Absolutely No One Saw Coming</div>
+<div class="link-desc">When Indiana and Miami square off with the national championship on the line next Monday, it will mark a season final...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 5:35pm • ♥ 8 • <a href="https://bsky.app/profile/wsj.com/post/3mc62qvlbk72i">View</a></p>
+</div>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">The No. 1 ranked Indiana Hoosiers roar into the college national championship game against Miami with a 56-22 demolition of Oregon. A historic perfect season is one win away.</p>
+<a href="https://on.wsj.com/49yaFuG" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreifk6jzr7vzu6z2373kqrpmtyg6dglvwqnymql2dbl3c6itsrnzh4q@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Indiana Football Looks Like It Will Never Lose Again</div>
+<div class="link-desc">The undefeated Hoosiers roar into the college national championship game versus Miami with a 56-22 demolition of Oregon.</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 5:10pm • ♥ 10 • <a href="https://bsky.app/profile/wsj.com/post/3mc5zfnx4rq2h">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc7yjhcmmz2e">NFL Wild Card Weekend Delivers Record-Breaking Chaos</a></h4>
+<details><summary>2 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">This was the year when the Wild Card round lived up to its name, with a record number of fourth-quarter lead changes and more late-game mayhem than any postseason we’ve seen before. on.wsj.com/4pyBTqO</p>
+<a href="https://on.wsj.com/4pyBTqO" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreig44ihr4xst6es3fkenvu5swmvnzqpu7fyuna422o3p6ng3ifgtxq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">It Was the Craziest NFL Playoff Weekend Ever—and These Numbers Prove It</div>
+<div class="link-desc">This was the year when the Wild Card round lived up to its name, with a record number of fourth-quarter lead changes ...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 12:00pm • ♥ 8 • <a href="https://bsky.app/profile/wsj.com/post/3mc7yjhcmmz2e">View</a></p>
+</div>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">The self-sabotaging Eagles couldn’t figure it out all season. Now the reigning winners are kaput. on.wsj.com/4qGLflw</p>
+<a href="https://on.wsj.com/4qGLflw" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreigcpli5y5jw4dynm3nuw7663ik4anlae56kocfswn44ctdhtfvveu@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">A Super Bowl Champion Falls Apart in Philadelphia</div>
+<div class="link-desc">The self-sabotaging Eagles couldn’t figure it out all season. Now the reigning winners are kaput.</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:30pm • ♥ 3 • <a href="https://bsky.app/profile/wsj.com/post/3mca5kmegmq2c">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/theathleticfc.bsky.social/post/3mc6gon7f6k2o">Barcelona Beats Real Madrid in Supercopa de España Final</a></h4>
+<details><summary>2 posts</summary>
+<div class="post">
+<span class="author">@theathleticfc.bsky.social</span>
+<p class="text">Raphinha's deflected effort proved the difference for Barcelona in a five-goal thriller against Real Madrid — three of which came in first-half stoppage time.
+
+Barca and Madrid have faced each other in the previous three Supercopa de Espana finals — the winner of each has gone on to win La Liga.</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fa7xejyd32fvuar5hpa2n2yi/bafkreiaibckc2zgb5ta6su37ddrls54zjudayosxwaff2vxyvpkvvdltli@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc6gon7f6k2o" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 9:08pm • ♥ 45 • <a href="https://bsky.app/profile/theathleticfc.bsky.social/post/3mc6gon7f6k2o">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theathleticfc.bsky.social</span>
+<p class="text">Ronald Araujo was lifted up in the air by his Barcelona team-mates after making his return to action as a late substitute in the Supercopa de Espana final after requesting a period of absence in November.
+
+With a trophy on his first game back, the Uruguayan could not have asked for a better return.</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fa7xejyd32fvuar5hpa2n2yi/bafkreide55qvnxmwvjmkdgz2n7osaexnb734qlkmrim2smhhhmc2zmzt4u@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc6imflrik2o" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 9:43pm • ♥ 36 • <a href="https://bsky.app/profile/theathleticfc.bsky.social/post/3mc6imflrik2o">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/parkermolloy.com/post/3mc5zzg4x2c25">Opinion: Caleb Williams and Rome Odunze Connect on Clutch Fourth Down</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@parkermolloy.com</span>
+<p class="text">I can't get over how clutch Caleb and Rome were on this 4th down play late in the game.</p>
+<p class="meta">Jan 11, 5:21pm • ♥ 185 • <a href="https://bsky.app/profile/parkermolloy.com/post/3mc5zzg4x2c25">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/klimtgustav.bsky.social/post/3mb7y6gbskg2b">@klimtgustav.bsky.social</a>
+<p class="text">Birch Forest
+https://botfrens.com/collections/109/contents/28511</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:4sbw7cdojtbn67rtrs7jpbp6/bafkreifec6zu5jdvtgpbr7zmxwaqz4hklu57ciw2a2kgu6kxblh3hh3kra@jpeg" alt="&quot;Birch Forest&quot; by Gustav Klimt captures a serene woodland scene, with slender birch trees rising above a vibrant carpet of autumn leaves. Klimt's use of color and pattern reflects his deviation from traditional landscape painting, highlighting his characteristic blend of realism and decorative style." loading="lazy" data-group="3mb7y6gbskg2b" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Dec 30, 6:29pm • ♥ 117 • <a href="https://bsky.app/profile/klimtgustav.bsky.social/post/3mb7y6gbskg2b">View</a></p>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/normalisland.co.uk/post/3mc5hpigzcs2r">@normalisland.co.uk</a>
+<p class="text">BREAKING: Staggering scenes as brave Iranians stand up to their illegitimate government in Tehran... um, hang on, I'm being told this is actually Minneapolis. Forget I said anything...</p>
+<p class="meta">Jan 11, 11:54am • ♥ 16483 • <a href="https://bsky.app/profile/normalisland.co.uk/post/3mc5hpigzcs2r">View</a></p>
+</article>
+</section>
+<details class="section" id="section-film" open>
+<summary><h2>Film</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theguardian.com/post/3mc7azw6wbo2q">Golden Globes 2026: One Battle After Another and Adolescence Dominate Ceremony</a></h3>
+<details><summary>3 posts in story</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">One Battle After Another and Adolescence dominate 83rd Golden Globes</p>
+<a href="https://www.theguardian.com/film/2026/jan/11/one-battle-after-another-adolescence-golden-globes?utm_source=dlvr.it&amp;utm_medium=bluesky&amp;CMP=bsky_gu" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreicnm5zfzp3xdlnc4kbznaacbqflpl5sumhal6rvsbcqi5mwkfwxhu@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">One Battle After Another and Adolescence dominate 83rd Golden Globes</div>
+<div class="link-desc">Paul Thomas Anderson’s comedy thriller and the Netflix breakout drama took home major awards with Timothée Chalame...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 5:00am • ♥ 62 • <a href="https://bsky.app/profile/theguardian.com/post/3mc7azw6wbo2q">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Timothée Chalamet, Paul Thomas Anderson take honours at Gloden Globes https://aje.news/hqzdya</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreiayutk3ydu7bqy7eiojezbx4smkiqfksyhspf74hxv7w2fhs5755i@jpeg" alt="Timothée Chalamet, Paul Thomas Anderson take honours at Gloden Globes" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc7azrzrno2e" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 5:00am • ♥ 22 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc7azrzrno2e">View</a></p>
+</div>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">The Golden Globes ceremony ignored politics. But their big winner taps today’s unhappy turbulence | Peter Bradshaw</p>
+<a href="https://www.theguardian.com/film/2026/jan/12/the-golden-globes-ceremony-ignored-politics-but-their-big-winner-taps-todays-unhappy-turbulence?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768208286" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreidcayztg6xmbok73tnqyh5dehj2om7ptuwq5flzbjsnpolipva2uq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">The Golden Globes ceremony ignored politics. But their big winner taps today’s unhappy turbulence | Peter Bradshaw</div>
+<div class="link-desc">One Battle After Another engages with the tense climate of the second Trump administration unlike any other contender</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 11:09am • ♥ 33 • <a href="https://bsky.app/profile/theguardian.com/post/3mc7vnneqws2n">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mc6iuzea2b2z">A Ghost in Your Ear Review: 'Truly Terrifying' Headphone Horror</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">A Ghost in Your Ear review – truly terrifying ‘headphone horror’</p>
+<a href="https://www.theguardian.com/stage/2026/jan/11/a-ghost-in-your-ear-review-hampstead-theatre-london?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768167453" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreigrhnwgewwlw6gk4eoadhgi7frbtmhdrfye2kfh67lptepoxceg7a@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">A Ghost in Your Ear review – truly terrifying ‘headphone horror’</div>
+<div class="link-desc">With shades of MR James and Inside No 9 Jamie Armitage’s innovative recording studio haunting is a good old-fashion...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 9:47pm • ♥ 26 • <a href="https://bsky.app/profile/theguardian.com/post/3mc6iuzea2b2z">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mca7jz4ipi2z">The Storm Whale Review: Touching Tale of a Little Leviathan</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">The Storm Whale review – touching tale of a little leviathan’s surprise visit</p>
+<a href="https://www.theguardian.com/stage/2026/jan/12/the-storm-whale-review-little-angel-studios-benji-davies?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768217153" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreib5ekxj7g27qckanduqtsgcz4h4gwzrxi7jed7vfpbrc76qecv4ae@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">The Storm Whale review – touching tale of a little leviathan’s surprise visit</div>
+<div class="link-desc">Two children’s books by Benji Davies are adapted for an attractive production that would benefit from a bit more ra...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 2:06pm • ♥ 0 • <a href="https://bsky.app/profile/theguardian.com/post/3mca7jz4ipi2z">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/katie.bzky.team/post/3mc62xsppr22x">Opinion: Why Dune Movies Are 'Just Precisely Okay'</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@katie.bzky.team</span>
+<p class="text">it's all his movies. it's why the dune movies are just precisely okay</p>
+<p class="meta">Jan 11, 5:38pm • ♥ 6 • <a href="https://bsky.app/profile/katie.bzky.team/post/3mc62xsppr22x">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/katestrasdin.bsky.social/post/3mc7vc2fms222">@katestrasdin.bsky.social</a>
+<p class="text">Callot Soeurs were always innovative, a cutting edge design house that has not received as much attention as it deserves. This is one of my favourites, a c1909 evening dress of silk mesh with celluloid sequins &amp; paste gems. Such a brilliant &amp; sparkling blue #greggmuseum #FashionHistory 🗃️🪡</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:oh3zcnfc7l62orql6oo4fhaw/bafkreiclwr63vxns3gat7xipoqwr3jlubr4hvbtbdytdoltztd3s24gv4m@jpeg" alt="A three quarter full length view of a bright blue short sleeved evening dress with long floor length skirt. The dress is covered with rows of square cut celluloid sequins. The bodice consists of a white jet decorated with gold sequins and paste gems" loading="lazy" data-group="3mc7vc2fms222" data-idx="0" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:oh3zcnfc7l62orql6oo4fhaw/bafkreigjmbgg4s426cst3owubzfoydmrihest2mph2xaf6bd7gxm4c3giq@jpeg" alt="Bodice detail of the long blue early 1900s evening dress that shows the white insert, short decorated sleeves and the gold sequins with paste gems. You can see the rows of blue square sequins that cover the skirt" loading="lazy" data-group="3mc7vc2fms222" data-idx="1" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 11:02am • ♥ 101 • <a href="https://bsky.app/profile/katestrasdin.bsky.social/post/3mc7vc2fms222">View</a></p>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/peark.es/post/3mc744w7gmc2s">@peark.es</a>
+<p class="text">Sentiment check: r/wallstreetbets is absolutely libbing out, indistinguishable from Bsky.</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:pnx2fjuannbdpy3337ggthpp/bafkreic3jwx7g5etoqk5aw55ss5fmmcj3wnemv3ikrs3luuijo2sbolgru@jpeg" alt="X
+r/wallstreetbets
+• 2 people typing...
+jpow response
+39.6k upvotes • 2k comments
+•••
+AV16mm • 1h
+One of the last adults in the room. Thanks for sticking it out jpow.
+•••
+~ Reply
+3
+个
+4,219
+4Yk9gop • 1h
+He is an American hero. A fucking hero. We don't deserve him. He will go down as one of the greatest Fed chairs of all time. I am buying gold (physical) with him leaving.
+8①736 4
+gizamo • 1h
+REETX Autismo 2080Tl Special
+The dude is the only reason the economy is even slightly functional after the clusterfuckbombs the administration shit out last year. It'll be wild when he's gone.
+个
+302
+lhamAmerican • 1h
+JPow carried us through the absolute roughest economic situations seen in in decades and did it like a champ. Absolute balls of steel to recognize that he had to make tough decisions and stick to his guns
+•••
+品个164
+ajmartin527 • 51m
+And everyone, myself included, excoriated the &quot;y at the time. But jpow gave absolutely no fuc about us regards, he flew a Cessna through a
+V
+hurricane and us in the passenger seat didn't even" loading="lazy" data-group="3mc744w7gmc2s" data-idx="0" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:pnx2fjuannbdpy3337ggthpp/bafkreigybxx5o2z3wl3s76r5ckwuzgjijeaxwlebwcakiz3ghky2rsdocm@jpeg" alt="X
+r/wallstreetbets
+• 2 people typing...
+jpow response
+39.6k upvotes • 2k comments
+.•.
+O
+UltraMachoTaco • 2h deez nuts
+Idk who sees this guy speak in the way he does and thinks
+&quot;oh, he must be a Democratic psyop&quot;
+Reply
+3,900
+lan_everywhere • 1h
+2017
+It is my honor to announce my nomination of Jerome Powell to be the next Chairman of the Federal Reserve.
+2025
+Owas surprised when Jerome Powell was appointed. 4
+••.
+4,977
+↓
+lab-gone-wrong • 1h
+Daily reminder that 40% of America thinks this guy is brilliant" loading="lazy" data-group="3mc744w7gmc2s" data-idx="1" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:pnx2fjuannbdpy3337ggthpp/bafkreibhvzo2ef7fmm4tjz2cut6uvfyaqi2v7sjqeptenmq3o2bivfe4qy@jpeg" alt="X
+r/wallstreetbets
+• 834 people here
+jpow response
+39.6k upvotes • 2k comments
+...
+of the Fodoral Reserve setting interest
+ButtExterminator • 2h
+Top 1% Commenter
+Poor guy is just so tired
+•••
+S Reply
+2,555
+AvacadMmmm • 1h
+We all are.
+• • •
+个
+1,004
+Embarrassed_Sea1336 • 1h
+Well, are we fucking done yet? Are we ready to stand up and say, &quot;enough's enough&quot;?
+• ••
+150
+AstroEngineer314 • 1h
+He told us we'd get tired of winning. He certainly was right about the first part." loading="lazy" data-group="3mc744w7gmc2s" data-idx="2" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:pnx2fjuannbdpy3337ggthpp/bafkreia6cwmyxbwceh3xjqa72xtgxs3wotiz3s6bcxsycjax7ozn7hh6eu@jpeg" alt="X
+r/wallstreetbets
+825 people here
+jpow response
+39.6k upvotes • 2k comments
+•• •
+Fod will be able
+WeakPeak1015 • 2h
+Man, JPowell is a true professional.
+•••
+少
+Reply
+622
+4 more replies v
+FrenchCrazy • 1h
+The federal reserve is the only thing right now holding us back from rampant inflation and keeping trust in the dollar on the global markets.
+• ••
+S Reply
+2
+1,428
+nullbyte420 • 1h
+Trust in the dollar? It's value has been tanking since the tariff shitshow. People in international finance subs are asking how come their US stocks are in the negative when they've gone up 10%. The dollar is pretty fucked
+•••
+①
+331
+个
+Exciting_Place_6817 • 1h
+Imagine it with the jpow dam gone holding back an avalanche of hell." loading="lazy" data-group="3mc744w7gmc2s" data-idx="3" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 3:32am • ♥ 4187 • <a href="https://bsky.app/profile/peark.es/post/3mc744w7gmc2s">View</a></p>
+</article>
+</section>
+<details class="section" id="section-music" open>
+<summary><h2>Music</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theguardian.com/post/3mc6qx55z6b2q">Guardian Classical Music Critic Andrew Clements Dies at 75</a></h3>
+<details><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Andrew Clements, Guardian’s classical music critic, dies aged 75</p>
+<a href="https://www.theguardian.com/music/2026/jan/12/andrew-clements-guardians-classical-music-critic-dies-aged-75?utm_source=dlvr.it&amp;utm_medium=bluesky&amp;CMP=bsky_gu" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreieffp3miodrreemvbpt6t6pmir6juqkwgpxkaqcxpfuyafo47u25m@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Andrew Clements, Guardian’s classical music critic, dies aged 75</div>
+<div class="link-desc">An outstanding critical voice, his deep knowledge and love of music was evident in everything he wrote
+
+The Guardian�...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 12:12am • ♥ 55 • <a href="https://bsky.app/profile/theguardian.com/post/3mc6qx55z6b2q">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/bloomberg.com/post/3mc62ii5i252x">Bad Bunny's Super Bowl Slot Marks New Era for Hyperlocal Music</a></h4>
+<details><summary>2 posts</summary>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">Bad Bunny’s upcoming Super Bowl slot marks a new era of global focus on hyperlocal music. Artists, like rapper Skai Isyourgod, who are rooted in accent, dialect and place are overturning long-held assumptions about what it takes to break through internationally. Read more: bloom.bg/4aMY5tN
+
+📷️: Getty</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreidc6mw3lnbdiy2uhkmpllpa5nufdparrgva26mt3c6bf3hcwgwwym@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc62ii5i252x" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 5:30pm • ♥ 36 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc62ii5i252x">View</a></p>
+</div>
+<div class="post">
+<span class="author">@bloomberg.com</span>
+<p class="text">“Understanding 0%, Vibing 100%.” From Bad Bunny to Chinese rap, streaming is helping local music find global audiences.</p>
+<a href="https://bloom.bg/49NM85X" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:uewxgchsjy4kmtu7dcxa77us/bafkreibkr2etsm4n3cymhajuloxkhv2gc3irehip7fa7k6ziqladio6mru@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">From Bad Bunny to Chinese Rap, Hyperlocal Music Is Going Global</div>
+<div class="link-desc">Artists like Skai Isyourgod — rooted in accent, dialect and place — are overturning assumptions about what it tak...</div>
+<div class="link-domain">bloom.bg</div>
+</div>
+</a>
+<p class="meta">Jan 12, 9:00am • ♥ 9 • <a href="https://bsky.app/profile/bloomberg.com/post/3mc7oh7xal623">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/stereogum.com/post/3mc6ykqmwws2t">Charli XCX and Djo Present Golden Globe for Best Song</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@stereogum.com</span>
+<p class="text">Presented by Charli XCX and Djo, the 2026 Golden Globe for Best Song went to &quot;Golden&quot; from 'KPop Demon Hunters.' A few hours before the broadcast, Penske Media Eldridge announced that Best Score would be be presented off-air. It went to Ludwig Göransson for 'Sinners.'
+
+stereogum.com/2484849/gold...</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:r5qqbgz6n5huvcsvzzm6fsit/bafkreihk2p4rcrc3erwsguzsfeeshzjka4m4m7vqoueytcrg5q6h26i5e4@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc6ykqmwws2t" data-idx="0" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:r5qqbgz6n5huvcsvzzm6fsit/bafkreiedylnphhhwzxfremiweedbxmjpdherqqo5bmoj5ditsxg5thp6zm@jpeg" alt="Image" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc6ykqmwws2t" data-idx="1" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 2:28am • ♥ 26 • <a href="https://bsky.app/profile/stereogum.com/post/3mc6ykqmwws2t">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/stereogum.com/post/3mc657ankok2s">Chappell Roan Makes Surprise Appearance at Artists For Aid Concert</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@stereogum.com</span>
+<p class="text">Chappell Roan made a surprise appearance at last night’s Artists For Aid concert in LA, joining Lucy Dacus on a Magnetic Fields classic.
+
+stereogum.com/2484832/watc...
+
+Organized by Mustafa, the event benefits the Sudanese American Physicians Association and the Palestine Children’s Relief Fund.</p>
+<p class="meta">Jan 11, 6:18pm • ♥ 59 • <a href="https://bsky.app/profile/stereogum.com/post/3mc657ankok2s">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/miasato.bsky.social/post/3mc6ftgpmg22y">@miasato.bsky.social</a>
+<p class="text">This weekend I finished sewing this bolero using a vintage Vogue Issey Miyake sewing pattern 🪡</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fctau3eedws5cdrvnv4k6n2q/bafkreiccmnnrhwv5eb3mrjstcn4lkaljbdnee7iwifi3sv5yytsmuimycq@jpeg" alt="cream, red and orange plaid cropped jacket. sewn using a vintage issey miyake sewing pattern. the jacket has a knotted front and wide sleeves that button up to the armpits" loading="lazy" data-group="3mc6ftgpmg22y" data-idx="0" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fctau3eedws5cdrvnv4k6n2q/bafkreihkaiyoxjogh2xpu3ggntnjdymdpswbwprf76vj3tqljs5o77o4aq@jpeg" alt="Image" loading="lazy" data-group="3mc6ftgpmg22y" data-idx="1" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fctau3eedws5cdrvnv4k6n2q/bafkreiduu7lwdlgnf5hck5wnxmb563njfpf4nkadabf3ui6wpvgameszja@jpeg" alt="Image" loading="lazy" data-group="3mc6ftgpmg22y" data-idx="2" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fctau3eedws5cdrvnv4k6n2q/bafkreidq2q2k225iaop5t3mygqdo3q3wrqlpqnwe2c35734bauoqk45jti@jpeg" alt="Vintage vogue issey miyake sewing pattern" loading="lazy" data-group="3mc6ftgpmg22y" data-idx="3" onclick="openLightbox(this)">
+</div>
+<details class="thread-replies" open>
+<summary>1 replies in thread</summary>
+<div class="thread-reply">
+<span class="author">@miasato.bsky.social</span>
+<p class="text">It’s actually one large rectangle when the sleeves are unbuttoned. The Met has the same jacket in its collection 😀</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fctau3eedws5cdrvnv4k6n2q/bafkreidagzrcxdtwsbo7xfoive6bpd3knjrusmvy2tdue224enulww6ncy@jpeg" alt="Image" loading="lazy" data-group="3mc6ftkajp22y" data-idx="0" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fctau3eedws5cdrvnv4k6n2q/bafkreifk7nayfq5mzkxp2653lejquova5mlopx7pudaqogjteiehy6ozgy@jpeg" alt="Image" loading="lazy" data-group="3mc6ftkajp22y" data-idx="1" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fctau3eedws5cdrvnv4k6n2q/bafkreiclmpypwcpkip7fe6itb32x423pcqhnv5r5mkde2ifby7pg6plxgq@jpeg" alt="Image" loading="lazy" data-group="3mc6ftkajp22y" data-idx="2" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 8:53pm • ♥ 24 • <a href="https://bsky.app/profile/miasato.bsky.social/post/3mc6ftkajp22y">View</a></p>
+</div>
+</details>
+<p class="meta">Jan 11, 8:53pm • ♥ 99 • <a href="https://bsky.app/profile/miasato.bsky.social/post/3mc6ftgpmg22y">View</a></p>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/ceeks.bsky.social/post/3mc76s3axtc2x">@ceeks.bsky.social</a>
+<p class="text">[transition glasses fade to black]</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:sh5iavnipwl2mxsrcqwsxgz6/bafkreibinser6qqhdcowqw2ddeqmexbljtbyec6g23mlmmcicpkesi4t5u@jpeg" alt="Image" loading="lazy" data-group="3mc76s3axtc2x" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 4:19am • ♥ 3161 • <a href="https://bsky.app/profile/ceeks.bsky.social/post/3mc76s3axtc2x">View</a></p>
+</article>
+</section>
+<details class="section" id="section-literature" open>
+<summary><h2>Literature</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/aljazeera.com/post/3mc7q4mofhv2l">Writers Quit Adelaide Festival Over Palestinian Author Ban</a></h3>
+<details><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">About 100 writers and four board members quit Adelaide Festival after it barred author Randa Abdel-Fattah.</p>
+<a href="https://www.aljazeera.com/news/2026/1/12/australia-festival-faces-mass-boycott-after-dropping-palestinian-author?utm_source=bluesky&amp;utm_medium=social&amp;utm_campaign=socialPulse" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreibmlh2h4bmsgknbgbfhrxplea4rak4carwwxlyluh4avav5oo3m54@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Australia festival faces mass boycott after dropping Palestinian author</div>
+<div class="link-desc">About 100 writers and four board members quit Adelaide Festival after it barred author Randa Abdel-Fattah.</div>
+<div class="link-domain">www.aljazeera.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 9:30am • ♥ 211 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc7q4mofhv2l">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/thetransfemininereview.com/post/3mc6733eya22b">Rainie Oet's Debut Trans Children's Novel 'Glitch Girl\!' Breaks New Ground</a></h4>
+<details><summary>3 posts</summary>
+<div class="post">
+<span class="author">@thetransfemininereview.com</span>
+<p class="text">⭐ Rainier Oet's debut novel in verse breaks essential new ground for trans kids in the children's fiction industry, though I struggled with the presentation of its autofictional elements.</p>
+<a href="https://www.patreon.com/posts/2025-cleanup-by-147839164" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:a3ifpbp74ln32mve7tcwv764/bafkreibtq24lybwpxaxxemotnwvtpwx72kzb3ppwg3svf4tjoyofny7psu@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">[2025 Cleanup] Glitch Girl! by Rainie Oet (Kokila, 3/11/25) | The Transfeminine Review</div>
+<div class="link-desc">Get more from The Transfeminine Review on Patreon</div>
+<div class="link-domain">www.patreon.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:52pm • ♥ 16 • <a href="https://bsky.app/profile/thetransfemininereview.com/post/3mc6733eya22b">View</a></p>
+</div>
+<div class="post">
+<span class="author">@thetransfemininereview.com</span>
+<p class="text">Rainie* fuck autocorrect jfc</p>
+<p class="meta">Jan 11, 7:00pm • ♥ 3 • <a href="https://bsky.app/profile/thetransfemininereview.com/post/3mc67j3kluk2b">View</a></p>
+</div>
+<div class="post">
+<span class="author">@benjanun.bsky.social</span>
+<p class="text">children's categories have historically had almost no transfem presence, this is neat</p>
+<p class="meta">Jan 11, 6:58pm • ♥ 4 • <a href="https://bsky.app/profile/benjanun.bsky.social/post/3mc67fyq3oc2d">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/thetransfemininereview.com/post/3mc6gpy6rus27">Transfeminine Review Editor Read 97 Books by Transfem Authors in 2025</a></h4>
+<details><summary>2 posts</summary>
+<div class="post">
+<span class="author">@thetransfemininereview.com</span>
+<p class="text">At final count, I read 97 books by transfemininr authors last year 🥳</p>
+<p class="meta">Jan 11, 9:09pm • ♥ 76 • <a href="https://bsky.app/profile/thetransfemininereview.com/post/3mc6gpy6rus27">View</a></p>
+</div>
+<div class="post">
+<span class="author">@thetransfemininereview.com</span>
+<p class="text">I don't know if that's the most of anyone in the world, but it's gotta be up there.</p>
+<p class="meta">Jan 11, 9:10pm • ♥ 24 • <a href="https://bsky.app/profile/thetransfemininereview.com/post/3mc6grhsyc227">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/nacl.sh/post/3mbviy7p3js2j">Opinion: Philip K. Dick's Evolution in Writing Women with BPD</a></h4>
+<details><summary>2 posts</summary>
+<div class="post">
+<span class="author">@nacl.sh</span>
+<p class="text">pkd is is the only good author in history bc his life arc went from writing books about how women with bpd arent people and that's why it's wrong to beat them to writing books about how women with bpd are actually the only real people and that's why everyone else is satanic agent that you cant trust</p>
+<p class="meta">Jan 08, 7:55am • ♥ 181 • <a href="https://bsky.app/profile/nacl.sh/post/3mbviy7p3js2j">View</a></p>
+</div>
+<div class="post">
+<span class="author">@katie.bzky.team</span>
+<p class="text">BANGER</p>
+<p class="meta">Jan 11, 7:26pm • ♥ 7 • <a href="https://bsky.app/profile/katie.bzky.team/post/3mc6axuw3rc2b">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/vickyhaddock.bsky.social/post/3mc7hsdkzp42r">@vickyhaddock.bsky.social</a>
+<p class="text">Artist John Singer Sargent was born #OnThisDay in 1856. His 1892 portrait Mrs Hugh Hammersley, depicted Mary Hammersley in a cherry silk velvet gown trimmed with gold lace at the cuffs, hem and neck. Mary kept this fragment of the gown all her life. Met Museum collection. #fashionhistory</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fmvmbdwawjxv3d5awfmpbij6/bafkreic57v7jx7aaklrmlrjgnohc7dngwdgi5sefq4igmtz2lsdrqmjh7e@jpeg" alt="Image" loading="lazy" data-group="3mc7hsdkzp42r" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 7:01am • ♥ 90 • <a href="https://bsky.app/profile/vickyhaddock.bsky.social/post/3mc7hsdkzp42r">View</a></p>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/ditzkoff.bsky.social/post/3mc6neohmtc2y">@ditzkoff.bsky.social</a>
+<p class="text">Tfw your childhood pediatricians reunite to tell you that you have osteoporosis</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:buy3qvqcj3o76leo6ap7pn2p/bafkreig6zyn2gwhtvnodcykw6artbgu3kurnapnddpcrsjcxvhm3cuo4aq@jpeg" alt="Image" loading="lazy" data-group="3mc6neohmtc2y" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 11:08pm • ♥ 3158 • <a href="https://bsky.app/profile/ditzkoff.bsky.social/post/3mc6neohmtc2y">View</a></p>
+</article>
+</section>
+<details class="section" id="section-politics-ca" open>
+<summary><h2>Canadian Politics</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/balkissoon.bsky.social/post/3mbzs7boqq22p">AI Minister Evan Solomon Defends Government Presence on X Amid CSAM Controversy</a></h3>
+<details><summary>6 posts in story</summary>
+<div class="post">
+<span class="author">@balkissoon.bsky.social</span>
+<p class="text">Evan Solomon, the minister responsible for AI regulation and safety in Canada, declined an interview request.</p>
+<a href="https://bsky.app/profile/akurjata.ca/post/3mbzfhwjun22t" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Andrew Kurjata (@akurjata.ca)</div>
+<div class="link-desc">Canadian government still using X amid platform’s child sex abuse material scandal globalnews.ca/news/1160665...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 10, 12:51am • ♥ 125 • <a href="https://bsky.app/profile/balkissoon.bsky.social/post/3mbzs7boqq22p">View</a></p>
+</div>
+<div class="post">
+<span class="author">@alexusherhesa.bsky.social</span>
+<p class="text">Remember last month when Solomon was all about how the future of AI lay in having people trust the technology?</p>
+<a href="https://bsky.app/profile/balkissoon.bsky.social/post/3mbzs7boqq22p" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Denise Balkissoon (@balkissoon.bsky.social)</div>
+<div class="link-desc">Evan Solomon, the minister responsible for AI regulation and safety in Canada, declined an interview request.</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 11, 8:56pm • ♥ 25 • <a href="https://bsky.app/profile/alexusherhesa.bsky.social/post/3mc6fyhccvc2h">View</a></p>
+</div>
+<div class="post">
+<span class="author">@parismarx.com</span>
+<p class="text">Oh great, the worst of the Canadian tech oligarchy are directly thanking Evan Solomon for saying an X ban isn’t in the cards.</p>
+<a href="https://bsky.app/profile/rachelgilmore.bsky.social/post/3mc6uirvkvk26" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Rachel Gilmore (@rachelgilmore.bsky.social)</div>
+<div class="link-desc">And here's Canada's tech broligarchy cheering Evan Solomon on...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:22am • ♥ 203 • <a href="https://bsky.app/profile/parismarx.com/post/3mc6uuzi4gs2r">View</a></p>
+</div>
+<div class="post">
+<span class="author">@lukelebrun.ca</span>
+<p class="text">Political figures won't leave X because the conversation starts and ends with: &quot;We have ### followers, sacrificing our audience is too risky&quot;
+
+These people are risk averse, they make decisions based on what feels least risky. They will only leave X when they start fearing blowback and PR headaches</p>
+<a href="https://bsky.app/profile/senatorpaulasimons.bsky.social/post/3mc6iajn6cc25" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Senator Paula Simons 🇨🇦 (@senatorpaulasimons.bsky.social)</div>
+<div class="link-desc">The CBC has just posted a transcript of my recent As it Happens interview about X and Grok. I’m posting a couple of...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 11, 10:00pm • ♥ 300 • <a href="https://bsky.app/profile/lukelebrun.ca/post/3mc6jm4u7es25">View</a></p>
+</div>
+<div class="post">
+<span class="author">@lukelebrun.ca</span>
+<p class="text">The @ndp.ca (or other parties) could do more than delete X
+
+They could push for rules requiring government accounts only operate on platforms that meet higher standards around moderation, security and transparency
+
+Lead by example. Governments implicitly endorse these platforms with their presence</p>
+<a href="https://bsky.app/profile/calder12.bsky.social/post/3mc6zi44oy223" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Rick (@calder12.bsky.social)</div>
+<div class="link-desc">If the NDP really wants to set themselves apart, this should be a no brainer for them.</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 12, 3:12am • ♥ 314 • <a href="https://bsky.app/profile/lukelebrun.ca/post/3mc72yryjrc2q">View</a></p>
+</div>
+<div class="post">
+<span class="author">@vmcntosh.bsky.social</span>
+<p class="text">Woke up this morning to Canada’s Ministry of AI issuing either big tech can do what they want, or a high level of government is afraid of a white supremacist pedophile billionaire.
+
+Sorry, but if you won’t take a hard line against CSAM, what’s the point?</p>
+<p class="meta">Jan 11, 12:15pm • ♥ 240 • <a href="https://bsky.app/profile/vmcntosh.bsky.social/post/3mc5ivmqvyk2m">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/utopia-defer.red/post/3mc7cw3jtyc23">Rumors Swirl of Coordinated X Ban by Canada, UK, and Australia</a></h4>
+<details><summary>2 posts</summary>
+<div class="post">
+<span class="author">@utopia-defer.red</span>
+<p class="text"></p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:dsbpb3w7glnyddtbewg73g74/bafkreib6plm3pospuo7yavevlnzvz4d33nxhl3lehxrbpbng4guho74mvy@jpeg" alt="crude ms painting of timmy turner from the fairy odd parents. He is kneeling at his bedside as if praying with the speech bubble:
+
+Please God let this happen because it would be so fucking funny" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc7cw3jtyc23" data-idx="0" onclick="openLightbox(this)">
+</div>
+<a href="https://bsky.app/profile/alexip718.com/post/3mc7a2zwlo22e" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Alex Ip 葉清霖 (@alexip718.com)</div>
+<div class="link-desc">Extremely unusual that the Bluesky team is working late on a Sunday night to verify Canadian political parties and el...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 12, 5:33am • ♥ 2090 • <a href="https://bsky.app/profile/utopia-defer.red/post/3mc7cw3jtyc23">View</a></p>
+</div>
+<div class="post">
+<span class="author">@katie.bzky.team</span>
+<p class="text">excited to get my blue check</p>
+<p class="meta">Jan 12, 5:59am • ♥ 57 • <a href="https://bsky.app/profile/katie.bzky.team/post/3mc7eeat72k2x">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/thestar.com/post/3mc66vhjock2i">Mark Carney Seeks Reset With China Amid Trump's Global Trade Chaos</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">Mark Carney seeks a reset with China amid Donald Trump’s chaos and global tensions. Can he succeed where others have failed?</p>
+<a href="https://www.thestar.com/politics/federal/mark-carney-seeks-a-reset-with-china-amid-donald-trumps-chaos-and-global-tensions-can/article_64641386-91f7-43c4-a804-d690c64c18f6.html" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:w5pxbmkjntxfw6mt4emennhv/bafkreib7v5unhynof2astovfxlji2muz7v4j3piapn7wj5li24giwiyh64@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Mark Carney seeks a reset with China amid Donald Trump’s chaos and global tensions. Can he succeed where others have failed?</div>
+<div class="link-desc">The prime minister is Beijing-bound to “elevate engagement” on trade, energy, agriculture and international secur...</div>
+<div class="link-domain">www.thestar.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:49pm • ♥ 13 • <a href="https://bsky.app/profile/thestar.com/post/3mc66vhjock2i">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/youcaughtscott.com/post/3mc6hly27cc2g">Opinion: PornHub More Ethical Than X, Critics Say in Platform Debate</a></h4>
+<details><summary>2 posts</summary>
+<div class="post">
+<span class="author">@youcaughtscott.com</span>
+<p class="text">Honestly PornHub is more ethical than X at this point. Campaign to get the Canadian government to upload there. It’d be more dignified.</p>
+<a href="https://bsky.app/profile/jameswsthomson.com/post/3mc6he7hy5c26" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">Jimmy Thomson (@jameswsthomson.com)</div>
+<div class="link-desc">B) hits hard here: what, if any, are the limits and criteria the government has set for where they communicate? Would...</div>
+<div class="link-domain">bsky.app</div>
+</div>
+</a>
+<p class="meta">Jan 11, 9:24pm • ♥ 80 • <a href="https://bsky.app/profile/youcaughtscott.com/post/3mc6hly27cc2g">View</a></p>
+</div>
+<div class="post">
+<span class="author">@celeste.lgbt</span>
+<p class="text">Can’t believe I’m saying this, but here we are, in 2026: At least PornHub, unlike Twitter, actually prohibits child pornography.</p>
+<p class="meta">Jan 11, 9:33pm • ♥ 5 • <a href="https://bsky.app/profile/celeste.lgbt/post/3mc6i3gufn22j">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/julieinstitches.bsky.social/post/3mc5vlkoses2g">@julieinstitches.bsky.social</a>
+<p class="text">Quilted petticoat, off white silk satin, England, c1765. More here via The Museum at FIT: fashionmuseum.fitnyc.edu/objects/4498...</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:gkaquvgeh3sadrcpygqwdby4/bafkreibyk4obsztpkhjlfnjjrkn7guibvfcyyrve2vp4ggvlh7wsqu6jny@jpeg" alt="Floor length c1765 underskirt/petticoat of off white silk satin. Hand quilted in scallops at top &amp; floral motif around bottom, FIT" loading="lazy" data-group="3mc5vlkoses2g" data-idx="0" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:gkaquvgeh3sadrcpygqwdby4/bafkreihnqwwrjz3j5iwmr5yjnpdspbou24q6nq77xwythxknb4jh5ct3di@jpeg" alt="Close up of C18th petticoat quilting showing floral motif, FIT" loading="lazy" data-group="3mc5vlkoses2g" data-idx="1" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 4:02pm • ♥ 41 • <a href="https://bsky.app/profile/julieinstitches.bsky.social/post/3mc5vlkoses2g">View</a></p>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/scoiattolo.mountainherder.xyz/post/3mc5uin7uak2b">@scoiattolo.mountainherder.xyz</a>
+<p class="text">Male to New Yorker / Male to Marisa Tomei</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:uyqnubfj3qlho6psy6uvvt6u/bafkreich2wsn6lckkr7iymxyjwnkifvaurzlyndytwgzlzgx2735apsr44@jpeg" alt="A 2020 letterbox review of My Cousin Vinny (1992):
+
+Watched Nov 26, 2020
+I'm a man who is very content with his gender identity, but I must admit there's part of me that wants nothing more than to literally just be Marisa Tomei in this movie and wear all those delightful leather jackets and backless catsuits while talking in that New York accent
+
+2026 edit: hahaha. oh sweet girl. i guess the signs were all there." loading="lazy" data-group="3mc5uin7uak2b" data-idx="0" onclick="openLightbox(this)">
+</div>
+<details class="thread-replies" open>
+<summary>1 replies in thread</summary>
+<div class="thread-reply">
+<span class="author">@katie.bzky.team</span>
+<p class="text">HAAAAAAH</p>
+<p class="meta">Jan 11, 6:18pm • ♥ 31 • <a href="https://bsky.app/profile/katie.bzky.team/post/3mc656g64jc2x">View</a></p>
+</div>
+</details>
+<p class="meta">Jan 11, 3:43pm • ♥ 2060 • <a href="https://bsky.app/profile/scoiattolo.mountainherder.xyz/post/3mc5uin7uak2b">View</a></p>
+</article>
+</section>
+<details class="section" id="section-local-news" open>
+<summary><h2>Toronto News</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/thestar.com/post/3mca3wxktis25">Toronto Carding Class Action Lawsuit: Police Won't Stop Stopping Us, Victims Say</a></h3>
+<details><summary>2 posts in story</summary>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">Why the legacy of ‘carding’ is now a massive class action lawsuit — and why this man wants Toronto police to ‘leave me alone, please’</p>
+<a href="https://www.thestar.com/news/gta/why-the-legacy-of-carding-is-now-a-massive-class-action-lawsuit-and-why-this/article_6eabc9a2-b017-4e45-88c0-7c660731138f.html" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:w5pxbmkjntxfw6mt4emennhv/bafkreihxsqtl3wnyk4m3hnkf7cdfsd2xo3fu5rfinumhr26ugpjklux4w4@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Why the legacy of ‘carding’ is now a massive class action lawsuit — and why this man wants Toronto police to ‘leave me alone, please’</div>
+<div class="link-desc">Dale James is “the man Toronto police won’t stop stopping.” Even after “carding” was abolished, he says he�...</div>
+<div class="link-domain">www.thestar.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 1:01pm • ♥ 11 • <a href="https://bsky.app/profile/thestar.com/post/3mca3wxktis25">View</a></p>
+</div>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">Why the legacy of ‘carding’ is now a massive class action lawsuit — and why this man wants Toronto police to ‘leave me alone, please’</p>
+<a href="https://www.thestar.com/news/gta/why-the-legacy-of-carding-is-now-a-massive-class-action-lawsuit-and-why-this/article_6eabc9a2-b017-4e45-88c0-7c660731138f.html?utm_source=&amp;utm_medium=&amp;utm_campaign=GTA&amp;utm_content=card" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:w5pxbmkjntxfw6mt4emennhv/bafkreihxsqtl3wnyk4m3hnkf7cdfsd2xo3fu5rfinumhr26ugpjklux4w4@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Why the legacy of ‘carding’ is now a massive class action lawsuit — and why this man wants Toronto police to ‘leave me alone, please’</div>
+<div class="link-desc">Dale James is “the man Toronto police won’t stop stopping.” Even after “carding” was abolished, he says he�...</div>
+<div class="link-domain">www.thestar.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 2:13pm • ♥ 1 • <a href="https://bsky.app/profile/thestar.com/post/3mca7y24wps2z">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/thestar.com/post/3mc66sds3h22i">Richmond Hill Man Dies in Unprovoked Driveway Attack</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">A Richmond Hill man died after an unprovoked attack in his driveway. The man accused had a history of violent assaults</p>
+<a href="https://www.thestar.com/news/gta/a-richmond-hill-man-died-after-an-unprovoked-attack-in-his-driveway-the-man-accused/article_5aa01a71-8efa-4db7-bb0c-4fb85c8e66f9.html" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:w5pxbmkjntxfw6mt4emennhv/bafkreibftylzyagz2zhyvcxx7i5jflhjqqx6xql4rlwvbouscm7mkwvuxa@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">A Richmond Hill man died after an unprovoked attack in his driveway. The man accused had a history of violent assaults</div>
+<div class="link-desc">Police reports, court transcripts and witness accounts detail escalating violence leading up to a fatal attack on a R...</div>
+<div class="link-domain">www.thestar.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:47pm • ♥ 3 • <a href="https://bsky.app/profile/thestar.com/post/3mc66sds3h22i">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/thestar.com/post/3mc66n6m5zs2i">Mayor Chow Claims Property Tax Freeze Saves Toronto Families ,200 a Year</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">Olivia Chow says she’s saving families $1,200 a year. Here’s how she got that number</p>
+<a href="https://www.thestar.com/news/gta/city-hall/toronto-budget-savings-explained/article_825ed3b4-d4bf-411a-8097-f59f4b6b5df3.html" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:w5pxbmkjntxfw6mt4emennhv/bafkreicgenmryqxuo6v26bvg5bg6aowdlfhwxlnn2ttwvjlyj3di7qkyhu@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Olivia Chow says she’s saving families $1,200 a year. Here’s how she got that number</div>
+<div class="link-desc">The Toronto mayor’s figure is based on projections from the TTC fare freeze and the city’s child nutrition progra...</div>
+<div class="link-domain">www.thestar.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:44pm • ♥ 4 • <a href="https://bsky.app/profile/thestar.com/post/3mc66n6m5zs2i">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/celeste.lgbt/post/3mc6rmskuc223">Opinion: TTC Riders Kicked Off Bus Due to Unannounced Schedule Change</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@celeste.lgbt</span>
+<p class="text">The TTC in Toronto: where you get kicked of the bus owing to an unannounced short turn, wait 5 minutes in the cold, then three buses — all do the same line for the bus you got kicked off of — show up one behind another.</p>
+<p class="meta">Jan 12, 12:24am • ♥ 4 • <a href="https://bsky.app/profile/celeste.lgbt/post/3mc6rmskuc223">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/jdmccafferty.bsky.social/post/3mc6lh65j622e">@jdmccafferty.bsky.social</a>
+<p class="text">These sleeve panels were meant to be worn under a gown or bodice with open sleeves.   They gave the impression of a lavishly decorated smock or waistcoat under the bodice of the gown but were cheaper &amp; less bulky to wear.  #English, 1615-1625 (Victoria &amp; Albert Museum, London)</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:l3ytunymnwkge7ljius6nudt/bafkreibbrk7hsj3actp7bvshattj63q3onxivb6arsmb5v7jm5ggn6o7su@jpeg" alt="Image" loading="lazy" data-group="3mc6lh65j622e" data-idx="0" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:l3ytunymnwkge7ljius6nudt/bafkreibjswd2lukep2whmmqv6nucpmpekelucivg4orv7pjvmeoucihtly@jpeg" alt="Image" loading="lazy" data-group="3mc6lh65j622e" data-idx="1" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:l3ytunymnwkge7ljius6nudt/bafkreiaqn4v4mzsgvzx6wjt36jrbqanad3pnna7qssesfm66spkmukw5aa@jpeg" alt="Image" loading="lazy" data-group="3mc6lh65j622e" data-idx="2" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:l3ytunymnwkge7ljius6nudt/bafkreihxvmqcgcylp3fi5lr6qbl25rlbgftkeaayl3ettm7zsac3udnp34@jpeg" alt="Image" loading="lazy" data-group="3mc6lh65j622e" data-idx="3" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 10:33pm • ♥ 36 • <a href="https://bsky.app/profile/jdmccafferty.bsky.social/post/3mc6lh65j622e">View</a></p>
+</article>
+</div>
+</details>
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/kashana.blacksky.app/post/3mc6zbfd3vk2l">@kashana.blacksky.app</a>
+<p class="text">I miss the good old days of DEI, back when we had pronouns and Sunday nights where the head of the Fed wasn’t being blackmailed</p>
+<p class="meta">Jan 12, 2:41am • ♥ 2268 • <a href="https://bsky.app/profile/kashana.blacksky.app/post/3mc6zbfd3vk2l">View</a></p>
+</article>
+</section>
+<details class="section" id="section-politics-us" open>
+<summary><h2>US Politics</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/wsj.com/post/3mc6irzxx6c2q">LA wildfire victims denied rebuild permits amid housing crisis</a></h3>
+<details><summary>1 posts in story</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Residents of two condo communities that were destroyed by last year’s Palisades fire learned how much their insurance policies affect whether—and how—they could rebuild after a disaster.</p>
+<a href="https://on.wsj.com/3Ld7RuW" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreihdf647al52jrzch6muxwcb4ev2xnympaqcoe4dv7wtioq7kgp76e@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">How Insurance Led Two L.A. Communities to Take Different Paths After the Fires</div>
+<div class="link-desc">Residents of neighboring Palisades condo communities learned how much their policies affect whether—and how—they ...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 9:46pm • ♥ 4 • <a href="https://bsky.app/profile/wsj.com/post/3mc6irzxx6c2q">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/crampell.bsky.social/post/3mc5jsw4x222b">Mississippi's largest synagogue set on fire in arson attack</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@crampell.bsky.social</span>
+<p class="text">Mississippi’s largest synagogue was set on fire before dawn Saturday. Fire department ruled it arson, and a suspect has been arrested. 
+It is the same synagogue that the Ku Klux Klan bombed in 1967 because the rabbi supported civil rights. mississippitoday.org/2026/01/10/f...</p>
+<a href="https://mississippitoday.org/2026/01/10/fire-damages-mississippi-largest-synagogue/" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:6m7rbdgaz5vyg4bnbefi7kh6/bafkreidsdjotsku7gxdshqojzlcxmmpnvzw5mbe4fsvxjlqls56f5kpli4@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Predawn fire reduces parts of Mississippi's largest synagogue to charred ruins - Mississippi Today</div>
+<div class="link-desc">A fire heavily damaged Jackson’s only synagogue before dawn Saturday – the same house of worship that was firebom...</div>
+<div class="link-domain">mississippitoday.org</div>
+</div>
+</a>
+<p class="meta">Jan 11, 12:31pm • ♥ 3168 • <a href="https://bsky.app/profile/crampell.bsky.social/post/3mc5jsw4x222b">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc5y2suup42r">WSJ investigation reveals ICE agents have used deadly force 13 times</a></h4>
+<details><summary>2 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">A WSJ visual investigation found that the Minneapolis ICE killing is one of 13 times federal immigration agents have used deadly force against civilians in vehicles since July.</p>
+<a href="https://on.wsj.com/4jDfHKY" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreieekldzhrduv6hv35q7dh55qh2owk3mnoeowospadopztkxgib6xq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Videos Show How ICE Vehicle Stops Can Escalate to Shootings</div>
+<div class="link-desc">A WSJ visual investigation found that the Minneapolis ICE killing is one of 13 incidents where federal immigration ag...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 4:46pm • ♥ 55 • <a href="https://bsky.app/profile/wsj.com/post/3mc5y2suup42r">View</a></p>
+</div>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">A WSJ visual investigation found that the Minneapolis ICE killing is one of 13 times federal immigration agents have used deadly force against civilians in vehicles since July.</p>
+<a href="https://on.wsj.com/49KPkPT" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreieekldzhrduv6hv35q7dh55qh2owk3mnoeowospadopztkxgib6xq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Videos Show How ICE Vehicle Stops Can Escalate to Shootings</div>
+<div class="link-desc">A WSJ visual investigation found that the Minneapolis ICE killing is one of 13 incidents where federal immigration ag...</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 4:19pm • ♥ 185 • <a href="https://bsky.app/profile/wsj.com/post/3mc5wkcj3k32z">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/thestar.com/post/3mc66m5l3uc2i">Opinion: Analysis: Trump policy unpredictability creates chaos</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@thestar.com</span>
+<p class="text">Trump ‘policy’ has turned the U.S. into America the Random. Here’s why that’s more dangerous than ever
+
+#Opinion from @stephenmarche.bsky.social</p>
+<a href="https://www.thestar.com/opinion/trump-policy-has-turned-the-u-s-into-america-the-random-heres-why-thats-more/article_57dc75ce-23af-4ef6-8189-1cab082f112b.html" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:w5pxbmkjntxfw6mt4emennhv/bafkreicxxdscxzsnblmae6wf37jin4ffhwok7ep7zueq5l3xsut4dr3zmm@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Stephen Marche: Trump ‘policy’ has turned the U.S. into America the Random. Here’s why that’s more dangerous than ever</div>
+<div class="link-desc">When violence doesn’t work to change policy, violence becomes the point</div>
+<div class="link-domain">www.thestar.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 6:43pm • ♥ 19 • <a href="https://bsky.app/profile/thestar.com/post/3mc66m5l3uc2i">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/mangomakes.bsky.social/post/3mc5j255yyk2w">@mangomakes.bsky.social</a>
+<p class="text">Self indulgent:))
+#art #oc #ocart #gunmetalolympus</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:ajfwnnwg7lzzvmbcvecokyll/bafkreiblxlacibmgs6njg3y6sjsasjuqfzr655hta2scgddqimm5bwb5vy@jpeg" alt="Image" loading="lazy" data-group="3mc5j255yyk2w" data-idx="0" onclick="openLightbox(this)">
+</div>
+<details class="thread-replies" open>
+<summary>1 replies in thread</summary>
+<div class="thread-reply">
+<span class="author">@benjanun.bsky.social</span>
+<p class="text">they're so pretty, I love the white lashes</p>
+<p class="meta">Jan 11, 9:11pm • ♥ 2 • <a href="https://bsky.app/profile/benjanun.bsky.social/post/3mc6gugnpmk2d">View</a></p>
+</div>
+</details>
+<p class="meta">Jan 11, 12:18pm • ♥ 35 • <a href="https://bsky.app/profile/mangomakes.bsky.social/post/3mc5j255yyk2w">View</a></p>
+</article>
+</div>
+</details>
+<details class="section" id="section-geopolitics" open>
+<summary><h2>Geopolitics</h2></summary>
+<article class="headline-story">
+<h3><a href="https://bsky.app/profile/theguardian.com/post/3mc7fobx7yf2y">Gaza Violence Persists Despite Ceasefire</a></h3>
+<details><summary>5 posts in story</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">No staff, no equipment, no medicine: a doctor on returning to Gaza after 665 days in an Israeli prison</p>
+<a href="https://www.theguardian.com/global-development/2026/jan/12/no-staff-no-equipment-no-medicine-a-doctor-on-returning-to-gaza-after-665-days-in-an-israeli-prison?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768194709" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreiasy4ggisx3lduezi3omecjrunmdymadvxcwytuouigs5gbzy7buq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">No staff, no equipment, no medicine: a doctor on returning to Gaza after 665 days in an Israeli prison</div>
+<div class="link-desc">Dr Ahmed Muhanna, one of the country’s most senior emergency care consultants, says the scale of destruction he saw...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 6:23am • ♥ 133 • <a href="https://bsky.app/profile/theguardian.com/post/3mc7fobx7yf2y">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">A displaced Palestinian girl was filmed gathering bread from the ground in a Gaza displacement camp after Israeli forces bombed the tents.</p>
+<p class="meta">Jan 11, 5:27pm • ♥ 343 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc62dgdyd224">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Despite a ceasefire that began on October 10, the Israeli army continues daily attacks on the enclave.</p>
+<a href="https://www.aljazeera.com/news/2026/1/12/israeli-quadcopter-kills-three-in-gazas-khan-younis-police-chief-slain?utm_source=bluesky&amp;utm_medium=social&amp;utm_campaign=socialPulse" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreiaq5pjpfl5d3g2ewfhyqhqiywkxycm4wqvcijb6eka3xo35kg77mi@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Israeli quadcopter kills three in Gaza's Khan Younis; police chief slain</div>
+<div class="link-desc">Despite a ceasefire that began on October 10, the Israeli army continues daily attacks on the enclave.</div>
+<div class="link-domain">www.aljazeera.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 2:00pm • ♥ 35 • <a href="https://bsky.app/profile/aljazeera.com/post/3mca77ezpti2i">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Three UK activists from Palestine Action are on a life-threatening hunger strike to demand bail and fair trials. Heba Muraisi, Kamran Ahmed and Lewie Chiaramello are pushing their bodies to the limits, risking organ failure and death.
+
+🔗: aje.io/89fro4 | #Infograph</p>
+<p class="meta">Jan 12, 1:46pm • ♥ 57 • <a href="https://bsky.app/profile/aljazeera.com/post/3mca6hseq3c2l">View</a></p>
+</div>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">Israel’s plan for 9,000 units at Jerusalem airport ‘nuclear’ step to sever the city from the West Bank, analyst says.</p>
+<a href="https://www.aljazeera.com/news/2026/1/12/israel-advances-fatal-settlement-plan-for-occupied-east-jerusalem?utm_source=bluesky&amp;utm_medium=social&amp;utm_campaign=socialPulse" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreiefwdnbwrolrwbxhyodjloe23lxmumxgvtqwzkuetbtjuswxj5lcq@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Israel advances ‘fatal' settlement plan for occupied East Jerusalem</div>
+<div class="link-desc">Israel's plan for 9,000 units at Jerusalem airport is a move to sever the city from the West Bank, analyst says.</div>
+<div class="link-domain">www.aljazeera.com</div>
+</div>
+</a>
+<p class="meta">Jan 12, 12:30pm • ♥ 54 • <a href="https://bsky.app/profile/aljazeera.com/post/3mca26gxda427">View</a></p>
+</div>
+</details>
+</article>
+<div class="stories-grid">
+<article class="story">
+<h4><a href="https://bsky.app/profile/aljazeera.com/post/3mc7cpg2eyv2p">UN Court Opens Myanmar Rohingya Genocide Case</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@aljazeera.com</span>
+<p class="text">UN top court set to open Myanmar Rohingya genocide case https://aje.news/zx9nso</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:2lofqead276vtc5647ye7sl2/bafkreihgzhvkpjusguyzifdjihjp2xba3f6iz4cgg3zc7h6mzxo7ncekku@jpeg" alt="UN top court set to open Myanmar Rohingya genocide case" loading="lazy" style="max-width:100%;max-height:200px;" data-group="3mc7cpg2eyv2p" data-idx="0" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 12, 5:30am • ♥ 84 • <a href="https://bsky.app/profile/aljazeera.com/post/3mc7cpg2eyv2p">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/wsj.com/post/3mc5tdglgkk2h">Israel and Hamas Prepare for Renewed Fighting</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@wsj.com</span>
+<p class="text">Israel and Hamas are preparing for renewed fighting as the Palestinian militant group refuses to disarm.</p>
+<a href="https://on.wsj.com/49y8mb0" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:i3fhjvvkbmirhyu4aeihhrnv/bafkreidhm5hko5xfsquvbuobo7lzuzkxdm54qqvv5eu5ehxetwrhsiar6a@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Israel and Hamas Get Ready to Go Back to War in Gaza</div>
+<div class="link-desc">The group is refusing to disarm, a requirement that is holding up President Trump’s peace plan for the enclave.</div>
+<div class="link-domain">on.wsj.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 3:22pm • ♥ 19 • <a href="https://bsky.app/profile/wsj.com/post/3mc5tdglgkk2h">View</a></p>
+</div>
+</details>
+</article>
+<article class="story">
+<h4><a href="https://bsky.app/profile/theguardian.com/post/3mc63tipdc32n">Opinion: Why Peace in Ukraine Remains Elusive Despite Growing Support</a></h4>
+<details><summary>1 posts</summary>
+<div class="post">
+<span class="author">@theguardian.com</span>
+<p class="text">Ending the war in Ukraine has more support than ever. So why is peace still not in sight? | Gwendolyn Sasse</p>
+<a href="https://www.theguardian.com/commentisfree/2026/jan/11/ukraine-end-war-peace-paris-declaration-coalition-russia?utm_term=Autofeed&amp;CMP=bsky_gu&amp;utm_medium=&amp;utm_source=Bluesky#Echobox=1768138278" class="link-card" target="_blank" rel="noopener">
+<img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:vovinwhtulbsx4mwfw26r5ni/bafkreic2e2cnw5kpnuh44q2hdpncftnxwnumqkcj2egjgc2jvw5nhtgqou@jpeg" alt="" loading="lazy">
+<div class="link-info">
+<div class="link-title">Ending the war in Ukraine has more support than ever. So why is peace still not in sight? | Gwendolyn Sasse</div>
+<div class="link-desc">The Paris declaration by the ‘coalition of the willing’ supports a nonexistent ceasefire that remains at the merc...</div>
+<div class="link-domain">www.theguardian.com</div>
+</div>
+</a>
+<p class="meta">Jan 11, 5:54pm • ♥ 68 • <a href="https://bsky.app/profile/theguardian.com/post/3mc63tipdc32n">View</a></p>
+</div>
+</details>
+</article>
+<article class="feed-card">
+<div class="label">From the Feed</div>
+<a class="author" href="https://bsky.app/profile/annamthane.bsky.social/post/3mc63qkwjds2y">@annamthane.bsky.social</a>
+<p class="text">Gowns &amp; Roses
+
+Robe à la française,
+French,
+1750–75
+(www.metmuseum.org/art/collecti...)</p>
+<div class="images">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:mlpdmvieuru2ra2h6g7vqmwe/bafkreih35m6oeflw4qvmjfdhnempuni73ubofus36rptvwsum5w6o33jfm@jpeg" alt="front view of a Robe à la française made of blonde silk with floral design, Metropolitan Museum of Art" loading="lazy" data-group="3mc63qkwjds2y" data-idx="0" onclick="openLightbox(this)">
+<img src="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:mlpdmvieuru2ra2h6g7vqmwe/bafkreig4zz767cinktlusl5rk7caexuzbd7fagcptjorch24cgs6vfwlva@jpeg" alt="Detail if the textile: cabbage roses and, in a frame of golden leaves, red blossoms and blue-white shapes)" loading="lazy" data-group="3mc63qkwjds2y" data-idx="1" onclick="openLightbox(this)">
+</div>
+<p class="meta">Jan 11, 5:52pm • ♥ 32 • <a href="https://bsky.app/profile/annamthane.bsky.social/post/3mc63qkwjds2y">View</a></p>
+</article>
+</div>
+</details>
+<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+<button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+<button class="lightbox-nav prev" onclick="navLightbox(-1, event)">&#8249;</button>
+<img id="lightbox-img" src="" alt="">
+<button class="lightbox-nav next" onclick="navLightbox(1, event)">&#8250;</button>
+<div class="lightbox-counter"><span id="lightbox-idx">1</span> / <span id="lightbox-total">1</span></div>
+</div>
+<script>
+let lbGroup = [], lbIdx = 0;
+function openLightbox(img) {
+  const group = img.dataset.group;
+  lbGroup = Array.from(document.querySelectorAll('img[data-group="' + group + '"]'));
+  lbIdx = parseInt(img.dataset.idx) || 0;
+  showLightboxImage();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+function navLightbox(dir, e) {
+  e.stopPropagation();
+  lbIdx = Math.max(0, Math.min(lbGroup.length - 1, lbIdx + dir));
+  showLightboxImage();
+}
+function showLightboxImage() {
+  const img = lbGroup[lbIdx];
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox-img').alt = img.alt;
+  document.getElementById('lightbox-idx').textContent = lbIdx + 1;
+  document.getElementById('lightbox-total').textContent = lbGroup.length;
+  document.querySelector('.lightbox-nav.prev').disabled = lbIdx === 0;
+  document.querySelector('.lightbox-nav.next').disabled = lbIdx === lbGroup.length - 1;
+}
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+  if (e.key === 'ArrowLeft') navLightbox(-1, e);
+  if (e.key === 'ArrowRight') navLightbox(1, e);
+});
+
+// Sidebar scroll tracking
+(function() {
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.sidebar a');
+  if (!sections.length || !navLinks.length) return;
+
+  function updateActiveSection() {
+    let current = '';
+    sections.forEach(function(section) {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= 150) current = section.id;
+    });
+    navLinks.forEach(function(link) {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveSection);
+  updateActiveSection();
+})();
+</script>
+</body>
+</html>

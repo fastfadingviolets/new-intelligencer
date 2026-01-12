@@ -1,0 +1,3362 @@
+{
+  "sg_001": {
+    "id": "sg_001",
+    "headline": "Toronto Carding Class Action Lawsuit: Police Won't Stop Stopping Us, Victims Say",
+    "draft_headline": "Toronto carding class action lawsuit: Man says police won't stop stopping him",
+    "post_rkeys": [
+      "3mca3wxktis25",
+      "3mca7y24wps2z"
+    ],
+    "primary_rkey": "3mca3wxktis25",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_002": {
+    "id": "sg_002",
+    "headline": "New York Lawmakers Debate Universal Childcare as Political Conversions Spark Skepticism",
+    "draft_headline": "Debate over NY universal childcare and political conversions",
+    "post_rkeys": [
+      "3mc5pjilexk2y",
+      "3mc5xtkbaok26"
+    ],
+    "primary_rkey": "3mc5pjilexk2y",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 7
+  },
+  "sg_003": {
+    "id": "sg_003",
+    "headline": "Golden Globes 2026: One Battle After Another and Adolescence Dominate Ceremony",
+    "draft_headline": "Golden Globes 2026: One Battle After Another and Adolescence dominate",
+    "post_rkeys": [
+      "3mc7azw6wbo2q",
+      "3mc7azrzrno2e",
+      "3mc7vnneqws2n"
+    ],
+    "primary_rkey": "3mc7azw6wbo2q",
+    "is_opinion": false,
+    "section_id": "film",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_004": {
+    "id": "sg_004",
+    "headline": "Sewing a Vintage Issey Miyake Bolero from a Vogue Pattern",
+    "draft_headline": "Sewing a Vintage Issey Miyake Bolero from a Vogue Pattern",
+    "post_rkeys": [
+      "3mc6ftgpmg22y",
+      "3mc6ftkajp22y"
+    ],
+    "primary_rkey": "3mc6ftgpmg22y",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 2
+  },
+  "sg_005": {
+    "id": "sg_005",
+    "headline": "Deadlights Discord Theater Presents The Northman",
+    "draft_headline": "Deadlights Discord Theater presents The Northman",
+    "post_rkeys": [
+      "3mc63g76jgk2q",
+      "3mc63gcpxcs2q"
+    ],
+    "primary_rkey": "3mc63g76jgk2q",
+    "is_opinion": false,
+    "section_id": "film",
+    "priority": 4
+  },
+  "sg_006": {
+    "id": "sg_006",
+    "headline": "Original Character Fashion Illustration",
+    "draft_headline": "Original Character Fashion Illustration",
+    "post_rkeys": [
+      "3mc5j255yyk2w",
+      "3mc6gugnpmk2d"
+    ],
+    "primary_rkey": "3mc5j255yyk2w",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 14
+  },
+  "sg_007": {
+    "id": "sg_007",
+    "headline": "FA Cup Third Round: Macclesfield's Giant-Killing and Weekend Action",
+    "draft_headline": "FA Cup third round: Macclesfield's giant-killing and weekend action",
+    "post_rkeys": [
+      "3mca4fps5se2y",
+      "3mc7uihtfo32o",
+      "3mc5xsehkki27",
+      "3mc5shnbtsc2e"
+    ],
+    "primary_rkey": "3mca4fps5se2y",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 4
+  },
+  "sg_008": {
+    "id": "sg_008",
+    "headline": "Canadians' Pandemic Drinking Habits Persist, Report Shows",
+    "draft_headline": "Report: Canadians' pandemic drinking habits persist",
+    "post_rkeys": [
+      "3mcaa2syqoc2z",
+      "3mca3xqlsec25"
+    ],
+    "primary_rkey": "3mcaa2syqoc2z",
+    "is_opinion": false,
+    "section_id": "politics-ca",
+    "priority": 5
+  },
+  "sg_009": {
+    "id": "sg_009",
+    "headline": "AI Minister Evan Solomon Defends Government Presence on X Amid CSAM Controversy",
+    "draft_headline": "Evan Solomon defends Canadian government presence on X amid CSAM controversy",
+    "post_rkeys": [
+      "3mbzs7boqq22p",
+      "3mc6fyhccvc2h",
+      "3mc6uuzi4gs2r",
+      "3mc6jm4u7es25",
+      "3mc72yryjrc2q",
+      "3mc5ivmqvyk2m"
+    ],
+    "primary_rkey": "3mbzs7boqq22p",
+    "is_opinion": false,
+    "section_id": "politics-ca",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_010": {
+    "id": "sg_010",
+    "headline": "Rumors Swirl of Coordinated X Ban by Canada, UK, and Australia",
+    "draft_headline": "Rumors of coordinated X ban by Canada, UK, and Australia",
+    "post_rkeys": [
+      "3mc7cw3jtyc23",
+      "3mc7eeat72k2x"
+    ],
+    "primary_rkey": "3mc7cw3jtyc23",
+    "is_opinion": false,
+    "section_id": "politics-ca",
+    "priority": 2
+  },
+  "sg_011": {
+    "id": "sg_011",
+    "headline": "PornHub More Ethical Than X, Critics Say in Platform Debate",
+    "draft_headline": "PornHub vs X: debate over government communications platforms",
+    "post_rkeys": [
+      "3mc6hly27cc2g",
+      "3mc6i3gufn22j"
+    ],
+    "primary_rkey": "3mc6hly27cc2g",
+    "is_opinion": true,
+    "section_id": "politics-ca",
+    "role": "opinion",
+    "priority": 3
+  },
+  "sg_012": {
+    "id": "sg_012",
+    "headline": "Gabriel Martinelli's Contrasting Week: From Villain to Hero",
+    "draft_headline": "Gabriel Martinelli's contrasting week: villain to hero",
+    "post_rkeys": [
+      "3mc7wgf2x422x",
+      "3mc7r5nu55s2v"
+    ],
+    "primary_rkey": "3mc7wgf2x422x",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 6
+  },
+  "sg_013": {
+    "id": "sg_013",
+    "headline": "Grateful Dead's Bob Weir Dies",
+    "draft_headline": "Grateful Dead's Bob Weir dies",
+    "post_rkeys": [
+      "3mc66agy4os27",
+      "3mc65ht25wd2n",
+      "3mc64r3bofc24",
+      "3mc6jku7u6e2g",
+      "3mc6pfpdcik2j",
+      "3mc74nfju2k22"
+    ],
+    "primary_rkey": "3mc66agy4os27",
+    "is_opinion": false,
+    "section_id": "front-page",
+    "original_section": "music",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_014": {
+    "id": "sg_014",
+    "headline": "Bad Bunny's Super Bowl Slot Marks New Era for Hyperlocal Music",
+    "draft_headline": "Bad Bunny and the rise of hyperlocal music going global",
+    "post_rkeys": [
+      "3mc62ii5i252x",
+      "3mc7oh7xal623"
+    ],
+    "primary_rkey": "3mc62ii5i252x",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 2
+  },
+  "sg_015": {
+    "id": "sg_015",
+    "headline": "NFL Wild Card Weekend Delivers Record-Breaking Chaos",
+    "draft_headline": "NFL Wild Card weekend: Record-breaking chaos and Eagles' collapse",
+    "post_rkeys": [
+      "3mc7yjhcmmz2e",
+      "3mca5kmegmq2c"
+    ],
+    "primary_rkey": "3mc7yjhcmmz2e",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 2
+  },
+  "sg_016": {
+    "id": "sg_016",
+    "headline": "AI Water Usage Concerns and Rural Hoboken Jokes Collide",
+    "draft_headline": "SwiftOnSecurity on AI water usage and rural Hoboken",
+    "post_rkeys": [
+      "3mc6wj4cpfk2p",
+      "3mc6wnlqdks2p"
+    ],
+    "primary_rkey": "3mc6wj4cpfk2p",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 7
+  },
+  "sg_017": {
+    "id": "sg_017",
+    "headline": "Iranian Drone Pickup Lines Have Users Dying",
+    "draft_headline": "SwiftOnSecurity on precision and Iranian drones",
+    "post_rkeys": [
+      "3mc7ilkw5pc2p",
+      "3mc7inaub2k2p"
+    ],
+    "primary_rkey": "3mc7ilkw5pc2p",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 2
+  },
+  "sg_018": {
+    "id": "sg_018",
+    "headline": "Golden Girls Meet Lord of the Rings in Elaborate Fantasy Crossover",
+    "draft_headline": "Golden Girls meets Lord of the Rings",
+    "post_rkeys": [
+      "3mc6i43xyrk2u",
+      "3mc6igl3rvs2u"
+    ],
+    "primary_rkey": "3mc6i43xyrk2u",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_019": {
+    "id": "sg_019",
+    "headline": "IT Workers Priced Out of RTX 5090s by Daycare Employees",
+    "draft_headline": "SwiftOnSecurity on RTX 5090 and IT career decline",
+    "post_rkeys": [
+      "3mc5z36si3c2o",
+      "3mc5z5usz522o"
+    ],
+    "primary_rkey": "3mc5z36si3c2o",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 4
+  },
+  "sg_020": {
+    "id": "sg_020",
+    "headline": "They're Good Dogs, Brent (Also Good Vans)",
+    "draft_headline": "They're good dogs/vans, Brent",
+    "post_rkeys": [
+      "3mc76vfubws2b",
+      "3mc76yxael22b"
+    ],
+    "primary_rkey": "3mc76vfubws2b",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 8
+  },
+  "sg_021": {
+    "id": "sg_021",
+    "headline": "Trump's Powell Investigation Creates Million Jerome Powell Clones",
+    "draft_headline": "Reactions to Trump investigation of Jerome Powell",
+    "post_rkeys": [
+      "3mc7avcggns2h",
+      "3mc6zbfd3vk2l",
+      "3mc744w7gmc2s"
+    ],
+    "primary_rkey": "3mc7avcggns2h",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 3
+  },
+  "sg_022": {
+    "id": "sg_022",
+    "headline": "You Ruined a Perfectly Good LLM: Now It Has Anxiety",
+    "draft_headline": "LLM with anxiety",
+    "post_rkeys": [
+      "3mc6skz2dy22z",
+      "3mc6sleflys2z"
+    ],
+    "primary_rkey": "3mc6skz2dy22z",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 5
+  },
+  "sg_023": {
+    "id": "sg_023",
+    "headline": "Indiana Dominates Oregon to Reach College Football Championship",
+    "draft_headline": "Indiana dominates Oregon to reach college football championship",
+    "post_rkeys": [
+      "3mc62qvlbk72i",
+      "3mc5zfnx4rq2h"
+    ],
+    "primary_rkey": "3mc62qvlbk72i",
+    "is_opinion": false,
+    "section_id": "sports",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_024": {
+    "id": "sg_024",
+    "headline": "UK Regulators Investigate X Over AI-Generated Sexualized Images",
+    "draft_headline": "Regulators investigate X/Grok over AI-generated sexualized imagery",
+    "post_rkeys": [
+      "3mca6gsnnky2q",
+      "3mc7vlqjl7227",
+      "3mc7w5sukyu2n",
+      "3mc7p4io34f27",
+      "3mc7thttdkw22",
+      "3mc6h2dub2225"
+    ],
+    "primary_rkey": "3mca6gsnnky2q",
+    "is_opinion": false,
+    "section_id": "front-page",
+    "original_section": "tech",
+    "priority": 6
+  },
+  "sg_025": {
+    "id": "sg_025",
+    "headline": "Manchester United's Coaching Staff Adjusts After Amorim's Departure",
+    "draft_headline": "Manchester United coaching staff after Amorim's departure",
+    "post_rkeys": [
+      "3mc7v76kznt2o",
+      "3mc7otmxm222e"
+    ],
+    "primary_rkey": "3mc7v76kznt2o",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 9
+  },
+  "sg_026": {
+    "id": "sg_026",
+    "headline": "ICE Killing of Renee Good Sparks Minneapolis Protests",
+    "draft_headline": "Renee Good killing by ICE sparks Minneapolis protests and national debate",
+    "post_rkeys": [
+      "3mc6at4iiz52h",
+      "3mc6nrmvvfs2l",
+      "3mc6ff74h7k2m",
+      "3mc6kt3qa5s2x",
+      "3mbwm5vbm7k2c",
+      "3mbxmbfgeni2n",
+      "3mca3z3mkys25",
+      "3mca65ulg4c22",
+      "3mc6bpxqzks2b",
+      "3mc5yztk3cc2k",
+      "3mc657uhpnk2u",
+      "3mca6fuai2k2a",
+      "3mc6rwm7i622z"
+    ],
+    "primary_rkey": "3mc6at4iiz52h",
+    "is_opinion": false,
+    "section_id": "front-page",
+    "original_section": "politics-us",
+    "priority": 3
+  },
+  "sg_027": {
+    "id": "sg_027",
+    "headline": "LRB on Samuel Pepys's Diary and the Deciphering of Coded Entries",
+    "draft_headline": "LRB on Samuel Pepys's diary and the deciphering of his coded entries",
+    "post_rkeys": [
+      "3mc5pn6ykft26",
+      "3mc7xdg4pe22k"
+    ],
+    "primary_rkey": "3mc5pn6ykft26",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 4
+  },
+  "sg_028": {
+    "id": "sg_028",
+    "headline": "Rainie Oet's Debut Trans Children's Novel 'Glitch Girl\\!' Breaks New Ground",
+    "draft_headline": "Review of Rainie Oet's debut trans children's novel 'Glitch Girl\\!'",
+    "post_rkeys": [
+      "3mc6733eya22b",
+      "3mc67j3kluk2b",
+      "3mc67fyq3oc2d"
+    ],
+    "primary_rkey": "3mc6733eya22b",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 2
+  },
+  "sg_029": {
+    "id": "sg_029",
+    "headline": "F/F Romance Overlooked in Discussions of Escaping Cishet Dynamics",
+    "draft_headline": "Discussion of F/F romance being overlooked compared to M/M in escaping cishet dynamics",
+    "post_rkeys": [
+      "3mc5umk7lhc22",
+      "3mc5umkbsqk22",
+      "3mc5umkbtpt22"
+    ],
+    "primary_rkey": "3mc5umk7lhc22",
+    "is_opinion": true,
+    "section_id": "literature",
+    "role": "opinion",
+    "priority": 7
+  },
+  "sg_030": {
+    "id": "sg_030",
+    "headline": "Guide to Transfem Books Not Focused on Transness",
+    "draft_headline": "Recommendations for books by transfem authors not focused on transness",
+    "post_rkeys": [
+      "3mc6lrd7t6s25",
+      "3mc6m267z2225"
+    ],
+    "primary_rkey": "3mc6lrd7t6s25",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 9
+  },
+  "sg_031": {
+    "id": "sg_031",
+    "headline": "Review: Herbert W. Franke's SF Short Story 'Slum' in Translation",
+    "draft_headline": "Review of Herbert W. Franke's SF short story 'Slum' in translation",
+    "post_rkeys": [
+      "3mc6dkjxbds2q",
+      "3mc6dwkrrsc2q"
+    ],
+    "primary_rkey": "3mc6dkjxbds2q",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 5
+  },
+  "sg_032": {
+    "id": "sg_032",
+    "headline": "Barcelona Beats Real Madrid in Supercopa de España Final",
+    "draft_headline": "Barcelona beats Real Madrid in Supercopa de Espana final",
+    "post_rkeys": [
+      "3mc6gon7f6k2o",
+      "3mc6imflrik2o"
+    ],
+    "primary_rkey": "3mc6gon7f6k2o",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 3
+  },
+  "sg_033": {
+    "id": "sg_033",
+    "headline": "WSJ investigation reveals ICE agents have used deadly force 13 times",
+    "draft_headline": "WSJ investigation reveals ICE agents have used deadly force 13 times",
+    "post_rkeys": [
+      "3mc5y2suup42r",
+      "3mc5wkcj3k32z"
+    ],
+    "primary_rkey": "3mc5y2suup42r",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 3
+  },
+  "sg_034": {
+    "id": "sg_034",
+    "headline": "OpenClaudia AI Coding Agent Project Development Updates",
+    "draft_headline": "OpenClaudia: AI coding agent project development updates",
+    "post_rkeys": [
+      "3mc6pryfles27",
+      "3mc6rpupwws27",
+      "3mc7hcwwr222u",
+      "3mc7k4kr2hc2u",
+      "3mc7hg2qn5c2c",
+      "3mc74g2vv6c2y",
+      "3mc74gwhpwc2y",
+      "3mc6bjji5zk24",
+      "3mc6c7qkwek2y",
+      "3mc6bhi5gpc24",
+      "3mc6ccvc5wc24",
+      "3mc6ccwwsik2y",
+      "3mc6q5m4e6s2y",
+      "3mc6endh43s2y",
+      "3mc6eo3cbxs2y"
+    ],
+    "primary_rkey": "3mc6pryfles27",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 10
+  },
+  "sg_035": {
+    "id": "sg_035",
+    "headline": "Iran Protest Death Toll Reaches 538 as Trump Weighs Military Action",
+    "draft_headline": "Iran protests and US military threat",
+    "post_rkeys": [
+      "3mc5qqymaxb2n",
+      "3mc7h2aparx2t",
+      "3mc66pawxt32y",
+      "3mc66kc44e22i",
+      "3mc6ilipmas2j",
+      "3mc63lrpgn22e",
+      "3mc7y675mo227",
+      "3mc6vxvkwyv2y",
+      "3mc6shqs6oq2g",
+      "3mc74z6peyr2n",
+      "3mc7t5num5k2l",
+      "3mc7r4xpk5v2q",
+      "3mc7mrbkbbk2i",
+      "3mc7li3aygc2o",
+      "3mc7l3enee22g",
+      "3mca3u45evr27",
+      "3mc5trexby22e",
+      "3mc5s3pu2zf2z",
+      "3mc6ynj7pby2h"
+    ],
+    "primary_rkey": "3mc5qqymaxb2n",
+    "is_opinion": false,
+    "section_id": "front-page",
+    "original_section": "geopolitics",
+    "priority": 4
+  },
+  "sg_036": {
+    "id": "sg_036",
+    "headline": "AI as CNC Machine for Software Engineering",
+    "draft_headline": "AI as 'CNC machine' for software engineering analogy",
+    "post_rkeys": [
+      "3mc67ftbvhc2y",
+      "3mc6k5smkak2d",
+      "3mc6eq74ty226"
+    ],
+    "primary_rkey": "3mc67ftbvhc2y",
+    "is_opinion": true,
+    "section_id": "tech",
+    "role": "opinion",
+    "priority": 19
+  },
+  "sg_037": {
+    "id": "sg_037",
+    "headline": "Trump and Fed Chair Powell trade accusations in escalating conflict",
+    "draft_headline": "Trump and Fed Chair Powell trade accusations in escalating conflict",
+    "post_rkeys": [
+      "3mc7hqyvnpa2z",
+      "3mc7vey6a732t"
+    ],
+    "primary_rkey": "3mc7hqyvnpa2z",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 8
+  },
+  "sg_038": {
+    "id": "sg_038",
+    "headline": "Male to Marisa Tomei Transition Goals Resonate Widely",
+    "draft_headline": "Male to Marisa Tomei transition goals",
+    "post_rkeys": [
+      "3mc5uin7uak2b",
+      "3mc656g64jc2x"
+    ],
+    "primary_rkey": "3mc5uin7uak2b",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 6
+  },
+  "sg_039": {
+    "id": "sg_039",
+    "headline": "Trump Threatens Greenland Takeover as NATO Allies React",
+    "draft_headline": "Trump threatens Greenland takeover",
+    "post_rkeys": [
+      "3mc7gyjda3p2t",
+      "3mc6h2j3hby2a",
+      "3mc6wxurjqb27",
+      "3mca3opwnp22i",
+      "3mc5m2mqdsc2i",
+      "3mc5s3ty7ao2x",
+      "3mc5rnjmdpq2e"
+    ],
+    "primary_rkey": "3mc7gyjda3p2t",
+    "is_opinion": false,
+    "section_id": "front-page",
+    "original_section": "geopolitics",
+    "priority": 5
+  },
+  "sg_040": {
+    "id": "sg_040",
+    "headline": "DOJ Launches Criminal Investigation Into Fed Chair Powell",
+    "draft_headline": "DOJ launches criminal investigation into Fed Chair Jerome Powell",
+    "post_rkeys": [
+      "3mc6subk7ar23",
+      "3mc6smbhbzk2e",
+      "3mc6tdsjd5y2w",
+      "3mc6vcbxek52l",
+      "3mc7l3rwd7z2t",
+      "3mca7os56vq2u",
+      "3mc7ey4wky72t",
+      "3mc6tub3hsc2s",
+      "3mc6w5a3by22l",
+      "3mc747liokc2f",
+      "3mc7bewu45n27",
+      "3mc7so2s5w42m",
+      "3mc7snzdy5e2c"
+    ],
+    "primary_rkey": "3mc6subk7ar23",
+    "is_opinion": false,
+    "section_id": "front-page",
+    "original_section": "finance",
+    "priority": 2
+  },
+  "sg_041": {
+    "id": "sg_041",
+    "headline": "Adult Film Workers Raise Concerns About AI Training and Deepfakes",
+    "draft_headline": "Discussion: AI training on adult content and deepfakes",
+    "post_rkeys": [
+      "3mc6gstam2s24",
+      "3mc6h6an3ak22"
+    ],
+    "primary_rkey": "3mc6gstam2s24",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 13
+  },
+  "sg_042": {
+    "id": "sg_042",
+    "headline": "Trump threatens Denmark over Greenland acquisition",
+    "draft_headline": "Trump threatens Denmark over Greenland acquisition",
+    "post_rkeys": [
+      "3mc5ysm5loo2t",
+      "3mc5ohlxkl22a"
+    ],
+    "primary_rkey": "3mc5ysm5loo2t",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 4
+  },
+  "sg_043": {
+    "id": "sg_043",
+    "headline": "Senate investigates UnitedHealth Medicare Advantage practices",
+    "draft_headline": "Senate investigates UnitedHealth Medicare Advantage practices",
+    "post_rkeys": [
+      "3mc7vg52t5j2e",
+      "3mc7vexcgmu2s"
+    ],
+    "primary_rkey": "3mc7vg52t5j2e",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 5
+  },
+  "sg_044": {
+    "id": "sg_044",
+    "headline": "Trump Warns Cuba to 'Make a Deal' After Maduro's Fall",
+    "draft_headline": "Trump and Cuba after Maduro's fall",
+    "post_rkeys": [
+      "3mc6au3z3zk26",
+      "3mc6amrw7xb2e",
+      "3mc67ycp5u22z",
+      "3mc66z2ibfv2m",
+      "3mc62hwon7f22",
+      "3mc5rlqt4in2a",
+      "3mca5ms2h6k25",
+      "3mca2yfmice26"
+    ],
+    "primary_rkey": "3mc6au3z3zk26",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 6
+  },
+  "sg_045": {
+    "id": "sg_045",
+    "headline": "Women's Super League: Man City Extend Lead Over Chelsea to Six Points",
+    "draft_headline": "Women's Super League: Man City extend lead over Chelsea",
+    "post_rkeys": [
+      "3mc5rvcwtaz2d",
+      "3mca3u4olgm2s"
+    ],
+    "primary_rkey": "3mc5rvcwtaz2d",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 5
+  },
+  "sg_046": {
+    "id": "sg_046",
+    "headline": "Transfeminine Review Editor Read 97 Books by Transfem Authors in 2025",
+    "draft_headline": "Transfeminine Review editor read 97 books by transfem authors in 2025",
+    "post_rkeys": [
+      "3mc6gpy6rus27",
+      "3mc6grhsyc227"
+    ],
+    "primary_rkey": "3mc6gpy6rus27",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 3
+  },
+  "sg_047": {
+    "id": "sg_047",
+    "headline": "Transgender protections preserved in spending bills, Supreme Court to hear trans athlete case",
+    "draft_headline": "Transgender protections preserved in spending bills, Supreme Court to hear trans athlete case",
+    "post_rkeys": [
+      "3mc6rqcw26s2m",
+      "3mc6wl4sx2s2c",
+      "3mc7gfzxq3s2g",
+      "3mc5nkyv2js2b"
+    ],
+    "primary_rkey": "3mc6rqcw26s2m",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 9
+  },
+  "sg_048": {
+    "id": "sg_048",
+    "headline": "Gaza Violence Persists Despite Ceasefire",
+    "draft_headline": "Gaza violence continues despite ceasefire",
+    "post_rkeys": [
+      "3mc7fobx7yf2y",
+      "3mc62dgdyd224",
+      "3mca77ezpti2i",
+      "3mca6hseq3c2l",
+      "3mca26gxda427"
+    ],
+    "primary_rkey": "3mc7fobx7yf2y",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_049": {
+    "id": "sg_049",
+    "headline": "Trump considers Iran response options as protests continue",
+    "draft_headline": "Trump considers Iran response options as protests continue",
+    "post_rkeys": [
+      "3mc7g2q4mdb2h",
+      "3mc63wcnyxy2i",
+      "3mc7hqeti4q2d"
+    ],
+    "primary_rkey": "3mc7g2q4mdb2h",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 6
+  },
+  "sg_050": {
+    "id": "sg_050",
+    "headline": "Britain Develops Ballistic Missile as Ukraine War Continues",
+    "draft_headline": "Ukraine war developments",
+    "post_rkeys": [
+      "3mc6yfdxfqq27",
+      "3mc7e2f4v4l25",
+      "3mc73yujxyn27"
+    ],
+    "primary_rkey": "3mc6yfdxfqq27",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 5
+  },
+  "sg_051": {
+    "id": "sg_051",
+    "headline": "Podcast Discusses AI Music Generation with Anthony Fantano",
+    "draft_headline": "Discussion: AI music generation and its impact",
+    "post_rkeys": [
+      "3mc4ogiyt4s2i",
+      "3mc6f5lxc5c2y"
+    ],
+    "primary_rkey": "3mc4ogiyt4s2i",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 14
+  },
+  "sg_052": {
+    "id": "sg_052",
+    "headline": "Japan Debates Easing Overtime Limits Amid Labor Shortage",
+    "draft_headline": "Japan rethinks overtime limits amid labor shortage",
+    "post_rkeys": [
+      "3mc7jgdxar324",
+      "3mc5x4wzkvt2p"
+    ],
+    "primary_rkey": "3mc7jgdxar324",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 14
+  },
+  "sg_053": {
+    "id": "sg_053",
+    "headline": "RFK Jr's past controversies and current influence on supplements industry",
+    "draft_headline": "RFK Jr's past controversies and current influence on supplements industry",
+    "post_rkeys": [
+      "3mc67rtkpou23",
+      "3mc6lgr3ewi2t"
+    ],
+    "primary_rkey": "3mc67rtkpou23",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 27
+  },
+  "sg_054": {
+    "id": "sg_054",
+    "headline": "Philip K. Dick's Evolution in Writing Women with BPD",
+    "draft_headline": "Discussion of Philip K. Dick's evolution as an author regarding women with BPD",
+    "post_rkeys": [
+      "3mbviy7p3js2j",
+      "3mc6axuw3rc2b"
+    ],
+    "primary_rkey": "3mbviy7p3js2j",
+    "is_opinion": true,
+    "section_id": "literature",
+    "role": "opinion",
+    "priority": 6
+  },
+  "sg_055": {
+    "id": "sg_055",
+    "headline": "Debate over X/Twitter and CSAM content moderation",
+    "draft_headline": "Debate over X/Twitter and CSAM content moderation",
+    "post_rkeys": [
+      "3mc54rtpkmk2v",
+      "3mc6ar2km5s2x",
+      "3mc6b7dsnqk2x"
+    ],
+    "primary_rkey": "3mc54rtpkmk2v",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 30
+  },
+  "sg_056": {
+    "id": "sg_056",
+    "headline": "Sudan Military Launches Offensive as Government Returns to Khartoum",
+    "draft_headline": "Sudan military operations and government return",
+    "post_rkeys": [
+      "3mc7v5jvuia27",
+      "3mc5vh2z5u72z"
+    ],
+    "primary_rkey": "3mc7v5jvuia27",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 4
+  },
+  "sg_057": {
+    "id": "sg_057",
+    "headline": "Brave Iranians Stand Up to Illegitimate Regime",
+    "post_rkeys": [
+      "3mc5hpigzcs2r"
+    ],
+    "primary_rkey": "3mc5hpigzcs2r",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 11
+  },
+  "sg_058": {
+    "id": "sg_058",
+    "headline": "SocDems Don't Understand Secret Laboratories",
+    "post_rkeys": [
+      "3mc7ak5mms22e"
+    ],
+    "primary_rkey": "3mc7ak5mms22e",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 21
+  },
+  "sg_059": {
+    "id": "sg_059",
+    "headline": "2026 Economy Balanced on Four Pillars of Something",
+    "post_rkeys": [
+      "3mc67liqtps2q"
+    ],
+    "primary_rkey": "3mc67liqtps2q",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 12
+  },
+  "sg_060": {
+    "id": "sg_060",
+    "headline": "Big Wheel of Castration Awaits Some Users",
+    "post_rkeys": [
+      "3mc6l6s2gvc2n"
+    ],
+    "primary_rkey": "3mc6l6s2gvc2n",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 20
+  },
+  "sg_061": {
+    "id": "sg_061",
+    "headline": "Crows Are Smart Because They Never Post",
+    "post_rkeys": [
+      "3mc6x4zjo5c2p"
+    ],
+    "primary_rkey": "3mc6x4zjo5c2p",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 9
+  },
+  "sg_062": {
+    "id": "sg_062",
+    "headline": "High-Altitude Research Facility About to Vanish",
+    "post_rkeys": [
+      "3mc6qr3bmck2u"
+    ],
+    "primary_rkey": "3mc6qr3bmck2u",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 13
+  },
+  "sg_063": {
+    "id": "sg_063",
+    "headline": "Childhood Pediatricians Reunite to Diagnose Osteoporosis",
+    "post_rkeys": [
+      "3mc6neohmtc2y"
+    ],
+    "primary_rkey": "3mc6neohmtc2y",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 22
+  },
+  "sg_064": {
+    "id": "sg_064",
+    "headline": "Who Was Capital? Marx's Less Famous Friend",
+    "post_rkeys": [
+      "3mc64xasak22h"
+    ],
+    "primary_rkey": "3mc64xasak22h",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 10
+  },
+  "sg_065": {
+    "id": "sg_065",
+    "headline": "Big Jeans Energy: Zoomer Fashion Attitude",
+    "post_rkeys": [
+      "3mc62gtiqus2s"
+    ],
+    "primary_rkey": "3mc62gtiqus2s",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 24
+  },
+  "sg_066": {
+    "id": "sg_066",
+    "headline": "Bill Maher's Expense Joke Lands Predictably",
+    "post_rkeys": [
+      "3mc77a4m4nc2j"
+    ],
+    "primary_rkey": "3mc77a4m4nc2j",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 23
+  },
+  "sg_067": {
+    "id": "sg_067",
+    "headline": "He Can't Keep Getting a Whey With It",
+    "post_rkeys": [
+      "3mc7d4uxoes2g"
+    ],
+    "primary_rkey": "3mc7d4uxoes2g",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 14
+  },
+  "sg_068": {
+    "id": "sg_068",
+    "headline": "Tel Aviv Lawyer Nathan Shaked Becomes Unlikely Celebrity",
+    "post_rkeys": [
+      "3mc7dbi5fcs2s"
+    ],
+    "primary_rkey": "3mc7dbi5fcs2s",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 15
+  },
+  "sg_069": {
+    "id": "sg_069",
+    "headline": "Transition Glasses Fade to Black",
+    "post_rkeys": [
+      "3mc76s3axtc2x"
+    ],
+    "primary_rkey": "3mc76s3axtc2x",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 19
+  },
+  "sg_070": {
+    "id": "sg_070",
+    "headline": "John Lithgow's First Season Dexter Exit Still Haunts Fans",
+    "post_rkeys": [
+      "3ln4y7xsncs2x"
+    ],
+    "primary_rkey": "3ln4y7xsncs2x",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 16
+  },
+  "sg_071": {
+    "id": "sg_071",
+    "headline": "My 401k Tomorrow: Financial Anxiety Peaks",
+    "post_rkeys": [
+      "3mc75y6n7wc25"
+    ],
+    "primary_rkey": "3mc75y6n7wc25",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 17
+  },
+  "sg_072": {
+    "id": "sg_072",
+    "headline": "Humans Need Sleep Button to Reduce Writhing",
+    "post_rkeys": [
+      "3mc73matxsgi2"
+    ],
+    "primary_rkey": "3mc73matxsgi2",
+    "is_opinion": false,
+    "section_id": "vibes",
+    "priority": 18
+  },
+  "sg_073": {
+    "id": "sg_073",
+    "headline": "John Singer Sargent's 1892 Portrait of Mrs. Hugh Hammersley",
+    "post_rkeys": [
+      "3mc7hsdkzp42r"
+    ],
+    "primary_rkey": "3mc7hsdkzp42r",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 5
+  },
+  "sg_074": {
+    "id": "sg_074",
+    "headline": "Met Museum Costume: Historical Hat",
+    "post_rkeys": [
+      "3mca7rceyxd2b"
+    ],
+    "primary_rkey": "3mca7rceyxd2b",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 12
+  },
+  "sg_075": {
+    "id": "sg_075",
+    "headline": "Met Museum Costume: Historical Bonnet",
+    "post_rkeys": [
+      "3mca2s3knyh2i"
+    ],
+    "primary_rkey": "3mca2s3knyh2i",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 10
+  },
+  "sg_076": {
+    "id": "sg_076",
+    "headline": "Gustav Klimt's Birch Forest",
+    "post_rkeys": [
+      "3mb7y6gbskg2b"
+    ],
+    "primary_rkey": "3mb7y6gbskg2b",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 15
+  },
+  "sg_077": {
+    "id": "sg_077",
+    "headline": "Queen Elizabeth II's 1954 State Opening of Parliament Gown",
+    "post_rkeys": [
+      "3mc7ylif3m22d"
+    ],
+    "primary_rkey": "3mc7ylif3m22d",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 3
+  },
+  "sg_078": {
+    "id": "sg_078",
+    "headline": "Joan Miro's Painting I",
+    "post_rkeys": [
+      "3mb55r6cul626"
+    ],
+    "primary_rkey": "3mb55r6cul626",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 16
+  },
+  "sg_079": {
+    "id": "sg_079",
+    "headline": "18th Century French Robe à la Française, 1750-75",
+    "post_rkeys": [
+      "3mc63qkwjds2y"
+    ],
+    "primary_rkey": "3mc63qkwjds2y",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 6
+  },
+  "sg_080": {
+    "id": "sg_080",
+    "headline": "Met Museum Costume: Historical Breeches",
+    "post_rkeys": [
+      "3mc63iugqud2n"
+    ],
+    "primary_rkey": "3mc63iugqud2n",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 13
+  },
+  "sg_081": {
+    "id": "sg_081",
+    "headline": "Callot Soeurs: Pioneering Innovation in Early 20th Century Fashion",
+    "post_rkeys": [
+      "3mc7vc2fms222"
+    ],
+    "primary_rkey": "3mc7vc2fms222",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 4
+  },
+  "sg_082": {
+    "id": "sg_082",
+    "headline": "Historical Sleeve Panels for Open-Sleeved Gowns",
+    "post_rkeys": [
+      "3mc6lh65j622e"
+    ],
+    "primary_rkey": "3mc6lh65j622e",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 7
+  },
+  "sg_083": {
+    "id": "sg_083",
+    "headline": "Met Museum Costume: Vintage Bonnet",
+    "post_rkeys": [
+      "3mc7mwqb6yd2e"
+    ],
+    "primary_rkey": "3mc7mwqb6yd2e",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 11
+  },
+  "sg_084": {
+    "id": "sg_084",
+    "headline": "Met Museum Costume: Historical Ensemble",
+    "post_rkeys": [
+      "3mc7r74o3jb2b"
+    ],
+    "primary_rkey": "3mc7r74o3jb2b",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 9
+  },
+  "sg_085": {
+    "id": "sg_085",
+    "headline": "Golden Globes Red Carpet Brings Back Statement Suiting",
+    "post_rkeys": [
+      "3mc7oqxxuh326"
+    ],
+    "primary_rkey": "3mc7oqxxuh326",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_086": {
+    "id": "sg_086",
+    "headline": "1765 Quilted Petticoat in White Silk Satin",
+    "post_rkeys": [
+      "3mc5vlkoses2g"
+    ],
+    "primary_rkey": "3mc5vlkoses2g",
+    "is_opinion": false,
+    "section_id": "fashion",
+    "priority": 8
+  },
+  "sg_087": {
+    "id": "sg_087",
+    "headline": "Free Trade Stars Still in Business Despite Concerns",
+    "post_rkeys": [
+      "3mc6b6owro22g"
+    ],
+    "primary_rkey": "3mc6b6owro22g",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 19
+  },
+  "sg_088": {
+    "id": "sg_088",
+    "headline": "Allegiant to Buy Sun Country Airlines for  Billion",
+    "post_rkeys": [
+      "3mc6mfwjtqe2k"
+    ],
+    "primary_rkey": "3mc6mfwjtqe2k",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 4
+  },
+  "sg_089": {
+    "id": "sg_089",
+    "headline": "Chinese Battery Makers Expand as US Automakers Cut Jobs in Germany",
+    "post_rkeys": [
+      "3mc6kxlhf7k2g"
+    ],
+    "primary_rkey": "3mc6kxlhf7k2g",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 6
+  },
+  "sg_090": {
+    "id": "sg_090",
+    "headline": "Coinbase Pressures Lawmakers to Preserve Crypto Access",
+    "post_rkeys": [
+      "3mc6h46gm722f"
+    ],
+    "primary_rkey": "3mc6h46gm722f",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 8
+  },
+  "sg_091": {
+    "id": "sg_091",
+    "headline": "Venezuela's Oil Company Used Tether to Sidestep Sanctions",
+    "post_rkeys": [
+      "3mc64yu6n4r2c"
+    ],
+    "primary_rkey": "3mc64yu6n4r2c",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 2
+  },
+  "sg_092": {
+    "id": "sg_092",
+    "headline": "Globe and Mail Market Update",
+    "post_rkeys": [
+      "3mca5pzs6a326"
+    ],
+    "primary_rkey": "3mca5pzs6a326",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 22
+  },
+  "sg_093": {
+    "id": "sg_093",
+    "headline": "Lululemon Warns on Fourth-Quarter Earnings",
+    "post_rkeys": [
+      "3mca4ybd7ax2r"
+    ],
+    "primary_rkey": "3mca4ybd7ax2r",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 5
+  },
+  "sg_094": {
+    "id": "sg_094",
+    "headline": "Globe and Mail Economic News",
+    "post_rkeys": [
+      "3mca2xmo5ro2i"
+    ],
+    "primary_rkey": "3mca2xmo5ro2i",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 23
+  },
+  "sg_095": {
+    "id": "sg_095",
+    "headline": "Barclays Shares Drop on Trump Credit Card Remarks",
+    "post_rkeys": [
+      "3mc7yjp7fdw2d"
+    ],
+    "primary_rkey": "3mc7yjp7fdw2d",
+    "is_opinion": false,
+    "section_id": "finance",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_096": {
+    "id": "sg_096",
+    "headline": "Globe and Mail Finance Coverage",
+    "post_rkeys": [
+      "3mc7xxauy5q2c"
+    ],
+    "primary_rkey": "3mc7xxauy5q2c",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 20
+  },
+  "sg_097": {
+    "id": "sg_097",
+    "headline": "Official Crude Market Faces Disruption",
+    "post_rkeys": [
+      "3mc7xgakf7g2q"
+    ],
+    "primary_rkey": "3mc7xgakf7g2q",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 15
+  },
+  "sg_098": {
+    "id": "sg_098",
+    "headline": "Financial Companies Turn to Banking Charter Experts",
+    "post_rkeys": [
+      "3mc7wtes2wz2u"
+    ],
+    "primary_rkey": "3mc7wtes2wz2u",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 18
+  },
+  "sg_099": {
+    "id": "sg_099",
+    "headline": "Central Banks Navigate Era of Rate Divergence",
+    "post_rkeys": [
+      "3mc6rxdqoeu23"
+    ],
+    "primary_rkey": "3mc6rxdqoeu23",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 11
+  },
+  "sg_100": {
+    "id": "sg_100",
+    "headline": "UK Business Confidence Weakens at End of 2025",
+    "post_rkeys": [
+      "3mc6qx3ye3h2z"
+    ],
+    "primary_rkey": "3mc6qx3ye3h2z",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 9
+  },
+  "sg_101": {
+    "id": "sg_101",
+    "headline": "Trump Signals Exxon Exemption from Tariff Push",
+    "post_rkeys": [
+      "3mc7cplnoh32x"
+    ],
+    "primary_rkey": "3mc7cplnoh32x",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 7
+  },
+  "sg_102": {
+    "id": "sg_102",
+    "headline": "China's Hopu Investment Seeks Up to  Billion for New Fund",
+    "post_rkeys": [
+      "3mc7b22qxom2p"
+    ],
+    "primary_rkey": "3mc7b22qxom2p",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 14
+  },
+  "sg_103": {
+    "id": "sg_103",
+    "headline": "Indian Stock Selloff Intensifies as Traders Await Earnings",
+    "post_rkeys": [
+      "3mc75qkotdu2d"
+    ],
+    "primary_rkey": "3mc75qkotdu2d",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 10
+  },
+  "sg_104": {
+    "id": "sg_104",
+    "headline": "Globe and Mail Business Report",
+    "post_rkeys": [
+      "3mc7vokfjdw2d"
+    ],
+    "primary_rkey": "3mc7vokfjdw2d",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 21
+  },
+  "sg_105": {
+    "id": "sg_105",
+    "headline": "Phoenix and Other Cities Face Glut of Upscale Housing",
+    "post_rkeys": [
+      "3mc7tmiv2pq2e"
+    ],
+    "primary_rkey": "3mc7tmiv2pq2e",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 12
+  },
+  "sg_106": {
+    "id": "sg_106",
+    "headline": "French Company's Stock Rises Steadily Since July",
+    "post_rkeys": [
+      "3mc7s4alipm2c"
+    ],
+    "primary_rkey": "3mc7s4alipm2c",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 16
+  },
+  "sg_107": {
+    "id": "sg_107",
+    "headline": "Former F1 Champion Nico Rosberg Raises M for Climate Fund",
+    "post_rkeys": [
+      "3mc7mrhxc7z24"
+    ],
+    "primary_rkey": "3mc7mrhxc7z24",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 13
+  },
+  "sg_108": {
+    "id": "sg_108",
+    "headline": "Polymarket Adds Betting on Home Prices in Major Cities",
+    "post_rkeys": [
+      "3mc6eudilgw2c"
+    ],
+    "primary_rkey": "3mc6eudilgw2c",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 17
+  },
+  "sg_109": {
+    "id": "sg_109",
+    "headline": "Copper Demand Drives Mining Megadeals",
+    "post_rkeys": [
+      "3mc6bwdzatj2i"
+    ],
+    "primary_rkey": "3mc6bwdzatj2i",
+    "is_opinion": false,
+    "section_id": "finance",
+    "priority": 3
+  },
+  "sg_110": {
+    "id": "sg_110",
+    "headline": "Reader Reviews 'The Dee Dee Calculus' by Bailey Williams",
+    "post_rkeys": [
+      "3mc5pke54rs2d"
+    ],
+    "primary_rkey": "3mc5pke54rs2d",
+    "is_opinion": true,
+    "section_id": "literature",
+    "role": "opinion",
+    "priority": 20
+  },
+  "sg_111": {
+    "id": "sg_111",
+    "headline": "LRB on Places Where the Same People Keep Colliding",
+    "post_rkeys": [
+      "3mc5tgroula2z"
+    ],
+    "primary_rkey": "3mc5tgroula2z",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 14
+  },
+  "sg_112": {
+    "id": "sg_112",
+    "headline": "Robert McGill on 'Simply Fiction' Podcast",
+    "post_rkeys": [
+      "3mc5l7b6gkk2p"
+    ],
+    "primary_rkey": "3mc5l7b6gkk2p",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 21
+  },
+  "sg_113": {
+    "id": "sg_113",
+    "headline": "First Book Haul of 2026",
+    "post_rkeys": [
+      "3mc6hkxca5c25"
+    ],
+    "primary_rkey": "3mc6hkxca5c25",
+    "is_opinion": true,
+    "section_id": "literature",
+    "role": "opinion",
+    "priority": 19
+  },
+  "sg_114": {
+    "id": "sg_114",
+    "headline": "LRB Podcast: 'Nature in Literature' Series Launch",
+    "post_rkeys": [
+      "3mcaa2bp3nv2m"
+    ],
+    "primary_rkey": "3mcaa2bp3nv2m",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 15
+  },
+  "sg_115": {
+    "id": "sg_115",
+    "headline": "Vadim Shefner Birthday Anniversary",
+    "post_rkeys": [
+      "3mca3kbqxnk2z"
+    ],
+    "primary_rkey": "3mca3kbqxnk2z",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 25
+  },
+  "sg_116": {
+    "id": "sg_116",
+    "headline": "Jack London Birthday Anniversary",
+    "post_rkeys": [
+      "3mca3dkgmgs2z"
+    ],
+    "primary_rkey": "3mca3dkgmgs2z",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 23
+  },
+  "sg_117": {
+    "id": "sg_117",
+    "headline": "Zach Hughes Birthday Anniversary",
+    "post_rkeys": [
+      "3mca35qiadc2z"
+    ],
+    "primary_rkey": "3mca35qiadc2z",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 26
+  },
+  "sg_118": {
+    "id": "sg_118",
+    "headline": "Clément Thibaud's '1815' on End of Revolutionary Age",
+    "post_rkeys": [
+      "3mc7kad5kq22g"
+    ],
+    "primary_rkey": "3mc7kad5kq22g",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 16
+  },
+  "sg_119": {
+    "id": "sg_119",
+    "headline": "Review: Izumi Suzuki's 'Terminal Boredom'",
+    "post_rkeys": [
+      "3mc6z42w2tc2c"
+    ],
+    "primary_rkey": "3mc6z42w2tc2c",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 12
+  },
+  "sg_120": {
+    "id": "sg_120",
+    "headline": "Jerome Bixby Birthday Anniversary",
+    "post_rkeys": [
+      "3mc6suyhk422r"
+    ],
+    "primary_rkey": "3mc6suyhk422r",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 24
+  },
+  "sg_121": {
+    "id": "sg_121",
+    "headline": "Robert Presslie Birthday Anniversary",
+    "post_rkeys": [
+      "3mc6spakqms2r"
+    ],
+    "primary_rkey": "3mc6spakqms2r",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 27
+  },
+  "sg_122": {
+    "id": "sg_122",
+    "headline": "Reader Reviews 'The Pink Diamond' by Tris Husband",
+    "post_rkeys": [
+      "3mc7stvlbzc2i"
+    ],
+    "primary_rkey": "3mc7stvlbzc2i",
+    "is_opinion": true,
+    "section_id": "literature",
+    "role": "opinion",
+    "priority": 17
+  },
+  "sg_123": {
+    "id": "sg_123",
+    "headline": "Writers Quit Adelaide Festival Over Palestinian Author Ban",
+    "post_rkeys": [
+      "3mc7q4mofhv2l"
+    ],
+    "primary_rkey": "3mc7q4mofhv2l",
+    "is_opinion": false,
+    "section_id": "literature",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_124": {
+    "id": "sg_124",
+    "headline": "LRB on Benny Morris and Israel's Ethnic Cleansing of Palestinians",
+    "post_rkeys": [
+      "3mc7pbxowhm2a"
+    ],
+    "primary_rkey": "3mc7pbxowhm2a",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 11
+  },
+  "sg_125": {
+    "id": "sg_125",
+    "headline": "Lou Bossis Wins Prix Mnémosyne 2024",
+    "post_rkeys": [
+      "3mc7klfg2ck2a"
+    ],
+    "primary_rkey": "3mc7klfg2ck2a",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 13
+  },
+  "sg_126": {
+    "id": "sg_126",
+    "headline": "Marcus Aurelius: Sage or Failed Ruler?",
+    "post_rkeys": [
+      "3mc5ti6oobv2e"
+    ],
+    "primary_rkey": "3mc5ti6oobv2e",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 10
+  },
+  "sg_127": {
+    "id": "sg_127",
+    "headline": "Reader Reviews Illustrated Erotic Book",
+    "post_rkeys": [
+      "3mc6fybj54c2b"
+    ],
+    "primary_rkey": "3mc6fybj54c2b",
+    "is_opinion": true,
+    "section_id": "literature",
+    "role": "opinion",
+    "priority": 18
+  },
+  "sg_128": {
+    "id": "sg_128",
+    "headline": "Toronto Poet Exposed for Writing University Essays for Students",
+    "post_rkeys": [
+      "3mc6ee2izos2v"
+    ],
+    "primary_rkey": "3mc6ee2izos2v",
+    "is_opinion": false,
+    "section_id": "literature",
+    "priority": 8
+  },
+  "sg_129": {
+    "id": "sg_129",
+    "headline": "Writer Shares Links to Published Work",
+    "post_rkeys": [
+      "3mc6cix45s22k"
+    ],
+    "primary_rkey": "3mc6cix45s22k",
+    "is_opinion": true,
+    "section_id": "literature",
+    "role": "opinion",
+    "priority": 22
+  },
+  "sg_130": {
+    "id": "sg_130",
+    "headline": "Korean Cafe Forêt Opens in Toronto",
+    "post_rkeys": [
+      "3mc6b6em4mk2t"
+    ],
+    "primary_rkey": "3mc6b6em4mk2t",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 14
+  },
+  "sg_131": {
+    "id": "sg_131",
+    "headline": "Norman Jewison's Toronto Home Where 'Moonstruck' Was Written Goes Up for Sale",
+    "post_rkeys": [
+      "3mc6afcnlh225"
+    ],
+    "primary_rkey": "3mc6afcnlh225",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 9
+  },
+  "sg_132": {
+    "id": "sg_132",
+    "headline": "Suspect Arrested in Daytime Stabbing Near Broadview and Danforth",
+    "post_rkeys": [
+      "3mc6accpn6225"
+    ],
+    "primary_rkey": "3mc6accpn6225",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 4
+  },
+  "sg_133": {
+    "id": "sg_133",
+    "headline": "Study Reveals Toronto's Best Neighbourhoods for Kids to Play",
+    "post_rkeys": [
+      "3mc67i4bgr22a"
+    ],
+    "primary_rkey": "3mc67i4bgr22a",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 12
+  },
+  "sg_134": {
+    "id": "sg_134",
+    "headline": "Richmond Hill Man Dies in Unprovoked Driveway Attack",
+    "post_rkeys": [
+      "3mc66sds3h22i"
+    ],
+    "primary_rkey": "3mc66sds3h22i",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 2
+  },
+  "sg_135": {
+    "id": "sg_135",
+    "headline": "Mayor Chow Claims Property Tax Freeze Saves Toronto Families ,200 a Year",
+    "post_rkeys": [
+      "3mc66n6m5zs2i"
+    ],
+    "primary_rkey": "3mc66n6m5zs2i",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 3
+  },
+  "sg_136": {
+    "id": "sg_136",
+    "headline": "A Look at Toronto's Small Business Scene",
+    "post_rkeys": [
+      "3mc5yqpe43c2o"
+    ],
+    "primary_rkey": "3mc5yqpe43c2o",
+    "is_opinion": true,
+    "section_id": "local-news",
+    "role": "opinion",
+    "priority": 16
+  },
+  "sg_137": {
+    "id": "sg_137",
+    "headline": "Diamond District Brawl Goes Viral on Social Media",
+    "post_rkeys": [
+      "3mc5yfqdzxv2c"
+    ],
+    "primary_rkey": "3mc5yfqdzxv2c",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 10
+  },
+  "sg_138": {
+    "id": "sg_138",
+    "headline": "Toronto Warming Centres Open as Temperatures Drop",
+    "post_rkeys": [
+      "3mc5r74g2qz2r"
+    ],
+    "primary_rkey": "3mc5r74g2qz2r",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 6
+  },
+  "sg_139": {
+    "id": "sg_139",
+    "headline": "National Franchise Show Returns to Toronto This Month",
+    "post_rkeys": [
+      "3mc6mlhazq222"
+    ],
+    "primary_rkey": "3mc6mlhazq222",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 15
+  },
+  "sg_140": {
+    "id": "sg_140",
+    "headline": "Toronto Woman Who Defrauded Cancer Charity Gets Last Chance from Judge",
+    "post_rkeys": [
+      "3mca4bh64q225"
+    ],
+    "primary_rkey": "3mca4bh64q225",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 5
+  },
+  "sg_141": {
+    "id": "sg_141",
+    "headline": "Iranians Rally in North York Against Islamic Regime",
+    "post_rkeys": [
+      "3mca46erppc25"
+    ],
+    "primary_rkey": "3mca46erppc25",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 8
+  },
+  "sg_142": {
+    "id": "sg_142",
+    "headline": "TTC Riders Kicked Off Bus Due to Unannounced Schedule Change",
+    "post_rkeys": [
+      "3mc6rmskuc223"
+    ],
+    "primary_rkey": "3mc6rmskuc223",
+    "is_opinion": true,
+    "section_id": "local-news",
+    "role": "opinion",
+    "priority": 11
+  },
+  "sg_143": {
+    "id": "sg_143",
+    "headline": "Toronto Poet and Activist Ras Takura: From Street-Corner Sales to Seed-Saving",
+    "post_rkeys": [
+      "3mc6bv7t56c2e"
+    ],
+    "primary_rkey": "3mc6bv7t56c2e",
+    "is_opinion": false,
+    "section_id": "local-news",
+    "priority": 13
+  },
+  "sg_144": {
+    "id": "sg_144",
+    "headline": "Africa Cup of Nations 2025 Semifinals Set: Senegal vs Egypt, Morocco vs South Africa",
+    "post_rkeys": [
+      "3mc7jl54h4c24"
+    ],
+    "primary_rkey": "3mc7jl54h4c24",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 7
+  },
+  "sg_145": {
+    "id": "sg_145",
+    "headline": "Minnesota's Abbey Murphy Scores Highlight Reel Goal",
+    "post_rkeys": [
+      "3mc62pxjoxk25"
+    ],
+    "primary_rkey": "3mc62pxjoxk25",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 21
+  },
+  "sg_146": {
+    "id": "sg_146",
+    "headline": "Canadian Figure Skating Championships Deliver Drama",
+    "post_rkeys": [
+      "3mc6akdarkc2n"
+    ],
+    "primary_rkey": "3mc6akdarkc2n",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 15
+  },
+  "sg_147": {
+    "id": "sg_147",
+    "headline": "Raptors Mailbag: Answers and Suggestions",
+    "post_rkeys": [
+      "3mc5p7n3ud22g"
+    ],
+    "primary_rkey": "3mc5p7n3ud22g",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 20
+  },
+  "sg_148": {
+    "id": "sg_148",
+    "headline": "Maple Leafs Firing on All Cylinders as Tough Schedule Begins",
+    "post_rkeys": [
+      "3mc66pbmo2k2i"
+    ],
+    "primary_rkey": "3mc66pbmo2k2i",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 16
+  },
+  "sg_149": {
+    "id": "sg_149",
+    "headline": "McTominay Scores Double as Napoli Comes from Behind Twice",
+    "post_rkeys": [
+      "3mc6jimk4n22o"
+    ],
+    "primary_rkey": "3mc6jimk4n22o",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 8
+  },
+  "sg_150": {
+    "id": "sg_150",
+    "headline": "Eritrea May Return to Competitive Football After Years Away",
+    "post_rkeys": [
+      "3mca77iedsf2o"
+    ],
+    "primary_rkey": "3mca77iedsf2o",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 13
+  },
+  "sg_151": {
+    "id": "sg_151",
+    "headline": "Kyle Lowry Discusses Raptors Return",
+    "post_rkeys": [
+      "3mc6ucvymtk2p"
+    ],
+    "primary_rkey": "3mc6ucvymtk2p",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 19
+  },
+  "sg_152": {
+    "id": "sg_152",
+    "headline": "Arsenal Academy Manager Per Mertesacker Set to Step Down",
+    "post_rkeys": [
+      "3mc7ylyctcc25"
+    ],
+    "primary_rkey": "3mc7ylyctcc25",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 10
+  },
+  "sg_153": {
+    "id": "sg_153",
+    "headline": "North Korea's Obsession with Winning Reaches New Level",
+    "post_rkeys": [
+      "3mc6nt7l2lo2g"
+    ],
+    "primary_rkey": "3mc6nt7l2lo2g",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 14
+  },
+  "sg_154": {
+    "id": "sg_154",
+    "headline": "Caleb Williams and Rome Odunze Connect on Clutch Fourth Down",
+    "post_rkeys": [
+      "3mc5zzg4x2c25"
+    ],
+    "primary_rkey": "3mc5zzg4x2c25",
+    "is_opinion": true,
+    "section_id": "sports",
+    "role": "opinion",
+    "priority": 22
+  },
+  "sg_155": {
+    "id": "sg_155",
+    "headline": "Liverpool's Conor Bradley Deals with Career Setbacks",
+    "post_rkeys": [
+      "3mc5yolzmps2w"
+    ],
+    "primary_rkey": "3mc5yolzmps2w",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 12
+  },
+  "sg_156": {
+    "id": "sg_156",
+    "headline": "The Athletic's Tactical Analysis: Second Half of Season Preview",
+    "post_rkeys": [
+      "3mc7swz54ck2n"
+    ],
+    "primary_rkey": "3mc7swz54ck2n",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 17
+  },
+  "sg_157": {
+    "id": "sg_157",
+    "headline": "Tottenham's Co-Sporting Director Fabio Paratici Nearing Return",
+    "post_rkeys": [
+      "3mc5wleiwjc2d"
+    ],
+    "primary_rkey": "3mc5wleiwjc2d",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 11
+  },
+  "sg_158": {
+    "id": "sg_158",
+    "headline": "Hull City Fan Swaps Christmas Trip for FA Cup Glory",
+    "post_rkeys": [
+      "3mc5vi6kdu22k"
+    ],
+    "primary_rkey": "3mc5vi6kdu22k",
+    "is_opinion": false,
+    "section_id": "sports",
+    "priority": 18
+  },
+  "sg_159": {
+    "id": "sg_159",
+    "headline": "A Ghost in Your Ear Review: 'Truly Terrifying' Headphone Horror",
+    "post_rkeys": [
+      "3mc6iuzea2b2z"
+    ],
+    "primary_rkey": "3mc6iuzea2b2z",
+    "is_opinion": false,
+    "section_id": "film",
+    "priority": 2
+  },
+  "sg_160": {
+    "id": "sg_160",
+    "headline": "The Storm Whale Review: Touching Tale of a Little Leviathan",
+    "post_rkeys": [
+      "3mca7jz4ipi2z"
+    ],
+    "primary_rkey": "3mca7jz4ipi2z",
+    "is_opinion": false,
+    "section_id": "film",
+    "priority": 3
+  },
+  "sg_161": {
+    "id": "sg_161",
+    "headline": "Why Dune Movies Are 'Just Precisely Okay'",
+    "post_rkeys": [
+      "3mc62xsppr22x"
+    ],
+    "primary_rkey": "3mc62xsppr22x",
+    "is_opinion": true,
+    "section_id": "film",
+    "role": "opinion",
+    "priority": 6
+  },
+  "sg_162": {
+    "id": "sg_162",
+    "headline": "Globe and Mail Film Coverage",
+    "post_rkeys": [
+      "3mc7vh5oipo2p"
+    ],
+    "primary_rkey": "3mc7vh5oipo2p",
+    "is_opinion": false,
+    "section_id": "film",
+    "priority": 7
+  },
+  "sg_163": {
+    "id": "sg_163",
+    "headline": "Ben Wheatley on How Filmmaking Beats Doomscrolling",
+    "post_rkeys": [
+      "3mc5t3uphvi2w"
+    ],
+    "primary_rkey": "3mc5t3uphvi2w",
+    "is_opinion": false,
+    "section_id": "film",
+    "priority": 5
+  },
+  "sg_164": {
+    "id": "sg_164",
+    "headline": "Elections Follow Failed Coup Attempt",
+    "post_rkeys": [
+      "3mc5qg3wsxw2l"
+    ],
+    "primary_rkey": "3mc5qg3wsxw2l",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 15
+  },
+  "sg_165": {
+    "id": "sg_165",
+    "headline": "London Is No 'Warzone' Despite Trump and Farage Claims",
+    "post_rkeys": [
+      "3mc7ixabyj62y"
+    ],
+    "primary_rkey": "3mc7ixabyj62y",
+    "is_opinion": true,
+    "section_id": "geopolitics",
+    "role": "opinion",
+    "priority": 31
+  },
+  "sg_166": {
+    "id": "sg_166",
+    "headline": "Campaign Urges Starmer Not to Diminish Special Education Rights",
+    "post_rkeys": [
+      "3mc7i3fub7h24"
+    ],
+    "primary_rkey": "3mc7i3fub7h24",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 26
+  },
+  "sg_167": {
+    "id": "sg_167",
+    "headline": "Civil Service Morale Lifts Under Labour Government",
+    "post_rkeys": [
+      "3mc7i3dryne2q"
+    ],
+    "primary_rkey": "3mc7i3dryne2q",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 28
+  },
+  "sg_168": {
+    "id": "sg_168",
+    "headline": "Marine Le Pen Faces Parliamentary Assistants Trial on Appeal",
+    "post_rkeys": [
+      "3mc7gdgxus22i"
+    ],
+    "primary_rkey": "3mc7gdgxus22i",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 17
+  },
+  "sg_169": {
+    "id": "sg_169",
+    "headline": "Macron Allies Compare Him to Putin in Leaked Comments",
+    "post_rkeys": [
+      "3mc7g24il6s2l"
+    ],
+    "primary_rkey": "3mc7g24il6s2l",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 29
+  },
+  "sg_170": {
+    "id": "sg_170",
+    "headline": "Sanctioned Vessel Seizures Create New US-Russia Flashpoint",
+    "post_rkeys": [
+      "3mc66zptwe32h"
+    ],
+    "primary_rkey": "3mc66zptwe32h",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 10
+  },
+  "sg_171": {
+    "id": "sg_171",
+    "headline": "92-Year-Old Judge to Preside Over Maduro Trial",
+    "post_rkeys": [
+      "3mc664hvvbv2s"
+    ],
+    "primary_rkey": "3mc664hvvbv2s",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 12
+  },
+  "sg_172": {
+    "id": "sg_172",
+    "headline": "UK Pays Tortured Guantánamo Detainee",
+    "post_rkeys": [
+      "3mc6kvvwh4i2w"
+    ],
+    "primary_rkey": "3mc6kvvwh4i2w",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 16
+  },
+  "sg_173": {
+    "id": "sg_173",
+    "headline": "Israeli Forces Kill One in Attacks on Southern Lebanon",
+    "post_rkeys": [
+      "3mc6hv5uzhm27"
+    ],
+    "primary_rkey": "3mc6hv5uzhm27",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 8
+  },
+  "sg_174": {
+    "id": "sg_174",
+    "headline": "South Africa Risks Further Trump Rift Over Iran Ties",
+    "post_rkeys": [
+      "3mc6hoo5ev42t"
+    ],
+    "primary_rkey": "3mc6hoo5ev42t",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 11
+  },
+  "sg_175": {
+    "id": "sg_175",
+    "headline": "UK Justice Minister Proposes Slashing Jury Trials to Clear Backlog",
+    "post_rkeys": [
+      "3mc64t6uimc2o"
+    ],
+    "primary_rkey": "3mc64t6uimc2o",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 23
+  },
+  "sg_176": {
+    "id": "sg_176",
+    "headline": "Why Peace in Ukraine Remains Elusive Despite Growing Support",
+    "post_rkeys": [
+      "3mc63tipdc32n"
+    ],
+    "primary_rkey": "3mc63tipdc32n",
+    "is_opinion": true,
+    "section_id": "geopolitics",
+    "role": "opinion",
+    "priority": 21
+  },
+  "sg_177": {
+    "id": "sg_177",
+    "headline": "Labour MPs Push to Ban Cryptocurrency Political Donations",
+    "post_rkeys": [
+      "3mc5zsrcuyy27"
+    ],
+    "primary_rkey": "3mc5zsrcuyy27",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 24
+  },
+  "sg_178": {
+    "id": "sg_178",
+    "headline": "Netanyahu's Vision of Perpetual Jewish Crisis",
+    "post_rkeys": [
+      "3mc5zqqyfo52d"
+    ],
+    "primary_rkey": "3mc5zqqyfo52d",
+    "is_opinion": true,
+    "section_id": "geopolitics",
+    "role": "opinion",
+    "priority": 22
+  },
+  "sg_179": {
+    "id": "sg_179",
+    "headline": "Which Countries Host the Largest Venezuelan Populations?",
+    "post_rkeys": [
+      "3mca5ncbp6h2d"
+    ],
+    "primary_rkey": "3mca5ncbp6h2d",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 18
+  },
+  "sg_180": {
+    "id": "sg_180",
+    "headline": "Globe and Mail Article",
+    "post_rkeys": [
+      "3mc7z7bozr72c"
+    ],
+    "primary_rkey": "3mc7z7bozr72c",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 38
+  },
+  "sg_181": {
+    "id": "sg_181",
+    "headline": "Syrians in Kurdish Aleppo Pick Up Pieces After Clashes",
+    "post_rkeys": [
+      "3mc7wtdw7io2e"
+    ],
+    "primary_rkey": "3mc7wtdw7io2e",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 7
+  },
+  "sg_182": {
+    "id": "sg_182",
+    "headline": "Texas Oilman Watches Venezuela Situation Closely",
+    "post_rkeys": [
+      "3mc7wd5nat52t"
+    ],
+    "primary_rkey": "3mc7wd5nat52t",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 19
+  },
+  "sg_183": {
+    "id": "sg_183",
+    "headline": "Nuance in Development Politics Versus Israel Discourse",
+    "post_rkeys": [
+      "3mc7fbtztic2b"
+    ],
+    "primary_rkey": "3mc7fbtztic2b",
+    "is_opinion": true,
+    "section_id": "geopolitics",
+    "role": "opinion",
+    "priority": 35
+  },
+  "sg_184": {
+    "id": "sg_184",
+    "headline": "UN Court Opens Myanmar Rohingya Genocide Case",
+    "post_rkeys": [
+      "3mc7cpg2eyv2p"
+    ],
+    "primary_rkey": "3mc7cpg2eyv2p",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 2
+  },
+  "sg_185": {
+    "id": "sg_185",
+    "headline": "Enthusiastic Reaction to Political Development",
+    "post_rkeys": [
+      "3mc75dqqmz227"
+    ],
+    "primary_rkey": "3mc75dqqmz227",
+    "is_opinion": true,
+    "section_id": "geopolitics",
+    "role": "opinion",
+    "priority": 36
+  },
+  "sg_186": {
+    "id": "sg_186",
+    "headline": "HMRC Accepted 'Tolerable' Risk in Child Benefit Fraud Crackdown",
+    "post_rkeys": [
+      "3mc7u5m4p5u2w"
+    ],
+    "primary_rkey": "3mc7u5m4p5u2w",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 27
+  },
+  "sg_187": {
+    "id": "sg_187",
+    "headline": "Globe and Mail Article",
+    "post_rkeys": [
+      "3mc7s5wwsok2p"
+    ],
+    "primary_rkey": "3mc7s5wwsok2p",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 37
+  },
+  "sg_188": {
+    "id": "sg_188",
+    "headline": "Scotland Urged to Protect Peatlands From Logging",
+    "post_rkeys": [
+      "3mc7rxb5fyl23"
+    ],
+    "primary_rkey": "3mc7rxb5fyl23",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 32
+  },
+  "sg_189": {
+    "id": "sg_189",
+    "headline": "Kashmir Bans VPNs for Two Months",
+    "post_rkeys": [
+      "3mc7rsaofmf27"
+    ],
+    "primary_rkey": "3mc7rsaofmf27",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 9
+  },
+  "sg_190": {
+    "id": "sg_190",
+    "headline": "How Glasgow Is Mobilizing Against Reform UK",
+    "post_rkeys": [
+      "3mc7litwq262q"
+    ],
+    "primary_rkey": "3mc7litwq262q",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 30
+  },
+  "sg_191": {
+    "id": "sg_191",
+    "headline": "Australia Plans to Stockpile Defense-Critical Minerals",
+    "post_rkeys": [
+      "3mc7l3uovgt2a"
+    ],
+    "primary_rkey": "3mc7l3uovgt2a",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 13
+  },
+  "sg_192": {
+    "id": "sg_192",
+    "headline": "EU Considers 'Farage Clause' to Protect Budget If Reform UK Wins",
+    "post_rkeys": [
+      "3mc5uroqhtw27"
+    ],
+    "primary_rkey": "3mc5uroqhtw27",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 20
+  },
+  "sg_193": {
+    "id": "sg_193",
+    "headline": "Peter Mandelson Refuses to Apologize Over Epstein Ties",
+    "post_rkeys": [
+      "3mc5u7s2mvp24"
+    ],
+    "primary_rkey": "3mc5u7s2mvp24",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 25
+  },
+  "sg_194": {
+    "id": "sg_194",
+    "headline": "From Bad Bunny to Chinese Rap: Streaming Music Without Understanding",
+    "post_rkeys": [
+      "3mc5trmf3wi2d"
+    ],
+    "primary_rkey": "3mc5trmf3wi2d",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 34
+  },
+  "sg_195": {
+    "id": "sg_195",
+    "headline": "Israel and Hamas Prepare for Renewed Fighting",
+    "post_rkeys": [
+      "3mc5tdglgkk2h"
+    ],
+    "primary_rkey": "3mc5tdglgkk2h",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 3
+  },
+  "sg_196": {
+    "id": "sg_196",
+    "headline": "Avalanche Kills British Skier in French Alps",
+    "post_rkeys": [
+      "3mc6dujbldt23"
+    ],
+    "primary_rkey": "3mc6dujbldt23",
+    "is_opinion": false,
+    "section_id": "geopolitics",
+    "priority": 33
+  },
+  "sg_197": {
+    "id": "sg_197",
+    "headline": "Excessive Force Performs Straight-Edge Metallic Hardcore in SoCal",
+    "post_rkeys": [
+      "3mc67cubhj22n"
+    ],
+    "primary_rkey": "3mc67cubhj22n",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 6
+  },
+  "sg_198": {
+    "id": "sg_198",
+    "headline": "Chappell Roan Makes Surprise Appearance at Artists For Aid Concert",
+    "post_rkeys": [
+      "3mc657ankok2s"
+    ],
+    "primary_rkey": "3mc657ankok2s",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 4
+  },
+  "sg_199": {
+    "id": "sg_199",
+    "headline": "Elaine Mitchener Redefines Singing in 'Are Friends Electric?' Review",
+    "post_rkeys": [
+      "3mc636avn622z"
+    ],
+    "primary_rkey": "3mc636avn622z",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 11
+  },
+  "sg_200": {
+    "id": "sg_200",
+    "headline": "Bebe Rexha Returns to Social Media After Brief Hiatus",
+    "post_rkeys": [
+      "3mc6kfqkbok2t"
+    ],
+    "primary_rkey": "3mc6kfqkbok2t",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 8
+  },
+  "sg_201": {
+    "id": "sg_201",
+    "headline": "Alternative Number Ones: Dishwalla's 'Counting Blue Cars' Revisited",
+    "post_rkeys": [
+      "3mca7lszbqk27"
+    ],
+    "primary_rkey": "3mca7lszbqk27",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 13
+  },
+  "sg_202": {
+    "id": "sg_202",
+    "headline": "When BBC Broadcast Music by Fake Composer Piotr Zak",
+    "post_rkeys": [
+      "3mca3cdlmvh2k"
+    ],
+    "primary_rkey": "3mca3cdlmvh2k",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 10
+  },
+  "sg_203": {
+    "id": "sg_203",
+    "headline": "Charli XCX and Djo Present Golden Globe for Best Song",
+    "post_rkeys": [
+      "3mc6ykqmwws2t"
+    ],
+    "primary_rkey": "3mc6ykqmwws2t",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 3
+  },
+  "sg_204": {
+    "id": "sg_204",
+    "headline": "Guardian Classical Music Critic Andrew Clements Dies at 75",
+    "post_rkeys": [
+      "3mc6qx55z6b2q"
+    ],
+    "primary_rkey": "3mc6qx55z6b2q",
+    "is_opinion": false,
+    "section_id": "music",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_205": {
+    "id": "sg_205",
+    "headline": "Yes Founding Keyboardist Tony Kaye Celebrates 80th Birthday",
+    "post_rkeys": [
+      "3mc73h5rn422t"
+    ],
+    "primary_rkey": "3mc73h5rn422t",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 9
+  },
+  "sg_206": {
+    "id": "sg_206",
+    "headline": "Reassessing Judy Garland's Complex Performance Legacy",
+    "post_rkeys": [
+      "3mc7ultxqxt2p"
+    ],
+    "primary_rkey": "3mc7ultxqxt2p",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 12
+  },
+  "sg_207": {
+    "id": "sg_207",
+    "headline": "Jenny and Bobby's Musical Romance",
+    "post_rkeys": [
+      "3mc6gj5cqxs2t"
+    ],
+    "primary_rkey": "3mc6gj5cqxs2t",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 7
+  },
+  "sg_208": {
+    "id": "sg_208",
+    "headline": "BBC Radio 1 Premieres Sombr's Phoebe Bridgers Cover",
+    "post_rkeys": [
+      "3mc6df6hgyk2b"
+    ],
+    "primary_rkey": "3mc6df6hgyk2b",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 5
+  },
+  "sg_209": {
+    "id": "sg_209",
+    "headline": "Wolf Parade Setlist Request: 'I'll Believe in Anything'",
+    "post_rkeys": [
+      "3mc6dmwjjkc2b"
+    ],
+    "primary_rkey": "3mc6dmwjjkc2b",
+    "is_opinion": false,
+    "section_id": "music",
+    "priority": 14
+  },
+  "sg_210": {
+    "id": "sg_210",
+    "headline": "The Case for Saving Canada Post Door-to-Door Delivery",
+    "post_rkeys": [
+      "3mc67iuqies2a"
+    ],
+    "primary_rkey": "3mc67iuqies2a",
+    "is_opinion": true,
+    "section_id": "politics-ca",
+    "role": "opinion",
+    "priority": 7
+  },
+  "sg_211": {
+    "id": "sg_211",
+    "headline": "Mark Carney Seeks Reset With China Amid Trump's Global Trade Chaos",
+    "post_rkeys": [
+      "3mc66vhjock2i"
+    ],
+    "primary_rkey": "3mc66vhjock2i",
+    "is_opinion": false,
+    "section_id": "politics-ca",
+    "priority": 4
+  },
+  "sg_212": {
+    "id": "sg_212",
+    "headline": "Journalist Documents Alleged Corruption in Doug Ford Government",
+    "post_rkeys": [
+      "3lpemjte2v22b"
+    ],
+    "primary_rkey": "3lpemjte2v22b",
+    "is_opinion": true,
+    "section_id": "politics-ca",
+    "role": "opinion",
+    "priority": 6
+  },
+  "sg_213": {
+    "id": "sg_213",
+    "headline": "Globe and Mail Post",
+    "post_rkeys": [
+      "3mc7vh3pvrw2p"
+    ],
+    "primary_rkey": "3mc7vh3pvrw2p",
+    "is_opinion": false,
+    "section_id": "politics-ca",
+    "priority": 11
+  },
+  "sg_214": {
+    "id": "sg_214",
+    "headline": "Globe and Mail Post",
+    "post_rkeys": [
+      "3mc7vgzs2dj2k"
+    ],
+    "primary_rkey": "3mc7vgzs2dj2k",
+    "is_opinion": false,
+    "section_id": "politics-ca",
+    "priority": 10
+  },
+  "sg_215": {
+    "id": "sg_215",
+    "headline": "Globe and Mail Post",
+    "post_rkeys": [
+      "3mc7s5yzup42c"
+    ],
+    "primary_rkey": "3mc7s5yzup42c",
+    "is_opinion": false,
+    "section_id": "politics-ca",
+    "priority": 9
+  },
+  "sg_216": {
+    "id": "sg_216",
+    "headline": "Ontario Company Provides Services Amid Current Events",
+    "post_rkeys": [
+      "3mc3m43bimm2q"
+    ],
+    "primary_rkey": "3mc3m43bimm2q",
+    "is_opinion": false,
+    "section_id": "politics-ca",
+    "priority": 8
+  },
+  "sg_217": {
+    "id": "sg_217",
+    "headline": "Opinion: Thread tracking alleged DNC influencers",
+    "post_rkeys": [
+      "3mc65cyvrb22q"
+    ],
+    "primary_rkey": "3mc65cyvrb22q",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 51
+  },
+  "sg_218": {
+    "id": "sg_218",
+    "headline": "Defense Department selects Owen West to lead POW/MIA accounting agency",
+    "post_rkeys": [
+      "3mc67izkehf2h"
+    ],
+    "primary_rkey": "3mc67izkehf2h",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 17
+  },
+  "sg_219": {
+    "id": "sg_219",
+    "headline": "Analysis: Trump policy unpredictability creates chaos",
+    "post_rkeys": [
+      "3mc66m5l3uc2i"
+    ],
+    "primary_rkey": "3mc66m5l3uc2i",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 29
+  },
+  "sg_220": {
+    "id": "sg_220",
+    "headline": "Opinion: HR backlash against gay HBO watch party attendance",
+    "post_rkeys": [
+      "3mbzz7qlooc26"
+    ],
+    "primary_rkey": "3mbzz7qlooc26",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 43
+  },
+  "sg_221": {
+    "id": "sg_221",
+    "headline": "Opinion: Fox News challenges Iran protest coverage",
+    "post_rkeys": [
+      "3mc63cl43ci27"
+    ],
+    "primary_rkey": "3mc63cl43ci27",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 42
+  },
+  "sg_222": {
+    "id": "sg_222",
+    "headline": "Opinion: Opposition to preventative healthcare rooted in ideology",
+    "post_rkeys": [
+      "3mc5kywn47k2m"
+    ],
+    "primary_rkey": "3mc5kywn47k2m",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 45
+  },
+  "sg_223": {
+    "id": "sg_223",
+    "headline": "Opinion: Libertarians increasingly embrace authoritarian positions",
+    "post_rkeys": [
+      "3mc65et3x422y"
+    ],
+    "primary_rkey": "3mc65et3x422y",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 44
+  },
+  "sg_224": {
+    "id": "sg_224",
+    "headline": "Opinion: Generic political commentary",
+    "post_rkeys": [
+      "3mc5nnxu7hk2m"
+    ],
+    "primary_rkey": "3mc5nnxu7hk2m",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 52
+  },
+  "sg_225": {
+    "id": "sg_225",
+    "headline": "Opinion: Commentary on illegal immigration terminology",
+    "post_rkeys": [
+      "3mc5olqopqs2l"
+    ],
+    "primary_rkey": "3mc5olqopqs2l",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 50
+  },
+  "sg_226": {
+    "id": "sg_226",
+    "headline": "Opinion: FBI agents face dilemma over deportation orders",
+    "post_rkeys": [
+      "3mc64nk6fds2y"
+    ],
+    "primary_rkey": "3mc64nk6fds2y",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 40
+  },
+  "sg_227": {
+    "id": "sg_227",
+    "headline": "Opinion: Right-wing propagandists criticized",
+    "post_rkeys": [
+      "3mc64o6d65s2y"
+    ],
+    "primary_rkey": "3mc64o6d65s2y",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 48
+  },
+  "sg_228": {
+    "id": "sg_228",
+    "headline": "Opinion: Corruption happens in plain view",
+    "post_rkeys": [
+      "3mc5wu4bmts25"
+    ],
+    "primary_rkey": "3mc5wu4bmts25",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 39
+  },
+  "sg_229": {
+    "id": "sg_229",
+    "headline": "Trump Organization launches luxury tower sales in Saudi Arabia",
+    "post_rkeys": [
+      "3mc645sreut2w"
+    ],
+    "primary_rkey": "3mc645sreut2w",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 20
+  },
+  "sg_230": {
+    "id": "sg_230",
+    "headline": "Opinion: Sarcasm about Democratic complicity claims",
+    "post_rkeys": [
+      "3mc6gk23huc26"
+    ],
+    "primary_rkey": "3mc6gk23huc26",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 46
+  },
+  "sg_231": {
+    "id": "sg_231",
+    "headline": "LA wildfire victims denied rebuild permits amid housing crisis",
+    "post_rkeys": [
+      "3mc6irzxx6c2q"
+    ],
+    "primary_rkey": "3mc6irzxx6c2q",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_232": {
+    "id": "sg_232",
+    "headline": "16,000 NYC nurses prepare to strike at three major hospitals",
+    "post_rkeys": [
+      "3mc6hvd7r332x"
+    ],
+    "primary_rkey": "3mc6hvd7r332x",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 7
+  },
+  "sg_233": {
+    "id": "sg_233",
+    "headline": "Trump administration takes M equity stake in uranium enrichment facility",
+    "post_rkeys": [
+      "3mca3vohjnn2p"
+    ],
+    "primary_rkey": "3mca3vohjnn2p",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 15
+  },
+  "sg_234": {
+    "id": "sg_234",
+    "headline": "Stewart Rhodes relaunches Oath Keepers with crowdfunding campaign",
+    "post_rkeys": [
+      "3mc7z4xrq3k2l"
+    ],
+    "primary_rkey": "3mc7z4xrq3k2l",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 10
+  },
+  "sg_235": {
+    "id": "sg_235",
+    "headline": "Nobel economist connects Trump policies to historical populism",
+    "post_rkeys": [
+      "3mca26tqnnh2h"
+    ],
+    "primary_rkey": "3mca26tqnnh2h",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 28
+  },
+  "sg_236": {
+    "id": "sg_236",
+    "headline": "Trump shares fake Wikipedia profile on Truth Social",
+    "post_rkeys": [
+      "3mca22d44as2l"
+    ],
+    "primary_rkey": "3mca22d44as2l",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 24
+  },
+  "sg_237": {
+    "id": "sg_237",
+    "headline": "House Republicans rally behind bill targeting ICC over Israel",
+    "post_rkeys": [
+      "3mc7yrqq6hh2i"
+    ],
+    "primary_rkey": "3mc7yrqq6hh2i",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 13
+  },
+  "sg_238": {
+    "id": "sg_238",
+    "headline": "Trump threatens credit card companies over gun purchase tracking",
+    "post_rkeys": [
+      "3mc72dsj6is2f"
+    ],
+    "primary_rkey": "3mc72dsj6is2f",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 14
+  },
+  "sg_239": {
+    "id": "sg_239",
+    "headline": "Opinion: Messaging about wealthy opponents in current political moment",
+    "post_rkeys": [
+      "3mc6zji5srk2k"
+    ],
+    "primary_rkey": "3mc6zji5srk2k",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 37
+  },
+  "sg_240": {
+    "id": "sg_240",
+    "headline": "Opinion: Right-wing commentators misunderstand protest dynamics",
+    "post_rkeys": [
+      "3mc6z7oalj22c"
+    ],
+    "primary_rkey": "3mc6z7oalj22c",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 41
+  },
+  "sg_241": {
+    "id": "sg_241",
+    "headline": "Trump threatens to veto bill extending Obamacare subsidies",
+    "post_rkeys": [
+      "3mc6yntgbej24"
+    ],
+    "primary_rkey": "3mc6yntgbej24",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 12
+  },
+  "sg_242": {
+    "id": "sg_242",
+    "headline": "Trump signals Exxon may avoid tariff push on Mideast energy investments",
+    "post_rkeys": [
+      "3mc6vcqii3723"
+    ],
+    "primary_rkey": "3mc6vcqii3723",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 16
+  },
+  "sg_243": {
+    "id": "sg_243",
+    "headline": "Opinion: Trump's weekend invasion tactics blend old and new strategies",
+    "post_rkeys": [
+      "3mc6srroiic26"
+    ],
+    "primary_rkey": "3mc6srroiic26",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 31
+  },
+  "sg_244": {
+    "id": "sg_244",
+    "headline": "Critical analysis of Rahm Emanuel's political record",
+    "post_rkeys": [
+      "3mc6q5seods2h"
+    ],
+    "primary_rkey": "3mc6q5seods2h",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 32
+  },
+  "sg_245": {
+    "id": "sg_245",
+    "headline": "Opinion: Call for aggressive state action against Republicans",
+    "post_rkeys": [
+      "3mc77u4ehus2i"
+    ],
+    "primary_rkey": "3mc77u4ehus2i",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 49
+  },
+  "sg_246": {
+    "id": "sg_246",
+    "headline": "Opinion: Obama deportation record reexamined",
+    "post_rkeys": [
+      "3mc76rxgb3226"
+    ],
+    "primary_rkey": "3mc76rxgb3226",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 36
+  },
+  "sg_247": {
+    "id": "sg_247",
+    "headline": "Opinion: Billionaire class belief in market-based governance",
+    "post_rkeys": [
+      "3mc7353gi5c2s"
+    ],
+    "primary_rkey": "3mc7353gi5c2s",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 33
+  },
+  "sg_248": {
+    "id": "sg_248",
+    "headline": "Opinion: Call for political action to protect safe spaces",
+    "post_rkeys": [
+      "3mc6pvfbcuk2s"
+    ],
+    "primary_rkey": "3mc6pvfbcuk2s",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 38
+  },
+  "sg_249": {
+    "id": "sg_249",
+    "headline": "Immigration lawyer navigates changing deportation landscape",
+    "post_rkeys": [
+      "3mc7v5xkclg2g"
+    ],
+    "primary_rkey": "3mc7v5xkclg2g",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 26
+  },
+  "sg_250": {
+    "id": "sg_250",
+    "headline": "Democrats see clear path to reclaim House in 2026 midterms",
+    "post_rkeys": [
+      "3mc7uitqyc52i"
+    ],
+    "primary_rkey": "3mc7uitqyc52i",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 21
+  },
+  "sg_251": {
+    "id": "sg_251",
+    "headline": "Smithsonian swaps Trump portrait, removes mention of impeachments",
+    "post_rkeys": [
+      "3mc5vrvjcr62y"
+    ],
+    "primary_rkey": "3mc5vrvjcr62y",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 18
+  },
+  "sg_252": {
+    "id": "sg_252",
+    "headline": "Hollywood divided over politics as industry faces crisis",
+    "post_rkeys": [
+      "3mc5vce4a2l2i"
+    ],
+    "primary_rkey": "3mc5vce4a2l2i",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 25
+  },
+  "sg_253": {
+    "id": "sg_253",
+    "headline": "Trump personally rebukes GOP senators supporting VA chief nomination",
+    "post_rkeys": [
+      "3mc5ugrdfnc2z"
+    ],
+    "primary_rkey": "3mc5ugrdfnc2z",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 11
+  },
+  "sg_254": {
+    "id": "sg_254",
+    "headline": "Mississippi's largest synagogue set on fire in arson attack",
+    "post_rkeys": [
+      "3mc5jsw4x222b"
+    ],
+    "primary_rkey": "3mc5jsw4x222b",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 2
+  },
+  "sg_255": {
+    "id": "sg_255",
+    "headline": "Trump administration removes federal data on food security and emissions",
+    "post_rkeys": [
+      "3mc5slwjzry2d"
+    ],
+    "primary_rkey": "3mc5slwjzry2d",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 19
+  },
+  "sg_256": {
+    "id": "sg_256",
+    "headline": "Trump trade adviser discusses tariffs and China policy",
+    "post_rkeys": [
+      "3mc5rjz3o7d24"
+    ],
+    "primary_rkey": "3mc5rjz3o7d24",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 23
+  },
+  "sg_257": {
+    "id": "sg_257",
+    "headline": "Opinion: Ashley St Clair comparison sparks mockery",
+    "post_rkeys": [
+      "3mc6ax2msuk27"
+    ],
+    "primary_rkey": "3mc6ax2msuk27",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 47
+  },
+  "sg_258": {
+    "id": "sg_258",
+    "headline": "Democratic physicians run for Congress focused on abortion rights",
+    "post_rkeys": [
+      "3mc6cwkblnp2z"
+    ],
+    "primary_rkey": "3mc6cwkblnp2z",
+    "is_opinion": false,
+    "section_id": "politics-us",
+    "priority": 22
+  },
+  "sg_259": {
+    "id": "sg_259",
+    "headline": "Opinion: America's size complicates authoritarian consolidation",
+    "post_rkeys": [
+      "3mc67juhvk22z"
+    ],
+    "primary_rkey": "3mc67juhvk22z",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 35
+  },
+  "sg_260": {
+    "id": "sg_260",
+    "headline": "Opinion: 1990s militia movements had FBI informant connections",
+    "post_rkeys": [
+      "3mc67ltdin22p"
+    ],
+    "primary_rkey": "3mc67ltdin22p",
+    "is_opinion": true,
+    "section_id": "politics-us",
+    "role": "opinion",
+    "priority": 34
+  },
+  "sg_261": {
+    "id": "sg_261",
+    "headline": "Developer Creates One-Handed Keyboard Design",
+    "post_rkeys": [
+      "3mc5r62kpgki2"
+    ],
+    "primary_rkey": "3mc5r62kpgki2",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 18
+  },
+  "sg_262": {
+    "id": "sg_262",
+    "headline": "Mathematicians Use AI to Study Infinity",
+    "post_rkeys": [
+      "3mc5q54kuvo2c"
+    ],
+    "primary_rkey": "3mc5q54kuvo2c",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 17
+  },
+  "sg_263": {
+    "id": "sg_263",
+    "headline": "Chinese Chipmaker Prepares  Billion Share Sale",
+    "post_rkeys": [
+      "3mc7kilmfia2c"
+    ],
+    "primary_rkey": "3mc7kilmfia2c",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 2
+  },
+  "sg_264": {
+    "id": "sg_264",
+    "headline": "AI Startup Mercor Employs Tens of Thousands of Contractors",
+    "post_rkeys": [
+      "3mc7g6xdipo2s"
+    ],
+    "primary_rkey": "3mc7g6xdipo2s",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 3
+  },
+  "sg_265": {
+    "id": "sg_265",
+    "headline": "Canadian Startup Launches 10 Low-Earth-Orbit Satellites",
+    "post_rkeys": [
+      "3mc6jkxgkpb2z"
+    ],
+    "primary_rkey": "3mc6jkxgkpb2z",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 8
+  },
+  "sg_266": {
+    "id": "sg_266",
+    "headline": "Musk Replaces Iran Flag Emoji on X Platform",
+    "post_rkeys": [
+      "3mc64lvy26c24"
+    ],
+    "primary_rkey": "3mc64lvy26c24",
+    "is_opinion": false,
+    "section_id": "tech",
+    "role": "headline",
+    "priority": 1
+  },
+  "sg_267": {
+    "id": "sg_267",
+    "headline": "Warner Bros Discovery Streaming Deals Under Scrutiny",
+    "post_rkeys": [
+      "3mc62lz5uw72w"
+    ],
+    "primary_rkey": "3mc62lz5uw72w",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 4
+  },
+  "sg_268": {
+    "id": "sg_268",
+    "headline": "How AI Can Reshape Society Without Thinking Like Humans",
+    "post_rkeys": [
+      "3mc5ysrjsdl2u"
+    ],
+    "primary_rkey": "3mc5ysrjsdl2u",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 12
+  },
+  "sg_269": {
+    "id": "sg_269",
+    "headline": "Europe's Dependence on US Tech Companies Raises Concerns",
+    "post_rkeys": [
+      "3mc7se2yros2u"
+    ],
+    "primary_rkey": "3mc7se2yros2u",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 15
+  },
+  "sg_270": {
+    "id": "sg_270",
+    "headline": "Experts Distinguish AI Safety from AI Harm",
+    "post_rkeys": [
+      "3mca5jy36b42e"
+    ],
+    "primary_rkey": "3mca5jy36b42e",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 11
+  },
+  "sg_271": {
+    "id": "sg_271",
+    "headline": "Globe and Mail Tech Report",
+    "post_rkeys": [
+      "3mc7xx4rx4v2p"
+    ],
+    "primary_rkey": "3mc7xx4rx4v2p",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 25
+  },
+  "sg_272": {
+    "id": "sg_272",
+    "headline": "Academics Debate AI Criticism and Technology Dependence",
+    "post_rkeys": [
+      "3mc5x2zc6522u"
+    ],
+    "primary_rkey": "3mc5x2zc6522u",
+    "is_opinion": true,
+    "section_id": "tech",
+    "role": "opinion",
+    "priority": 20
+  },
+  "sg_273": {
+    "id": "sg_273",
+    "headline": "The Corporate Origins of 'Open Source' vs 'Free Software'",
+    "post_rkeys": [
+      "3mc6vpb64bs2v"
+    ],
+    "primary_rkey": "3mc6vpb64bs2v",
+    "is_opinion": true,
+    "section_id": "tech",
+    "role": "opinion",
+    "priority": 21
+  },
+  "sg_274": {
+    "id": "sg_274",
+    "headline": "Humans Bond with Robot Vacuum Cleaners, Give Them Names",
+    "post_rkeys": [
+      "3mc7tmhwrdk2t"
+    ],
+    "primary_rkey": "3mc7tmhwrdk2t",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 16
+  },
+  "sg_275": {
+    "id": "sg_275",
+    "headline": "CES Showcases Desktop Holograms and Smart Home Tech",
+    "post_rkeys": [
+      "3mc6grd6vda2h"
+    ],
+    "primary_rkey": "3mc6grd6vda2h",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 9
+  },
+  "sg_276": {
+    "id": "sg_276",
+    "headline": "Tumblr Post Crossposted to Bluesky",
+    "post_rkeys": [
+      "3mbyyc2lhg22s"
+    ],
+    "primary_rkey": "3mbyyc2lhg22s",
+    "is_opinion": true,
+    "section_id": "tech",
+    "role": "opinion",
+    "priority": 22
+  },
+  "sg_277": {
+    "id": "sg_277",
+    "headline": "Walmart Expands Drone Delivery Network",
+    "post_rkeys": [
+      "3mc6fvul7xn2c"
+    ],
+    "primary_rkey": "3mc6fvul7xn2c",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 7
+  },
+  "sg_278": {
+    "id": "sg_278",
+    "headline": "Warhammer Quote on Music of Creation",
+    "post_rkeys": [
+      "3mc6ex43avs2y"
+    ],
+    "primary_rkey": "3mc6ex43avs2y",
+    "is_opinion": true,
+    "section_id": "tech",
+    "role": "opinion",
+    "priority": 23
+  },
+  "sg_279": {
+    "id": "sg_279",
+    "headline": "Memory Chip and Hard Drive Demand Surges",
+    "post_rkeys": [
+      "3mc6druajeh2o"
+    ],
+    "primary_rkey": "3mc6druajeh2o",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 5
+  },
+  "sg_280": {
+    "id": "sg_280",
+    "headline": "Lego Launches Sensor-Packed Smart Play Brick",
+    "post_rkeys": [
+      "3mc5wbyrxpa2c"
+    ],
+    "primary_rkey": "3mc5wbyrxpa2c",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 6
+  },
+  "sg_281": {
+    "id": "sg_281",
+    "headline": "Globe and Mail Tech Article",
+    "post_rkeys": [
+      "3mc5ujng4ff2d"
+    ],
+    "primary_rkey": "3mc5ujng4ff2d",
+    "is_opinion": false,
+    "section_id": "tech",
+    "priority": 24
+  }
+}
