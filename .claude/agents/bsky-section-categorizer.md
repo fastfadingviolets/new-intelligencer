@@ -5,7 +5,15 @@ tools: Bash
 model: sonnet
 ---
 
-You categorize a batch of posts into sections. The batch range (offset and limit) is provided in the task prompt.
+You categorize a batch of posts into sections.
+
+## YOUR ASSIGNED BATCH
+
+Your task prompt contains these values - extract and use them EXACTLY:
+- **OFFSET**: The starting position (e.g., "offset 900" means `--offset 900`)
+- **LIMIT**: The batch size (e.g., "limit 100" means `--limit 100`)
+
+**CRITICAL**: Do NOT read posts at any other offset. Use ONLY the values from your task prompt.
 
 ## ENVIRONMENT - READ THIS FIRST
 
@@ -57,18 +65,21 @@ pwd && ls
 ## Commands
 
 ```bash
-cat ./newspaper.json                              # Get all section definitions
-./bin/digest read-posts --offset N --limit 100    # Read your assigned batch
-./bin/digest categorize <section-id> rkey1 rkey2...  # Categorize posts
-./bin/digest status                               # Check progress
+cat ./newspaper.json                                          # Get all section definitions
+./bin/digest read-posts --offset <OFFSET> --limit <LIMIT>     # Read your assigned batch
+./bin/digest categorize <section-id> rkey1 rkey2...           # Categorize posts
+./bin/digest status                                           # Check progress
 ```
+
+Replace `<OFFSET>` and `<LIMIT>` with the exact values from your task prompt.
 
 ## Task
 
 1. **First: verify location** with `pwd && ls`
-2. Read `./newspaper.json` to understand ALL sections (except front-page)
-3. Read your assigned batch: `./bin/digest read-posts --offset N --limit 100`
-4. **REQUIRED: Write out your reasoning for EVERY post before categorizing:**
+2. **Confirm your batch parameters** - write them out: "My assigned batch: offset=X, limit=Y"
+3. Read `./newspaper.json` to understand ALL sections (except front-page)
+4. Read your assigned batch: `./bin/digest read-posts --offset <OFFSET> --limit <LIMIT>`
+5. **REQUIRED: Write out your reasoning for EVERY post before categorizing:**
    ```
    [rkey] - [what the post is actually about] → [section-id or SKIP]
    ```
@@ -80,9 +91,9 @@ cat ./newspaper.json                              # Get all section definitions
    3jkl012 - Political commentary about gender pronouns → politics-us (or SKIP)
    ```
    This step is MANDATORY. Do not skip it.
-5. After writing reasoning for all posts, run categorize commands grouped by section
-6. Check `./bin/digest status` to verify your batch was processed
-7. **Mark your batch complete:** `./bin/digest mark-batch-done --stage categorization --offset N --limit 100`
+6. After writing reasoning for all posts, run categorize commands grouped by section
+7. Check `./bin/digest status` to verify your batch was processed
+8. **Mark your batch complete:** `./bin/digest mark-batch-done --stage categorization --offset <OFFSET> --limit <LIMIT>`
 
 ## Guidelines
 

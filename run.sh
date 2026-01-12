@@ -30,4 +30,4 @@ fi
 
 # Run the agent workflow
 # Invoke the three subagents in sequence
-exec "$CLAUDE" --model haiku "Execute the prompt in @PROMPT.md"
+exec "$CLAUDE" --model haiku "Execute the prompt in PROMPT.md"
