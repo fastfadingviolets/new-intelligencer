@@ -483,3 +483,4 @@ func TestCompileDigestHTML_GoldenFile(t *testing.T) {
 		t.Errorf("Output does not match golden file.\nActual output written to: %s\nRun with -update-golden to update.", actualPath)
 	}
 }
+

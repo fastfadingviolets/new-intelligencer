@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{.Title}} - {{.Date}}</title>
+<style>
+{{inlineCSS}}
+</style>
+</head>
+<body>
+{{template "_sidebar.tmpl" .Sections}}
+
+<h1>{{.Title}}</h1>
+<p class="subtitle">{{.Date}}</p>
+
+{{template "_section.tmpl" .FrontPage}}
+
+{{range .NewsSections}}
+{{if .ContentBefore}}
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+{{range .ContentBefore}}
+{{template "_feed-card.tmpl" .}}
+{{end}}
+</section>
+{{end}}
+{{template "_section.tmpl" .}}
+{{end}}
+
+{{if .TrailingContent}}
+<section class="content-break">
+<div class="content-break-label">From the Feed</div>
+{{range .TrailingContent}}
+{{template "_feed-card.tmpl" .}}
+{{end}}
+</section>
+{{end}}
+
+{{template "_lightbox.tmpl"}}
+</body>
+</html>

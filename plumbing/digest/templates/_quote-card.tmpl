@@ -1,0 +1,9 @@
+{{define "_quote-card.tmpl"}}
+<a href="{{.URL}}" class="link-card" target="_blank" rel="noopener">
+<div class="link-info">
+<div class="link-title">@{{.AuthorHandle}}{{if .AuthorName}} ({{.AuthorName}}){{end}}</div>
+<div class="link-desc">{{.Text}}</div>
+<div class="link-domain">Quoted post</div>
+</div>
+</a>
+{{end}}

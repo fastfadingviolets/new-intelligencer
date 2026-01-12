@@ -1,0 +1,9 @@
+{{define "_sidebar.tmpl"}}
+<nav class="sidebar">
+<ul>
+{{range .}}
+<li><a href="#section-{{.Slug}}">{{.Name}}</a></li>
+{{end}}
+</ul>
+</nav>
+{{end}}

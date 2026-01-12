@@ -1,0 +1,12 @@
+{{define "_lightbox.tmpl"}}
+<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+<button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+<button class="lightbox-nav prev" onclick="navLightbox(-1, event)">&#8249;</button>
+<img id="lightbox-img" src="" alt="">
+<button class="lightbox-nav next" onclick="navLightbox(1, event)">&#8250;</button>
+<div class="lightbox-counter"><span id="lightbox-idx">1</span> / <span id="lightbox-total">1</span></div>
+</div>
+<script>
+{{inlineJS}}
+</script>
+{{end}}

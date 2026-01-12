@@ -1,0 +1,10 @@
+{{define "_link-card.tmpl"}}
+<a href="{{.URL}}" class="link-card" target="_blank" rel="noopener">
+{{if .Thumb}}<img src="{{.Thumb}}" alt="">{{end}}
+<div class="link-info">
+<div class="link-title">{{.Title}}</div>
+{{if .Description}}<div class="link-desc">{{.Description}}</div>{{end}}
+<div class="link-domain">{{.Domain}}</div>
+</div>
+</a>
+{{end}}

@@ -1,0 +1,21 @@
+{{define "_post.tmpl"}}
+<div class="post">
+<span class="author"><a href="{{.AuthorURL}}">@{{.AuthorHandle}}</a>{{if .AuthorName}} ({{.AuthorName}}){{end}}</span>
+{{if .IsRepost}}<span class="repost-info"> (reposted by @{{.RepostByHandle}})</span>{{end}}
+<div class="text">{{safeHTML .Text}}</div>
+{{if .Images}}
+<div class="images">
+{{range .Images}}
+<img src="{{.URL}}" alt="{{.Alt}}" data-group="{{.GroupID}}" data-idx="{{.Index}}" onclick="openLightbox(this)">
+{{end}}
+</div>
+{{end}}
+{{if .ExternalLink}}
+{{template "_link-card.tmpl" .ExternalLink}}
+{{end}}
+{{if .Quote}}
+{{template "_quote-card.tmpl" .Quote}}
+{{end}}
+<div class="meta">{{.Time}} · ♥ {{.LikeCount}}{{if .RepostCount}} · ↻ {{.RepostCount}}{{end}} · <a href="{{.URL}}">View</a></div>
+</div>
+{{end}}

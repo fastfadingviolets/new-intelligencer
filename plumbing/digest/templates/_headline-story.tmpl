@@ -1,0 +1,11 @@
+{{define "_headline-story.tmpl"}}
+<article class="headline-story">
+<h3><a href="{{.URL}}">{{.Headline}}</a></h3>
+{{if .Summary}}<p>{{.Summary}}</p>{{end}}
+<details><summary>{{.PostCount}} {{if eq .PostCount 1}}post{{else}}posts{{end}} in story</summary>
+{{range .Posts}}
+{{template "_post.tmpl" .}}
+{{end}}
+</details>
+</article>
+{{end}}

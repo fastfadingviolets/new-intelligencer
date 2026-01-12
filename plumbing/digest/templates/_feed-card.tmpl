@@ -1,0 +1,24 @@
+{{define "_feed-card.tmpl"}}
+<div class="feed-card">
+<div class="label">From the Feed</div>
+<div class="author"><a href="{{.Post.AuthorURL}}">@{{.Post.AuthorHandle}}</a></div>
+<div class="text">{{safeHTML .Post.Text}}</div>
+{{if .Post.Images}}
+<div class="images">
+{{range .Post.Images}}
+<img src="{{.URL}}" alt="{{.Alt}}" data-group="{{.GroupID}}" data-idx="{{.Index}}" onclick="openLightbox(this)">
+{{end}}
+</div>
+{{end}}
+{{if .Post.ExternalLink}}
+{{template "_link-card.tmpl" .Post.ExternalLink}}
+{{end}}
+{{if .Post.Quote}}
+{{template "_quote-card.tmpl" .Post.Quote}}
+{{end}}
+{{if .Post.ThreadReplies}}
+{{template "_thread-replies.tmpl" .Post.ThreadReplies}}
+{{end}}
+<div class="meta">{{.Post.Time}} · ♥ {{.Post.LikeCount}} · <a href="{{.Post.URL}}">View</a></div>
+</div>
+{{end}}

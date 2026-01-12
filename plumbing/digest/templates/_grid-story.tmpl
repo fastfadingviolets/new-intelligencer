@@ -1,0 +1,10 @@
+{{define "_grid-story.tmpl"}}
+<article class="story">
+<h4><a href="{{.URL}}">{{if .IsOpinion}}Opinion: {{end}}{{.Headline}}</a></h4>
+<details><summary>{{.PostCount}} {{if eq .PostCount 1}}post{{else}}posts{{end}}</summary>
+{{range .Posts}}
+{{template "_post.tmpl" .}}
+{{end}}
+</details>
+</article>
+{{end}}

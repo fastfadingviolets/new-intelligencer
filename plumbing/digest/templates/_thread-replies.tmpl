@@ -1,0 +1,19 @@
+{{define "_thread-replies.tmpl"}}
+<details class="thread-replies">
+<summary>{{len .}} {{if eq (len .) 1}}reply{{else}}replies{{end}} in thread</summary>
+{{range .}}
+<div class="thread-reply">
+<span class="author"><a href="{{.AuthorURL}}">@{{.AuthorHandle}}</a></span>
+<div class="text">{{safeHTML .Text}}</div>
+{{if .Images}}
+<div class="images">
+{{range .Images}}
+<img src="{{.URL}}" alt="{{.Alt}}" data-group="{{.GroupID}}" data-idx="{{.Index}}" onclick="openLightbox(this)">
+{{end}}
+</div>
+{{end}}
+<div class="meta">{{.Time}} · ♥ {{.LikeCount}}</div>
+</div>
+{{end}}
+</details>
+{{end}}
