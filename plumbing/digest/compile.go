@@ -15,6 +15,17 @@ func formatDigestDate(t time.Time) string {
 	return t.Format("02 January 2006")
 }
 
+// slugify converts a string to a URL-friendly slug
+func slugify(s string) string {
+	s = strings.ToLower(s)
+	s = strings.ReplaceAll(s, " ", "-")
+	s = strings.ReplaceAll(s, "&", "and")
+	// Remove any remaining non-alphanumeric characters except hyphens
+	reg := regexp.MustCompile(`[^a-z0-9-]`)
+	s = reg.ReplaceAllString(s, "")
+	return s
+}
+
 // postURL generates the bsky.app URL for a post
 func postURL(post Post) string {
 	return fmt.Sprintf("https://bsky.app/profile/%s/post/%s", post.Author.Handle, post.Rkey)
@@ -659,6 +670,24 @@ func CompileDigestHTML(
 		}
 	}
 
+	// Pre-compute which sections will actually be rendered (for sidebar nav)
+	type sidebarSection struct {
+		ID   string
+		Name string
+	}
+	sidebarSections := []sidebarSection{
+		{ID: "front-page", Name: "Front Page"},
+	}
+	for _, section := range newsSections {
+		groups := getSectionGroups(storyGroups, section.ID)
+		if section.MaxStories > 0 {
+			truncateStories(&groups, section.MaxStories)
+		}
+		if groups.Headline != nil || len(groups.Stories) > 0 || len(groups.Opinions) > 0 {
+			sidebarSections = append(sidebarSections, sidebarSection{ID: section.ID, Name: section.Name})
+		}
+	}
+
 	// Count grid gaps first (prioritize filling grids over interleaving)
 	frontPageGroups := getFrontPageGroups(storyGroups)
 
@@ -858,6 +887,73 @@ a:hover { text-decoration: underline; }
 .thread-reply .meta { color: var(--muted); font-size: 0.8em; }
 .thread-reply .images img { max-width: 100%; max-height: 120px; margin: 0.25rem 0; cursor: pointer; }
 
+/* Sidebar navigation - large screens (fixed left) */
+.sidebar {
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 180px;
+  z-index: 100;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  padding: 1rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar li { margin: 0; }
+.sidebar a {
+  display: block;
+  padding: 10px 16px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar a:hover { color: var(--text); border-left-color: var(--border); text-decoration: none; background: var(--section-bg); }
+.sidebar a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 600; background: var(--section-bg); }
+
+/* Sidebar - medium/small screens (sticky top bar) */
+@media (max-width: 1500px) {
+  .sidebar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    border-radius: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: var(--section-bg);
+  }
+  .sidebar ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
+    padding: 0.5rem;
+  }
+  .sidebar li { margin: 0; }
+  .sidebar a {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 4px;
+  }
+  .sidebar a:hover { background: var(--bg); border-left: none; border-bottom-color: var(--border); }
+  .sidebar a.active { background: var(--bg); border-left: none; border-bottom-color: var(--accent); }
+}
+@media (max-width: 600px) {
+  .sidebar a { padding: 6px 8px; font-size: 0.75rem; }
+}
+
 @media (max-width: 600px) {
   .stories-grid { grid-template-columns: 1fr; }
 }
@@ -871,8 +967,15 @@ a:hover { text-decoration: underline; }
 	html.WriteString("<h1>The Daily Digest</h1>\n")
 	html.WriteString(fmt.Sprintf("<p class=\"subtitle\">%s</p>\n", escapeHTML(formatDigestDate(config.CreatedAt))))
 
+	// Sidebar navigation
+	html.WriteString("<nav class=\"sidebar\">\n<ul>\n")
+	for _, s := range sidebarSections {
+		html.WriteString(fmt.Sprintf("<li><a href=\"#section-%s\">%s</a></li>\n", slugify(s.ID), escapeHTML(s.Name)))
+	}
+	html.WriteString("</ul>\n</nav>\n")
+
 	// Front Page
-	html.WriteString("<details class=\"section\" open>\n")
+	html.WriteString("<details class=\"section\" id=\"section-front-page\" open>\n")
 	html.WriteString("<summary><h2>Front Page</h2></summary>\n")
 
 	// frontPageGroups already computed above for grid gap counting
@@ -927,7 +1030,7 @@ a:hover { text-decoration: underline; }
 			html.WriteString("</section>\n")
 		}
 
-		html.WriteString("<details class=\"section\" open>\n")
+		html.WriteString(fmt.Sprintf("<details class=\"section\" id=\"section-%s\" open>\n", slugify(section.ID)))
 		html.WriteString(fmt.Sprintf("<summary><h2>%s</h2></summary>\n", escapeHTML(section.Name)))
 
 		// Headline story (full width, prominent)
@@ -1012,6 +1115,27 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowLeft') navLightbox(-1, e);
   if (e.key === 'ArrowRight') navLightbox(1, e);
 });
+
+// Sidebar scroll tracking
+(function() {
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('.sidebar a');
+  if (!sections.length || !navLinks.length) return;
+
+  function updateActiveSection() {
+    let current = '';
+    sections.forEach(function(section) {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= 150) current = section.id;
+    });
+    navLinks.forEach(function(link) {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveSection);
+  updateActiveSection();
+})();
 </script>
 `)
 	html.WriteString("</body>\n</html>\n")
