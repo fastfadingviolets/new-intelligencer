@@ -47,7 +47,7 @@ a:hover { text-decoration: underline; }
 .section:not([open]) > summary h2::after { content: " ▶"; }
 
 /* Headline story - full width, prominent */
-.headline-story { margin-bottom: 1.5rem; }
+.headline-story { margin-bottom: 1.5rem; text-align: center; }
 .headline-story h3 {
   font-size: clamp(1.3rem, 1rem + 1vw, 1.8rem);
   line-height: 1.3;

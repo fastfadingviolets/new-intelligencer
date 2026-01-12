@@ -1,0 +1,21 @@
+{{define "_front-page.tmpl"}}
+<section class="section" id="section-{{.Slug}}">
+
+{{if .HeadlineStory}}
+{{template "_headline-story.tmpl" .HeadlineStory}}
+{{end}}
+
+{{if .GridStories}}
+<div class="stories-grid">
+{{range .GridStories}}
+{{if .IsFiller}}
+{{template "_feed-card.tmpl" .Filler}}
+{{else}}
+{{template "_grid-story.tmpl" .}}
+{{end}}
+{{end}}
+</div>
+{{end}}
+
+</section>
+{{end}}
