@@ -50,6 +50,7 @@ pwd && ls
 4. Select the 4-6 most important stories across ALL news sections
 5. Move each selected story: `./bin/digest move-story <story-id> --to front-page`
 6. Verify with `./bin/digest show-front-page`
+7. **Mark complete**: `./bin/digest mark-batch-done --stage front-page`
 
 ## Front Page Criteria
 

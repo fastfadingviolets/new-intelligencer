@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Daily Digest - 12 January 2026</title>
+<title>The New Intelligencer - 12 January 2026</title>
 <style>
 :root {
   --bg: #f5f1e8;
@@ -24,16 +24,23 @@ body {
   padding: clamp(1rem, 2vw, 3rem);
   font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
 }
+.masthead { text-align: center; margin-bottom: 0.25rem; line-height: 1.1; }
+.masthead-the {
+  font-size: clamp(1.3rem, 1rem + 0.7vw, 1.6rem);
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+  margin-bottom: -0.2rem;
+}
 h1 {
   font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
   text-align: center;
-  border-bottom: 3px double var(--text);
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.25rem;
+  margin: 0;
+  font-variant: small-caps;
+  line-height: 1;
 }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
-.subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; }
+.subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 3px double var(--text); }
 
 /* Section headers - distinctive */
 .section > summary { list-style: none; cursor: pointer; }
@@ -54,7 +61,7 @@ a:hover { text-decoration: underline; }
 .section:not([open]) > summary h2::after { content: " ▶"; }
 
 /* Headline story - full width, prominent */
-.headline-story { margin-bottom: 1.5rem; }
+.headline-story { margin-bottom: 1.5rem; text-align: center; }
 .headline-story h3 {
   font-size: clamp(1.3rem, 1rem + 1vw, 1.8rem);
   line-height: 1.3;
@@ -251,12 +258,14 @@ a:hover { text-decoration: underline; }
 </nav>
 
 
-<h1>The Daily Digest</h1>
+<header class="masthead">
+<div class="masthead-the">The</div>
+<h1>New Intelligencer</h1>
+</header>
 <p class="subtitle">12 January 2026</p>
 
 
-<details class="section" id="section-front-page" open>
-<summary><h2>Front Page</h2></summary>
+<section class="section" id="section-front-page">
 
 
 
@@ -1575,7 +1584,7 @@ Iran cris...</div>
 </div>
 
 
-</details>
+</section>
 
 
 

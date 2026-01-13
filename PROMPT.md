@@ -13,15 +13,18 @@ Then invoke subagents in sequence.
 
 ## Waiting for Stage Completion
 
-Each agent marks itself done when finished. Use `--wait-for` to block until a stage completes:
+Each agent marks itself done when finished. Use `--wait-for` to block until a stage completes.
+
+**CRITICAL:** Run `--wait-for` commands in the **FOREGROUND** with a **10-minute timeout** (600000ms). Do NOT background these commands. Do NOT poll or check status manually. Just wait for the command to return:
 
 ```bash
 ./bin/digest status --wait-for categorization   # blocks until all batches done
 ./bin/digest status --wait-for consolidation    # blocks until all sections consolidated
+./bin/digest status --wait-for front-page       # blocks until front page selected
 ./bin/digest status --wait-for headlines        # blocks until all headlines set
 ```
 
-This prints progress updates and returns when the stage is complete (or errors on timeout).
+The command prints progress and exits when the stage completes. If the Bash tool times out after 10 minutes, simply **re-run the same `--wait-for` command**. It will resume waiting. Keep re-running until the stage completes. Do NOT try alternative polling approaches.
 
 ## Step 1: Parallel Batch Categorization
 
@@ -63,7 +66,11 @@ After consolidation is complete:
 bsky-front-page-selector - pick 4-6 top STORIES (not individual posts) for front page
 ```
 
-This agent moves entire story groups to the front-page section.
+This agent moves entire story groups to the front-page section. After spawning the agent, run:
+
+```bash
+./bin/digest status --wait-for front-page
+```
 
 ## Step 4: Headlines & Priorities (Parallel)
 

@@ -534,6 +534,8 @@ func isStageComplete(stage string, wd *WorkspaceData, bp *BatchProgress) bool {
 			}
 		}
 		return true
+	case "front-page":
+		return bp.FrontPage
 	case "headlines":
 		storyGroups, _ := LoadStoryGroups(filepath.Join(wd.Dir, "story-groups.json"))
 		sections := getSectionsWithStories(storyGroups)
@@ -571,6 +573,11 @@ func getStageProgress(stage string, wd *WorkspaceData, bp *BatchProgress) string
 		sections := getSectionsWithPosts(wd.Categories)
 		completed := len(bp.Consolidation)
 		return fmt.Sprintf("%d/%d sections complete", completed, len(sections))
+	case "front-page":
+		if bp.FrontPage {
+			return "front page selection complete"
+		}
+		return "front page selection pending"
 	case "headlines":
 		storyGroups, _ := LoadStoryGroups(filepath.Join(wd.Dir, "story-groups.json"))
 		sections := getSectionsWithStories(storyGroups)
@@ -633,10 +640,11 @@ var statusCmd = &cobra.Command{
 			validStages := map[string]bool{
 				"categorization": true,
 				"consolidation":  true,
+				"front-page":     true,
 				"headlines":      true,
 			}
 			if !validStages[statusWaitFor] {
-				return fmt.Errorf("invalid stage %q: must be categorization, consolidation, or headlines", statusWaitFor)
+				return fmt.Errorf("invalid stage %q: must be categorization, consolidation, front-page, or headlines", statusWaitFor)
 			}
 
 			timeout := time.Duration(statusTimeout) * time.Second
@@ -1576,6 +1584,7 @@ var addToStoryCmd = &cobra.Command{
 type BatchProgress struct {
 	Categorization []CatBatch `json:"categorization,omitempty"`
 	Consolidation  []string   `json:"consolidation,omitempty"`
+	FrontPage      bool       `json:"front_page,omitempty"`
 	Headlines      []string   `json:"headlines,omitempty"`
 }
 
@@ -1620,6 +1629,9 @@ For categorization:
 
 For consolidation:
   ./bin/digest mark-batch-done --stage consolidation --section music
+
+For front-page:
+  ./bin/digest mark-batch-done --stage front-page
 
 For headlines:
   ./bin/digest mark-batch-done --stage headlines --section music`,
@@ -1678,6 +1690,14 @@ func markBatchDoneInDir(dir, stage string, offset, limit int, section string) er
 			bp.Consolidation = append(bp.Consolidation, section)
 			fmt.Printf("Marked consolidation for %s complete\n", section)
 
+		case "front-page":
+			if bp.FrontPage {
+				fmt.Printf("Front page selection already marked complete\n")
+				return nil
+			}
+			bp.FrontPage = true
+			fmt.Printf("Marked front page selection complete\n")
+
 		case "headlines":
 			if section == "" {
 				return fmt.Errorf("--section is required for headlines stage")
@@ -1692,7 +1712,7 @@ func markBatchDoneInDir(dir, stage string, offset, limit int, section string) er
 			fmt.Printf("Marked headlines for %s complete\n", section)
 
 		default:
-			return fmt.Errorf("unknown stage: %s (use categorization, consolidation, or headlines)", stage)
+			return fmt.Errorf("unknown stage: %s (use categorization, consolidation, front-page, or headlines)", stage)
 		}
 
 		return saveBatchProgress(dir, bp)
@@ -1737,7 +1757,7 @@ func init() {
 	updateStoryCmd.Flags().Bool("opinion", false, "Mark as opinion piece")
 
 	// mark-batch-done flags
-	markBatchDoneCmd.Flags().String("stage", "", "Stage name (categorization, consolidation, headlines)")
+	markBatchDoneCmd.Flags().String("stage", "", "Stage name (categorization, consolidation, front-page, headlines)")
 	markBatchDoneCmd.Flags().Int("offset", 0, "Batch offset (for categorization)")
 	markBatchDoneCmd.Flags().Int("limit", 0, "Batch limit (for categorization)")
 	markBatchDoneCmd.Flags().String("section", "", "Section ID (for consolidation/headlines)")
