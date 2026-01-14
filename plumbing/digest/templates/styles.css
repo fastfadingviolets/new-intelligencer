@@ -126,7 +126,7 @@ a:hover { text-decoration: underline; }
 .lightbox-nav.next { right: 1rem; }
 .lightbox-nav:disabled { opacity: 0.2; cursor: default; }
 .lightbox-counter { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); color: white; font-size: 0.9rem; }
-.images img { cursor: pointer; }
+.images img { max-width: 100%; cursor: pointer; }
 
 /* Link cards */
 .link-card { display: flex; gap: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 0.5rem 0; text-decoration: none; color: inherit; }
