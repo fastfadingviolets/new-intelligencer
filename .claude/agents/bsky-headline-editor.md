@@ -69,9 +69,10 @@ pwd && ls
 ./bin/digest show-story <story-id>
 
 # Set headline and priority (BOTH REQUIRED)
-./bin/digest update-story <story-id> --headline "Headline Text" --priority N
-./bin/digest update-story <story-id> --headline "Headline Text" --priority N --role headline
-./bin/digest update-story <story-id> --headline "Opinion Title" --priority N --opinion
+# IMPORTANT: Use single quotes for headlines to preserve $ and other special characters
+./bin/digest update-story <story-id> --headline 'Headline Text' --priority N
+./bin/digest update-story <story-id> --headline 'Headline Text' --priority N --role headline
+./bin/digest update-story <story-id> --headline 'Opinion Title' --priority N --opinion
 
 # Check unprocessed stories
 ./bin/digest show-unprocessed <section-id>
@@ -95,13 +96,13 @@ For each story in your section:
 1. View it: `./bin/digest show-story <story-id>`
 2. Write a headline
 3. Assign a priority (1 = most important)
-4. Set it: `./bin/digest update-story <story-id> --headline "..." --priority N`
+4. Set it: `./bin/digest update-story <story-id> --headline '...' --priority N`
 
 **Priority 1 story gets `--role headline`:**
 ```bash
-./bin/digest update-story sg_001 --headline "Main Story" --priority 1 --role headline
-./bin/digest update-story sg_002 --headline "Second Story" --priority 2
-./bin/digest update-story sg_003 --headline "Third Story" --priority 3
+./bin/digest update-story sg_001 --headline 'Main Story' --priority 1 --role headline
+./bin/digest update-story sg_002 --headline 'Second Story' --priority 2
+./bin/digest update-story sg_003 --headline 'Third Story' --priority 3
 # ... continue for ALL stories
 ```
 
