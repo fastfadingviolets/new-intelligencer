@@ -1,122 +1,37 @@
-# Bluesky Daily Digest Agent
+# The New Intelligencer
 
-A multi-agent system that creates newspaper-style daily digests from your Bluesky timeline.
+A daily newspaper generated from your Bluesky timeline.
 
-## What This Does
+![The New Intelligencer](screenshot.png)
 
-This project uses Claude Code agents to transform your Bluesky feed into a curated daily digest:
+The New Intelligencer transforms your Bluesky feed into a curated newspaper-style digest. It fetches posts from your timeline, groups related posts into stories, writes headlines, and compiles everything into a browsable HTML page.
 
-1. **Fetches** posts from your timeline (last 24 hours)
-2. **Categorizes** posts into newspaper sections (tech, sports, music, politics, etc.)
-3. **Consolidates** related posts into story groups
-4. **Selects** top stories for the front page
-5. **Generates** headlines and priority rankings
-6. **Compiles** everything into markdown and HTML digests
-
-## Prerequisites
-
-- Go 1.24+
-- [Claude Code](https://github.com/anthropics/claude-code)
-- Bluesky account with an app password
-
-## Setup
-
-### 1. Generate a Bluesky App Password
-
-1. Open the Bluesky app
-2. Go to **Settings → Privacy and Security → App Passwords**
-3. Click **"Add App Password"**
-4. Name it "Daily Digest Agent"
-5. Save the generated password (format: `xxxx-xxxx-xxxx-xxxx`)
-
-### 2. Store Credentials in macOS Keychain
-
-```bash
-security add-generic-password -s "bsky-agent" -a "handle" -w "your.handle.bsky.social"
-security add-generic-password -s "bsky-agent" -a "password" -w "xxxx-xxxx-xxxx-xxxx"
-```
-
-The first time you run the agent, macOS will prompt you to allow access. Click **"Always Allow"** to avoid future prompts.
-
-### 3. Build the Tool
-
-```bash
-make build
-```
-
-This compiles the `digest` binary to `./bin/digest`.
-
-## Usage
-
-### Quick Start
+## Quick Start
 
 ```bash
 ./run.sh
 ```
 
-This runs the full digest workflow with Claude Code agents.
+This runs the full workflow and generates `digest.html` in today's workspace folder.
 
-### Key Commands
+## Setup
 
-```bash
-# Initialize a new workspace for today
-./bin/digest init
+### Prerequisites
 
-# Fetch posts from your timeline
-./bin/digest fetch
+- Go 1.24+
+- [Claude Code](https://github.com/anthropics/claude-code)
+- Bluesky account with an app password
 
-# Check workflow progress
-./bin/digest status
+### Bluesky Credentials
 
-# Compile the final digest
-./bin/digest compile
-```
-
-### Using Claude Code Agents
+1. In Bluesky, go to **Settings > Privacy and Security > App Passwords**
+2. Create a new app password
+3. Store your credentials in macOS Keychain:
 
 ```bash
-source env.sh
-claude "Use bsky-section-categorizer to process posts"
+security add-generic-password -s "bsky-agent" -a "handle" -w "your.handle.bsky.social"
+security add-generic-password -s "bsky-agent" -a "password" -w "xxxx-xxxx-xxxx-xxxx"
 ```
-
-## Workflow Pipeline
-
-The digest creation follows a 6-stage pipeline:
-
-```
-FETCH → CATEGORIZE → CONSOLIDATE → FRONT PAGE → HEADLINES → COMPILE
-```
-
-| Stage | Agent | Description |
-|-------|-------|-------------|
-| Fetch | CLI | Pull posts from Bluesky API |
-| Categorize | `bsky-section-categorizer` | Sort posts into sections |
-| Consolidate | `bsky-consolidator` | Group related posts into stories |
-| Front Page | `bsky-front-page-selector` | Pick 4-6 top stories |
-| Headlines | `bsky-headline-editor` | Set headlines and priorities |
-| Compile | CLI | Generate markdown and HTML |
-
-## Agent Architecture
-
-Four specialized Claude Code agents orchestrate the workflow:
-
-| Agent | Role |
-|-------|------|
-| **bsky-section-categorizer** | Evaluates posts and assigns them to newspaper sections |
-| **bsky-consolidator** | Groups posts about the same story/event together |
-| **bsky-front-page-selector** | Curates the most important stories for the front page |
-| **bsky-headline-editor** | Sets headlines, priorities, and story roles |
-
-Agent configurations are in `.claude/agents/`.
-
-## Output Formats
-
-The `compile` command generates two output files in the workspace directory:
-
-- **`digest.md`** - Markdown format with sections, headlines, and post links
-- **`digest.html`** - HTML rendering with embedded media and external link cards
-
-## Development
 
 ### Build
 
@@ -124,22 +39,36 @@ The `compile` command generates two output files in the workspace directory:
 make build
 ```
 
-### Test
+## How It Works
 
-```bash
-make test
+The digest is created through a six-stage pipeline:
+
+```
+FETCH → CATEGORIZE → CONSOLIDATE → FRONT PAGE → HEADLINES → COMPILE
 ```
 
-Runs 112 tests with Go's race detector enabled (`-race -count=3`).
+Four Claude Code agents handle the editorial work:
 
-### Clean
+| Agent | Role |
+|-------|------|
+| `bsky-section-categorizer` | Assigns posts to newspaper sections |
+| `bsky-consolidator` | Groups posts about the same story together |
+| `bsky-front-page-selector` | Picks the top stories for the front page |
+| `bsky-headline-editor` | Writes headlines and sets story priorities |
+
+### CLI Commands
 
 ```bash
-make clean
+./bin/digest init      # Initialize today's workspace
+./bin/digest fetch     # Fetch posts from your timeline
+./bin/digest status    # Check workflow progress
+./bin/digest compile   # Generate the final digest
 ```
 
-## Security
+## Development
 
-- Credentials are stored in macOS Keychain, not in code
-- App passwords are scoped and revokable
-- The agent never sees your main Bluesky password
+```bash
+make build   # Build the binary
+make test    # Run tests
+make clean   # Clean build artifacts
+```
