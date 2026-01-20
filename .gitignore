@@ -1,6 +1,9 @@
 # Binaries
 bin/
 
+# Digest workspaces
+digest-*/
+
 # Go build artifacts
 *.exe
 *.exe~
@@ -11,6 +14,7 @@ bin/
 # Go test/coverage
 *.test
 *.out
+*.actual
 coverage.txt
 
 # Go workspace
